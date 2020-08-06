@@ -1,14 +1,14 @@
 # Reload the rules:
 firewall-cmd --reload
 
-#Get a list of the active rules:
+# Get a list of the active rules:
 ```
 [root@lpe2d ~]# firewall-cmd --get-active-zones
 public
   interfaces: eth0
  ```
 
-#List the rules from the public zone:
+# List the rules from the public zone:
 ```
 [root@lpe2d ~]# firewall-cmd --list-all --zone=public
 public (active)
@@ -31,22 +31,22 @@ public (active)
 success
 ```
 
-#Manually remove port 25:
+# Manually remove port 25:
 ```
 [root@lpe2d ~]# firewall-cmd --zone=public --permanent --remove-port=25/tcp
 success
 ```
-#List services allowed:
+# List services allowed:
 ```
 [root@lpe2d ~]# firewall-cmd --list-services
 ```
 
-#manually remove service dhcpv6-client
+# manually remove service dhcpv6-client
 ```
 firewall-cmd --zone=public --permanent --remove-service=dhcpv6-client
 ```
 
-#Check configuration files: Centos8
+# Check configuration files: Centos8
 file: /etc/firewalld/firewalld.conf
 zone files: /etc/firewalld/zones
 ```
@@ -56,7 +56,7 @@ block.xml  dmz.xml  drop.xml  external.xml  home.xml  internal.xml  public.xml  
 ```
 
 
-#Reset firewall to defaults installation files:
+# Reset firewall to defaults installation files:
 ```
 #!/bin/bash
 #filename: reset_firewalld_to_default.sh
