@@ -2,18 +2,21 @@
 Tested on PE v2019.8.0 with code manager enabled.
 Version of hiera-eyaml: 3.2.0
 
-#1. hiera-eyaml comes installed with puppet
+# 1. hiera-eyaml comes installed with puppet
+
+```
   [ted.knab@lpe1p keys]$ eyaml version
   [hiera-eyaml-core] hiera-eyaml (core): 3.2.0
+```
 
-#2. Create some private keys are needed for things to work.
+# 2. Create some private keys are needed for things to work.
 create keys
 ```
 [ted.knab@lpe1p ~]$ eyaml createkeys
 [hiera-eyaml-core] Keys created OK
 [hiera-eyaml-core] Created key directory: ./keys
 ```
-#3. copy the new private and public keys to either '/var/lib/puppet/keys' or '/etc/puppetlabs/puppet/eyaml' and make the keys ro
+# 3. copy the new private and public keys to either '/var/lib/puppet/keys' or '/etc/puppetlabs/puppet/eyaml' and make the keys ro
     source: https://github.com/voxpupuli/hiera-eyaml
 
 ```
@@ -23,7 +26,7 @@ create keys
    chown -R pe-puppet:pe-puppet /var/lib/puppet
 ```
 
-#4. verfiy the premissions look right
+# 4. verfiy the premissions look right
 
 ```
 [root@lpe1p lib]# find /var/lib/puppet -type f
@@ -34,7 +37,7 @@ create keys
 -r--------. 1 pe-puppet pe-puppet 1.1K Aug 12 13:41 /var/lib/puppet/keys/public_key.pkcs7.pem
 ```
 
-#5. modify the hierachy in the environment you wish to setup
+# 5. modify the hierachy in the environment you wish to setup
 
 ```
 ---
@@ -66,7 +69,7 @@ hierarchy:
       - "common.yaml"
 ```
 
-#6. Tell eyaml where to find the keys
+# 6. Tell eyaml where to find the keys
 
 
 
@@ -87,7 +90,7 @@ pkcs7_private_key: '/var/lib/puppet/keys/private_key.pkcs7.pem'
 pkcs7_public_key:  '/var/lib/puppet/keys/public_key.pkcs7.pem'
 ```
 
-#7. In your reop create a common.eyaml file and put in your secrets.
+# 7. In your repo create a common.eyaml file and put in your secrets.
 
 This is how you would create a simple encrypted variable. 
 
@@ -117,7 +120,7 @@ mysecretvariable: >
 only one of the two needs to be added. Use 'double quotes around the string to prevent errors'.
 
 
-#8. after code deploy is run test with lookup
+# 8. after code deploy is run test with lookup
 
 ```
 sudo puppet lookup --environment production mysecretvariable 
