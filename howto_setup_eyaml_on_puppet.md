@@ -5,14 +5,14 @@ Version of hiera-eyaml: 3.2.0
 # 1. hiera-eyaml comes installed with puppet
 
 ```
-  [ted.knab@lpe1p keys]$ eyaml version
+  [myuser@testpuppetserver1 keys]$ eyaml version
   [hiera-eyaml-core] hiera-eyaml (core): 3.2.0
 ```
 
 # 2. Create some private keys are needed for things to work.
 create keys
 ```
-[ted.knab@lpe1p ~]$ eyaml createkeys
+[myuser@testpuppetserver1 ~]$ eyaml createkeys
 [hiera-eyaml-core] Keys created OK
 [hiera-eyaml-core] Created key directory: ./keys
 ```
@@ -26,13 +26,13 @@ create keys
    chown -R pe-puppet:pe-puppet /var/lib/puppet
 ```
 
-# 4. verfiy the premissions look right
+# 4. verfiy the permissions look right
 
 ```
-[root@lpe1p lib]# find /var/lib/puppet -type f
+[root@testpuppetserver1 lib]# find /var/lib/puppet -type f
 /var/lib/puppet/keys/private_key.pkcs7.pem
 /var/lib/puppet/keys/public_key.pkcs7.pem
-[root@lpe1p lib]# find /var/lib/puppet -type f -exec ls -lah {} ';'
+[root@testpuppetserver1 lib]# find /var/lib/puppet -type f -exec ls -lah {} ';'
 -r--------. 1 pe-puppet pe-puppet 1.7K Aug 12 13:41 /var/lib/puppet/keys/private_key.pkcs7.pem
 -r--------. 1 pe-puppet pe-puppet 1.1K Aug 12 13:41 /var/lib/puppet/keys/public_key.pkcs7.pem
 ```
@@ -43,7 +43,8 @@ create keys
 ---
 version: 5
 #environment: production
-#repo: Control-repo-CIMS
+#repo: Control-repo
+#filename: hiera.yaml
 #source:  source: https://github.com/voxpupuli/hiera-eyaml
 
 defaults:
@@ -84,7 +85,7 @@ pkcs7_public_key:  '/var/lib/puppet/keys/public_key.pkcs7.pem'
 
 The finished product should look like this:
 ```
-[root@lpe1p ~]# cat /etc/eyaml/config.yaml
+[root@testpuppetserver1 ~]# cat /etc/eyaml/config.yaml
 ---
 pkcs7_private_key: '/var/lib/puppet/keys/private_key.pkcs7.pem'
 pkcs7_public_key:  '/var/lib/puppet/keys/public_key.pkcs7.pem'
@@ -95,10 +96,10 @@ pkcs7_public_key:  '/var/lib/puppet/keys/public_key.pkcs7.pem'
 This is how you would create a simple encrypted variable. 
 
 ```
-[root@lpe1p ~]# eyaml encrypt -p -l mysecretpassword
+[root@testpuppetserver1 ~]# eyaml encrypt -p -l mysecretpassword
 Enter password: *****************
 
-[root@lpe1p ~]# eyaml encrypt -p -l mysecretvariable
+[root@testpuppetserver1 ~]# eyaml encrypt -p -l mysecretvariable
 Enter password: ***********
 mysecretvariable: ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAsWfSQXa7CFxZq7cfZJJaE0NMnuAx8BCGwqByWth3oFRwbZDxUU5stJyavmpcMP8udf1x12dGfgK7GNiWTSm1fxApjMTHKISW63bCTv5ScaXnVF9KmQvAQj46YYi4QNFJq2C3qldNVuushPoKUx4SqMDUA85KzYzFCVX/wJKUsx5ioWUd2R+GPsN0PgZ9NtnPi3X18dst1gDYl88jPht5705kKrOFYoF3CJEAsS7XHE/NuCXABdYoAxooQeH3p2UM7fzboWZkvihO6Jbd7i7HuF7kC+Ee0u2JSNtNOu0DzCmUPL4KO2qtf/7pWRdpPEYSbll0OaO1gBlCFs/TV5QEEzA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBBPqjRxw6F9a8/wMfGlqYb1gBCJQ6Idp8RSKQzGP878NIAf]
 
