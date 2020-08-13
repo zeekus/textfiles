@@ -121,10 +121,32 @@ mysecretvariable: >
 only one of the two needs to be added. Use 'double quotes around the string to prevent errors'.
 
 
-# 8. after code deploy is run test with lookup
+# 8. after code deploy is run test with lookup on your puppet server.
+
+Note lookups only work on the server with access to hiera.
+This limitation is documented in the man page. here: 
+
+```
+NAME
+lookup - Interactive Hiera lookup
+
+SYNOPSIS
+Does Hiera lookups from the command line.
+
+Since this command needs access to your Hiera data, make sure to run it on a node that has a copy of that data. This usually means logging into a Puppet Server node and running 'puppet lookup' with sudo.
+
+The most common version of this command is:
+
+'puppet lookup KEY --node NAME --environment ENV --explain'
+```
+source: https://puppet.com/docs/puppet/6.17/man/lookup.html
+
+https://puppet.com/docs/puppet/6.17/hiera_automatic.html#using_puppet_lookup
+
 
 ```
 sudo puppet lookup --environment production mysecretvariable 
+
 ```
 
 
