@@ -144,9 +144,16 @@ source: https://puppet.com/docs/puppet/6.17/man/lookup.html
 https://puppet.com/docs/puppet/6.17/hiera_automatic.html#using_puppet_lookup
 
 
+
+```
+
+
 ```
 sudo puppet lookup --environment production mysecretvariable 
+--- "mypass"
 
+sudo puppet lookup --environment development mysecretvariable 
+--- "mypass"
 ```
 
 
