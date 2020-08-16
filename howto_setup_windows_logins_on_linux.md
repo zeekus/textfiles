@@ -20,7 +20,9 @@ realmmd -
 authconfig - 
 ```
 
-# configuration files that control domain registration seem to gt created by the tools that 
+# configuration files that control domain registration create
+
+These should appear after a Linux host is joined to a domain. 
 
 
 ```
