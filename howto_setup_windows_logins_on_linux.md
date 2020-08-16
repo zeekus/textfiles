@@ -6,9 +6,9 @@ Linux can use AD as a authentication method. There are multiple tools that can b
 
 # Linux tools to join a domain
 
-adcli - mostly widely used
-realmmd -
-authconfig - 
+#adcli - mostly widely used
+#realmmd -
+#authconfig - 
 
 # configuration files that control domain registration seem to gt created by the tools that 
 
