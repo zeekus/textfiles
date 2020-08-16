@@ -1,16 +1,18 @@
 # Draft started 8/14/2020
 
+# How to setup Linux to connect to a Windows domain
+
+Linux can use AD as a authentication method. There are multiple tools that can be used to this.
+
+
 ## steps
 ```
   1 join the domain - before you can use Windows authentication you need to join your Linux box to a Windows or Samba domain controller. 
   2 setup sssd and oddjobs - for login and home directory managment. 
 ```
 
-# How to setup Linux to connect to a Windows domain
 
-Linux can use AD as a authentication method. There are multiple tools that can be used to this.
-
-# Linux tools to join a domain
+# Linux tools to 'join a domain'
 
 ```
 adcli - mostly widely used
