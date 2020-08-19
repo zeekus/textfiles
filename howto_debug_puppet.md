@@ -2,8 +2,9 @@
 
 #How to debug puppet runs
 
+# puppet dry runs with no changes
 ```
-puppet agent -tv --noop --explain
+puppet agent -tv --noop -
 ```
 
 # How to debug Yaml variables.
