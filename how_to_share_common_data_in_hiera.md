@@ -12,7 +12,7 @@ clearv1: test123
 ```
 
 
-## step load the common file from hiera on the set environemnt.
+## step load the common file from hiera on the set environment.
 
 Example: in Dev.
 
