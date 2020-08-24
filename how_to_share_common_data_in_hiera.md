@@ -41,7 +41,7 @@ hierarchy:
       - "groups/%{facts.group}.yaml"
       - "os/%{facts.os.family}.yaml"
       - "common.yaml"
-    ```
+```
 
 ## Test from your development environment
 
