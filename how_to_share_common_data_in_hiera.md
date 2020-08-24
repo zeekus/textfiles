@@ -1,6 +1,9 @@
-## How to share variables across Puppet environments.
+# How to share variables across Puppet environments.
 
-# step one store some data in your production environment's common.yaml or common.yaml
+The Problem we are trying to solve. Keep things simple. Reduce repeats of data. 
+
+
+## step one store some data in your production environment's common.yaml or common.yaml
 
 ```
 ---
@@ -9,7 +12,7 @@ clearv1: test123
 ```
 
 
-# step load the common file from hiera on the set environemnt.
+## step load the common file from hiera on the set environemnt.
 
 Example: in Dev.
 
@@ -40,7 +43,7 @@ hierarchy:
       - "common.yaml"
     ```
 
-# Test from your development environment
+## Test from your development environment
 
 ```
 [root@myhost ~]# puppet lookup clearv1 --environment development
