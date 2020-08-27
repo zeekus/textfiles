@@ -10,7 +10,9 @@ puppet agent -tv --noop -
 # How to debug Yaml variables.
 Yaml varabibles get set in either eymal or yaml files.
 
-Lookups can be used to query thme from the 'puppet server'. Here are some examples.
+Lookups can be used to query from the 'puppet server'. Here are some examples.
+
+## 1. Querying Common data 
 
 ```
 ---
@@ -28,6 +30,8 @@ centos:
   priority: 40
   content: 'centos ALL=(ALL) NOPASSWD: ALL'
 ```
+
+## 2. Querying node data. 
 
 ```
 ---
