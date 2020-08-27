@@ -4,11 +4,11 @@
 
 # puppet dry runs with no changes
 ```
-puppet agent -tv --noop -
+puppet agent -tv --noop 
 ```
 
 # How to debug Yaml variables.
-Yaml varabibles get set in either eymal or yaml files.
+Yaml varabibles get set in either eymal ( if enabled ) or yaml files.
 
 Lookups can be used to query from the 'puppet server'. Here are some examples.
 
