@@ -28,3 +28,15 @@ centos:
   priority: 40
   content: 'centos ALL=(ALL) NOPASSWD: ALL'
 ```
+
+```
+---
+#source: data/nodes/jira1d.example.net.yaml 
+jira::version:       '8.8.1'
+jira::product_name:  'jira-software'
+jira::installdir:    '/opt/atlassian/jira'
+jira::homedir:       '/var/atlassian/application-data/jira'
+```
+[root@lserver ~]# puppet lookup jira::javahome --node jira1d.example.net
+--- "/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre/bin/java"
+```
