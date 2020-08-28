@@ -44,3 +44,5 @@ sudo systemctl enable jira
 ```
 sudo systemctl status jira
 ```
+mostly copoied for future reference from: 
+source: https://confluence.atlassian.com/jirakb/run-jira-as-a-systemd-service-on-linux-979411854.html
