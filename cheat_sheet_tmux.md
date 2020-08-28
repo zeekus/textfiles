@@ -1,11 +1,11 @@
-#TMUX cheat sheet
+# TMUX cheat sheet
 
-#list session windows
+# list session windows
 ```
 ctrl+b w
 ```
 
-#attach and detach session
+# attach and detach session
 ```
 tmux attach
 
@@ -14,7 +14,7 @@ ctrl+b d #detach from session
 ```
 
 
-#previous/ next window/ window number
+# previous/ next window/ window number
 
 ```
 ctrl+b p #previous window
