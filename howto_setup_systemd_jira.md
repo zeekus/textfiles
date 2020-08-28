@@ -35,14 +35,14 @@ sudo systemctl deamon-reload
  sudo systemctl start jira
  ```
  
-#5. enable service to start upon reboots
+# 5. enable service to start upon reboots
 ```
 sudo systemctl enable jira
 ```
 
-#6. verify service is started and set to run on reboots
+# 6. verify service is started and set to run on reboots
 ```
 sudo systemctl status jira
 ```
-mostly copied: 
+# mostly copied: 
 source: https://confluence.atlassian.com/jirakb/run-jira-as-a-systemd-service-on-linux-979411854.html
