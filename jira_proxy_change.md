@@ -3,7 +3,7 @@
 # Problem
 
 Jira uses a proxy. With Jira 8.11.0 the legacy AJP/1.3 proxy stops working.
-Also, There is the ghost cat vulerability. 
+Also, There is the ghost cat vulnerrablity. 
 source: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-1938
 
 # Fix: switch from AJP/1.3 to  mod_proxy
@@ -55,6 +55,6 @@ ProxyPassReverse        / http://localhost:8080
 ```
 
 
-# Source: Intergrating Jira with Apache using SSL
+# Source: Integrating Jira with Apache using SSL
 
 https://confluence.atlassian.com/adminjiraserver079/integrating-jira-with-apache-using-ssl-950289045.html
