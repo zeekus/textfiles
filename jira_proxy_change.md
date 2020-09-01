@@ -1,35 +1,14 @@
-# How to change the proxy on Jira when using apache 2.4
+# How to change the proxy from AJP/1.3 to mod_proxy 
 
 # Problem
 
-Jira uses a proxy. With Jira 8.11.0 the legacy proxy stops working.
+Jira uses a proxy. With Jira 8.11.0 the legacy AJP/1.3 proxy stops working.
+Also, There is the ghost cat vulerability. 
+source: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-1938
 
-# Fix: switch from AJP/1.3 to http proxy
+# Fix: switch from AJP/1.3 to  mod_proxy
 
-## Part 1: Reconfigure Jira to use httpd proxy - server.xml diffs
-```
-                    acceptCount="100"
-                    disableUploadTimeout="true"
-                    redirectPort="8443"
-+                   proxyName = 'jira-dev.example.net'
-+                   proxyPort = '443'
-+                   scheme = 'https'
-         />
-
-
--        <Connector enableLookups="false" URIEncoding="UTF-8"
--                   port = "8009"
--                   protocol = "AJP/1.3"
--                   redirectPort = "8443"
--        />
-
-         <Engine name="Catalina" defaultHost="localhost">
-             <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">
-
-
-```
-
-## Part 2: Reconfigure Apache 2.4 to use httpd proxy jira_ssl.conf
+## Part 1: Reconfigure Apache 2.4 to use mod_proxy - ref file:  jira_ssl.conf
 
 ```
   ## Proxy rules AJP
@@ -52,6 +31,28 @@ ProxyPass               / http://localhost:8080
 ProxyPassReverse        / http://localhost:8080
 ```
 
+## Part 2: Reconfigure the application ( in this example Jira) to use new proxy ports - server.xml diffs
+```
+                    acceptCount="100"
+                    disableUploadTimeout="true"
+                    redirectPort="8443"
++                   proxyName = 'jira-dev.example.net'
++                   proxyPort = '443'
++                   scheme = 'https'
+         />
+
+
+-        <Connector enableLookups="false" URIEncoding="UTF-8"
+-                   port = "8009"
+-                   protocol = "AJP/1.3"
+-                   redirectPort = "8443"
+-        />
+
+         <Engine name="Catalina" defaultHost="localhost">
+             <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">
+
+
+```
 
 
 # Source: Intergrating Jira with Apache using SSL
