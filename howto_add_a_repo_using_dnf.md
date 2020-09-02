@@ -4,14 +4,15 @@
 # 1 clean the cache
 
 ```
-[root@sshd0d yum.repos.d]# dnf clean all
+[root@myclient1 yum.repos.d]# dnf clean all
 ```
 
 # 2 enable the desired repos
 
 ```
-[root@sshd0d yum.repos.d]# dnf config-manager --set-enabled epel
-[root@sshd0d yum.repos.d]# dnf config-manager --set-enabled epel-playground
+[root@myclient1 ]# dnf config-manager --set-enabled epel
+[root@myclient1 ]# dnf config-manager --set-enabled epel-playground
+[root@myclient1 ]# sudo yum config-manager --set-enabled PowerTools
 ```
 
 # 3 run the upgrade
