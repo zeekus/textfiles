@@ -1,9 +1,9 @@
-# how to configure nagios plugins on Centos 8
+# how to troubleshoot nagios plugins on Centos 8
 
 
 # checking mailq
 
-**install the module** 
+**install the nagios module** 
 
 ```
 dnf install nagios-plugins-mailq
@@ -59,7 +59,7 @@ Sep 02 11:54:34 nagios_client1.us-east.aws.example.net platform-python[380860]: 
 
 ```
 
-**fix selinux**
+**fix selinux on client server nagios_client1**
 
 ```
   ausearch -c 'check_mailq' --raw | audit2allow -M my-checkmailq
