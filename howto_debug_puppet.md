@@ -33,6 +33,15 @@ centos:
 
 ## 2. Querying node data. 
 
+NOTE fqdn are needed for queries to work.
+
+use the following on puppet to determine the fqdn
+
+```
+puppetserver ca list --all | grep -v 'pe-int\|console-cert'
+```
+
+
 ```
 ---
 #source: data/nodes/jira1d.example.net.yaml 
@@ -41,6 +50,8 @@ jira::product_name:  'jira-software'
 jira::installdir:    '/opt/atlassian/jira'
 jira::homedir:       '/var/atlassian/application-data/jira'
 ```
+
+
 
 ```
 [root@mypuppetserver ~]# puppet lookup jira::javahome --node jira1d.example.net
