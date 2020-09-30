@@ -1,5 +1,5 @@
-**AMI images create all the machines with same UUID. This is fine 
-**Problem: can't mount filesystem due to having the same UUID
+## AMI images create all the machines with same UUID. This is fine 
+## Problem: can't mount filesystem due to having the same UUID
 
 source: https://www.it3.be/2019/01/09/change-uuid-on-xfs-filesystem/
  
@@ -8,9 +8,6 @@ source: https://www.it3.be/2019/01/09/change-uuid-on-xfs-filesystem/
 [root@myhost ~]# mount /dev/xvdf1 /mount/media1 -t xfs
 [ 2038.999943] XFS (xvdf1): Filesystem has duplicate UUID 8ac4868e-a16f-4559-bcb4-5da83479cb0e - can't mount
 ```
-
-
-
 
 ```
 [root@myhost ~]# blkid | grep -i UUID
@@ -31,7 +28,7 @@ source: https://www.it3.be/2019/01/09/change-uuid-on-xfs-filesystem/
 /dev/xvdb3: UUID="dVce5c-YAh7-sDmT-NtDx-zPze-oF16-k9Yh8d" TYPE="LVM2_member"
 ```
 
-**Solution: rename UUID and mount.
+## Solution: rename UUID and mount.
 
 ``
 [root@myhost ~]# xfs_admin -f -U ebc90d35-de21-4466-9304-28cf0a0907a7 /dev/xvdb1
@@ -41,7 +38,7 @@ new UUID = ebc90d35-de21-4466-9304-28cf0a0907a7
 ```
 
 
-**Mount Filesystem should work now. 
+## Mount Filesystem should work now. 
 
 ```
 [root@myhost ~]# mount /dev/xvdb1 /media/mount1/
@@ -55,7 +52,7 @@ config-3.10.0-1127.el7.x86_64       initramfs-3.10.0-1062.7.1.el7.x86_64.img    
 efi                                 initramfs-3.10.0-1062.9.1.el7.x86_64.img                 symvers-3.10.0-1062.7.1.el7.x86_64.gz              System.map-3.10.0-1062.9.1.el7.x86_64   vmlinuz-3.10.0-1062.9.1.el7.x86_64
 ```
 
-**Umount Filestem and rename back 
+## Umount Filestem and rename back 
 
 ```
 [root@myhost mount1]# cd ..
