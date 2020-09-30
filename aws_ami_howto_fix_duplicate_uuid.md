@@ -43,13 +43,6 @@ new UUID = ebc90d35-de21-4466-9304-28cf0a0907a7
 ```
 [root@myhost ~]# mount /dev/xvdb1 /media/mount1/
 [root@myhost ~]# cd /media/mount1/
-[root@myhost mount1]# ls
-config-3.10.0-1062.12.1.el7.x86_64  grub                                                     initramfs-3.10.0-1127.18.2.el7.x86_64.img          symvers-3.10.0-1062.9.1.el7.x86_64.gz   System.map-3.10.0-1127.18.2.el7.x86_64             vmlinuz-3.10.0-1127.18.2.el7.x86_64
-config-3.10.0-1062.7.1.el7.x86_64   grub2                                                    initramfs-3.10.0-1127.el7.x86_64.img               symvers-3.10.0-1127.18.2.el7.x86_64.gz  System.map-3.10.0-1127.el7.x86_64                  vmlinuz-3.10.0-1127.el7.x86_64
-config-3.10.0-1062.9.1.el7.x86_64   initramfs-0-rescue-b20f54df558a4f6e8963ff3f93111c71.img  initramfs-3.10.0-693.21.1.el7.x86_64.img.vmimport  symvers-3.10.0-1127.el7.x86_64.gz       vmlinuz-0-rescue-b20f54df558a4f6e8963ff3f93111c71
-config-3.10.0-1127.18.2.el7.x86_64  initramfs-3.10.0-1062.12.1.el7.x86_64.img                initrd-plymouth.img                                System.map-3.10.0-1062.12.1.el7.x86_64  vmlinuz-3.10.0-1062.12.1.el7.x86_64
-config-3.10.0-1127.el7.x86_64       initramfs-3.10.0-1062.7.1.el7.x86_64.img                 symvers-3.10.0-1062.12.1.el7.x86_64.gz             System.map-3.10.0-1062.7.1.el7.x86_64   vmlinuz-3.10.0-1062.7.1.el7.x86_64
-efi                                 initramfs-3.10.0-1062.9.1.el7.x86_64.img                 symvers-3.10.0-1062.7.1.el7.x86_64.gz              System.map-3.10.0-1062.9.1.el7.x86_64   vmlinuz-3.10.0-1062.9.1.el7.x86_64
 ```
 
 ## Umount Filestem and rename back 
