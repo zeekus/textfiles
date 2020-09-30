@@ -30,7 +30,7 @@ source: https://www.it3.be/2019/01/09/change-uuid-on-xfs-filesystem/
 
 ## Solution: rename UUID and mount.
 
-``
+```
 [root@myhost ~]# xfs_admin -f -U ebc90d35-de21-4466-9304-28cf0a0907a7 /dev/xvdb1
 Clearing log and setting UUID
 writing all SBs
