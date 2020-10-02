@@ -1,13 +1,13 @@
 
 
-## Problem: Ocassionally data need to be recovered from a snapshot that holds LVM partions. 
+# Problem: Ocassionally data need to be recovered from a snapshot that holds LVM partions. 
 
-## Solution: mount drive to a system with different LVM labels. 
+# Solution: mount drive to a system with different LVM labels. 
 *NOTE use a Amazon AMI to prevent LVM lables from getting renamed.
 
-# add the volume to the instance [ the label given can be anything. ] 
+## add the volume to the instance [ the label given can be anything. ] 
 
-# verify the volume mounted
+## verify the volume mounted
 
 *before attching volume to system
 ```
@@ -22,14 +22,14 @@
 /dev/xvdf1: UUID="2c2e8abf-07c1-453b-8091-10a73fe33b75" TYPE="xfs"
 ```
 
-# mount the new volume on your recovery host
+## mount the new volume on your recovery host
 
 ```
 mkdir -p /media/lvm
 mount /dev/xvdf1 /media/lvm
 ```
 
-#scan the lvm partions
+## scan the lvm partions
 
 ```
 [root@myhost ~]# lvdisplay -v
@@ -53,7 +53,7 @@ mount /dev/xvdf1 /media/lvm
 ```
 
 
-# create a mount point of the virtual point and mount it
+## create a mount point of the virtual point and mount it
 
 ```
 
@@ -61,7 +61,7 @@ mount /dev/xvdf1 /media/lvm
 [root@myhost ~]# mount /dev/OS/root /media/lvm-root/
 ```
 
-# after recovering or modifying the data remember to unmount the drive and verify
+## after recovering or modifying the data remember to unmount the drive and verify
 
 ```
 [root@myhost ~]# umount /media/lvm-root /media/lvm
@@ -72,7 +72,7 @@ tmpfs           493M     0  493M   0% /dev/shm
 /dev/xvda1      7.9G  1.2G  6.6G  15% /
 ```
 
-# detach the volume and attach to host desired to run 
+## detach the volume and attach to host desired to run 
 
 
 
