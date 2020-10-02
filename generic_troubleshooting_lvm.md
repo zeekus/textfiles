@@ -1,7 +1,8 @@
-|Problem                                                                                            | Senario
-When mounting a LVM volume on a host with similar drive settings the labels for LVM can change.     | After a system was restored, a LVM volume on '/dev/xvda2' is not accessible
-This can happen if you use a Amazon AMI of another host as a recovery agent.                        |
-To prevent this, a special AMI should be created as a recovery agent with differnt LVM labels. 		|		 
+|Problem                                                                                            | Senario|
+|---------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+When mounting a LVM volume on a host with similar drive settings the labels for LVM can change.     | After a system was restored, a LVM volume on '/dev/xvda2' is not accessible.|
+This can happen if you use a Amazon AMI of another host as a recovery agent.                        | |
+To prevent this, a special AMI should be created as a recovery agent with differnt LVM labels. 		  | |		 
 
 
 ## Display the physical LVM volumes that are mounted.
