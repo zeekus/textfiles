@@ -1,0 +1,25 @@
+To modify the IP on a system running Network-Scripts 
+
+1. edit the files manually
+/etc/sysconfig/network-scripts/ifcfg-eth0
+
+2. use nmcli
+
+  * set ipv4 address
+  * set ipv4 gateway for the interface
+  * set ipv4 dns
+
+Set IP address with a Centos 8 machine
+```
+#> nmcli connection edit eth0
+nmcli> set IPv4.address 10.0.1.65/16
+nmcli> set IPv4.gateway 10.0.0.1
+nmcli> set IPv4.dns  10.0.1.15 10.128.4.10
+nmcli> save
+nmcli> quit
+```
+
+
+
+source: https://linuxconfig.org/rhel-8-configure-static-ip-address
+

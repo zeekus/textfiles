@@ -1,0 +1,12 @@
+How to update to the latest main line stable kernel. Centos7
+
+```
+New kernel upgrades:
+yum --enablerepo=elrepo-kernel install kernel-ml
+dracut --force 
+grub2-set-default 0
+grub2-mkconfig -o /boot/grub2/grub.cfg
+sudo reboot
+```
+
+source: http://elrepo.org/tiki/kernel-ml
