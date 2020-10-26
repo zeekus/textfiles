@@ -31,29 +31,15 @@
   PV UUID               hYRpWX-wurW-WXDb-W84g-Prht-jadA-KXlyNa
 ```
 
-Possible solution: use swap space to resize /var/tmp  
+# No physical disk space mesans we may need to shuffle stuff around.
+# Possible solution: use swap space to resize /var/tmp  
 
-[root@server0 ]# df -h
-Filesystem                    Size  Used Avail Use% Mounted on
-devtmpfs                      3.8G     0  3.8G   0% /dev
-tmpfs                         3.8G   24K  3.8G   1% /dev/shm
-tmpfs                         3.8G  145M  3.7G   4% /run
-tmpfs                         3.8G     0  3.8G   0% /sys/fs/cgroup
-/dev/mapper/OS-root           4.0G  2.1G  1.9G  53% /
-/dev/nvme0n1p1               1014M  454M  561M  45% /boot
-/dev/nvme1n1p1                 40G  7.3G   33G  19% /opt
-/dev/mapper/OS-tmp            3.0G   33M  3.0G   2% /tmp
-/dev/mapper/Data-home         5.0G   91M  5.0G   2% /home
-/dev/mapper/OS-var            2.0G  968M  1.1G  48% /var
+```
+[root@server0 ]# df -h | grep -i var_tmp
 /dev/mapper/OS-var_tmp        2.0G   37M  2.0G   2% /var/tmp
-/dev/mapper/OS-var_log        4.0G  566M  3.5G  14% /var/log
-/dev/mapper/OS-var_log_audit  2.0G   80M  2.0G   4% /var/log/audit
-/dev/mapper/Data-var_www      5.0G   33M  5.0G   1% /var/www
-tmpfs                         769M     0  769M   0% /run/user/0
-tmpfs                         769M     0  769M   0% /run/user/1382418527
+```
 
-
-# swap is 2GB
+# swap is 2GB. We could use 1GB of it. 
 
 ```
 [root@server0 ]#  cat /proc/swaps
@@ -74,11 +60,13 @@ Filename                                Type            Size    Used    Priority
   var_tmp       OS   -wi-ao---- 2.00g                                                     /dev/nvme0n1p3(2302)
 ```  
   
+
+## Check the drives and logical volumes again
+
 # pvs - Display information about physical volumes
 
-
 ```
-  [root@server0 jmassey]# pvs
+  [root@server0 ]# pvs
   PV             VG   Fmt  Attr PSize  PFree
   /dev/nvme0n1p2 Data lvm2 a--  10.00g    0
   /dev/nvme0n1p3 OS   lvm2 a--  18.99g    0
@@ -94,8 +82,7 @@ Filename                                Type            Size    Used    Priority
   OS     1   7   0 wz--n- 18.99g    0
 ```
 
-#lvs - Display information about logical volumes
-
+# lvs - Display information about logical volumes
 
 ```  
 [root@server0 ]# lvs
@@ -112,7 +99,7 @@ Filename                                Type            Size    Used    Priority
 ``` 
   
   
-#lvdisplay - Display information about a logical volume ( swap) 
+# lvdisplay - Display information about a logical volume ( swap) 
   
 ```   
   [root@server0 ]# lvdisplay /dev/OS/swap
@@ -134,12 +121,14 @@ Filename                                Type            Size    Used    Priority
   Block device           253:1
 ```
 
-#disable the swap partion
+## Start the changes
+
+# disable/unmount the swap partion *pending the system is not swapping*
 ```
 swapoff -a
 ```
 
-#shrink the swap partion 1 GB
+# shrink the swap partion 1 GB  
 
 ```
 [root@server0]# lvreduce -L 1G  /dev/OS/swap
@@ -150,7 +139,7 @@ Do you really want to reduce OS/swap? [y/n]: y
   Logical volume OS/swap successfully resized.
 ```  
   
-#reformat the smaller swap volume
+# reformat the smaller swap volume
 
 ```
 [root@server0]# mkswap /dev/OS/swap
@@ -165,7 +154,7 @@ no label, UUID=decb093d-1791-4af2-9203-96261b172591
 [root@server0 tmp]# swapon -a
 ```
 
-#verify swap size got smaller
+# verify swap size got smaller
 
 ```
                                              
@@ -188,13 +177,12 @@ no label, UUID=decb093d-1791-4af2-9203-96261b172591
   Block device           253:1
 ```
 
-#backup data from /var/tmp
-
+# backup data from /var/tmp
 # install xfsdump for this
 
 ```
 yum install xfsdump -y
-```
+
 [root@server0 tmp]# xfsdump -f /root/var_tmp.dump /var/tmp
 xfsdump: using file dump (drive_simple) strategy
 xfsdump: version 3.1.7 (dump format 3.0) - type ^C for status and control
@@ -239,23 +227,23 @@ xfsdump:   stream 0 /root/var_tmp.dump OK (success)
 xfsdump: Dump Status: SUCCESS
 ```
 
-#verify backup exists
+# verify backup exists
 
 ```
 [root@server0 ~]# ls -lah var_tmp.dump
 -rw-r--r--. 1 root root 3.8M Oct 26 11:01 var_tmp.dump
 ```
 
-#unmount /var/tmp 
+# umount the /var/tmp partition 
 
 ```
 [root@server0 tmp]# cd /
 [root@server0 ~]# umount /var/tmp/
 ```
 
-#resize /var/tmp
+# resize /var/tmp
 
-[ add 1G to /var/tmp ]
+[ add 1G to the 2GB /var/tmp ]
 
 ```
 [root@server0]# lvextend -L 3G  /dev/OS/var_tmp
@@ -263,7 +251,7 @@ xfsdump: Dump Status: SUCCESS
   Logical volume OS/var_tmp successfully resized.
 ```
 
-#grow xfs fileslsyte or format if other /var/tmp
+# grow xfs filessystem or format if you don't have an option to grow the filesystem
 
 ```
 [root@server0 ~]# xfs_growfs /dev/OS/var_tmp
@@ -279,7 +267,7 @@ realtime =none                   extsz=4096   blocks=0, rtextents=0
 data blocks changed from 524288 to 786432
 ```
 
-#verify size changed
+# verify size changed
 
 ```
 [root@server0 ~]# lvdisplay /dev/OS/var_tmp
@@ -301,7 +289,7 @@ data blocks changed from 524288 to 786432
   Block device           253:4
 ```
 
-#reboot and verify everything still works
+# reboot and verify everything still works
 
 ```
 reboot
