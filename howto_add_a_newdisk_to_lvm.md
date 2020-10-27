@@ -61,6 +61,7 @@ Disk identifier: 5B2BADF5-4774-B547-A045-E53D67DC3C63
 
 # format filesystem
 
+```
 [root@myhost ~]# mkfs.xfs /dev/MyVG01/Data
 meta-data=/dev/MyVG01/Data       isize=512    agcount=4, agsize=2228224 blks
          =                       sectsz=512   attr=2, projid32bit=1
@@ -72,6 +73,7 @@ naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
 log      =internal log           bsize=4096   blocks=4352, version=2
          =                       sectsz=512   sunit=0 blks, lazy-count=1
 realtime =none                   extsz=4096   blocks=0, rtextents=0
+```
 
 ## add newly formated volume to fstab 
 
