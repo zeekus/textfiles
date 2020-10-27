@@ -1,4 +1,6 @@
-# identify disks on system
+Topic: How to add a new disk to LVM. 
+
+## identify disks on system
 
 ```
 [root@myhost ~]# lsscsi
@@ -6,7 +8,7 @@
 [N:1:0:1]    disk    Amazon Elastic Block Store__1              /dev/nvme1n1
 ```
 
-# identify partitions on disks
+## identify partitions on disks
 
 main disk 
 
@@ -37,14 +39,14 @@ Disk identifier: 5B2BADF5-4774-B547-A045-E53D67DC3C63
 ```
 
 
-# create physical volume group with new disk
+## create physical volume group with new disk
 
 ```
 [root@myhost ~]# pvcreate /dev/nvme1n1
 ```
 
 
-# create or extend volume group with new disk  
+## create or extend volume group with new disk  
   
  Create new volume group if no volume group exists or extend existing one
  
@@ -59,7 +61,7 @@ Disk identifier: 5B2BADF5-4774-B547-A045-E53D67DC3C63
   Volume group "MyVG01" successfully created
 ```
 
-# format filesystem
+## format filesystem
 
 ```
 [root@myhost ~]# mkfs.xfs /dev/MyVG01/Data
@@ -77,7 +79,7 @@ realtime =none                   extsz=4096   blocks=0, rtextents=0
 
 ## add newly formated volume to fstab 
 
-# 1. find uuid for volume
+### 1. find uuid for volume
 
 ```
 [root@myhost ~]# blkid
@@ -88,7 +90,7 @@ realtime =none                   extsz=4096   blocks=0, rtextents=0
 /dev/mapper/MyVG01-Data: UUID="6df2a46f-95bf-4e0d-b799-1394cb982e9c" TYPE="xfs"
 ```
 
-# 2. Edit fstab
+### 2. Edit fstab
 orginal
 ```
 [centos@myhost ~]$ cat /etc/fstab
@@ -106,7 +108,7 @@ orginal
 UUID=b437cbaa-8fe5-49e4-8537-0895c219037a /                       xfs     defaults        0 0
 ```
 
-# 3. added lvm 
+### 3. added lvm 
 
 ```
 [centos@myhost ~]$ cat /etc/fstab
@@ -125,14 +127,14 @@ UUID=b437cbaa-8fe5-49e4-8537-0895c219037a /                       xfs     defaul
 UUID=6df2a46f-95bf-4e0d-b799-1394cb982e9c /media                  xfs     defaults        1 1 
 ```
 
-# 4. run mount to test
+### 4. run mount to test
 
 ```
 [root@myhost ~]# mount -a
 ```
 
 
-# 5. verify mount was added
+### 5. verify mount was added
 
 ```
 [root@myhost ~]# journalctl | grep -i mount | tail -3
