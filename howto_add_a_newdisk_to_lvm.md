@@ -8,7 +8,7 @@
 [N:1:0:1]    disk    Amazon Elastic Block Store__1              /dev/nvme1n1
 ```
 
-identify partitions on disks
+### identify partitions on disks
 
 main disk 
 
@@ -127,14 +127,14 @@ UUID=b437cbaa-8fe5-49e4-8537-0895c219037a /                       xfs     defaul
 UUID=6df2a46f-95bf-4e0d-b799-1394cb982e9c /media                  xfs     defaults        1 1 
 ```
 
-#### 4. run mount to test
+### run mount to test
 
 ```
 [root@myhost ~]# mount -a
 ```
 
 
-#### 5. verify mount was added
+### verify mount was added
 
 ```
 [root@myhost ~]# journalctl | grep -i mount | tail -3
