@@ -6,7 +6,7 @@
 [N:1:0:1]    disk    Amazon Elastic Block Store__1              /dev/nvme1n1
 ```
 
-# identify prations
+# identify partitions on disks
 
 main disk 
 
