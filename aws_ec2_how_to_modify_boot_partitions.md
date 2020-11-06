@@ -1,4 +1,7 @@
 
+DRAFT: This solution doesn't work as of 11/6/2020
+
+
 EC2 typically is only available in headless mode for most people.
 Additionally, most marketplace AMI come with one partition.
 
@@ -72,8 +75,10 @@ Disk Flags:
 
 Number  Start   End     Size    Type     File system  Flags
  1      1049kB  17.2GB  17.2GB  primary  xfs          boot
+```
 
 # Delete the partition on the second disk.
+
 
 ```
 parted /dev/xvdf
