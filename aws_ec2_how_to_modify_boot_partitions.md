@@ -77,13 +77,15 @@ Number  Start   End     Size    Type     File system  Flags
  1      1049kB  17.2GB  17.2GB  primary  xfs          boot
 ```
 
+# We created a 17GB disk for the new os
+   it is mounted as the second disk as /dev/xvdf1 in EC2
+
 # Delete the partition on the second disk.
 
+in our case the second disk is /dev/xvdf
 
 ```
-parted /dev/xvdf
-rm 1
-quit
+parted /dev/xvdf --script rm 1
 ```
 
 # Create a new partition table using the script command or through the interface
@@ -182,6 +184,48 @@ Clearing log and setting UUID
 writing all SBs
 ```
 
+# if you see an error you may need to run a aws_ami_howto_fix_duplicate_uuid
+
+```
+[root@mysourcehost ~]# xfs_repair -L /dev/xvdg1
+Phase 1 - find and verify superblock...
+Phase 2 - using internal log
+        - zero log...
+ALERT: The filesystem has valuable metadata changes in a log which is being
+destroyed because the -L option was used.
+        - scan filesystem freespace and inode maps...
+agi unlinked bucket 10 is 2122 in ag 1 (inode=4196426)
+sb_fdblocks 1880337, counted 1888529
+        - found root inode chunk
+Phase 3 - for each AG...
+        - scan and clear agi unlinked lists...
+        - process known inodes and perform inode discovery...
+        - agno = 0
+        - agno = 1
+        - agno = 2
+        - agno = 3
+        - process newly discovered inodes...
+Phase 4 - check for duplicate blocks...
+        - setting up duplicate extent list...
+        - check for inodes claiming duplicate blocks...
+        - agno = 0
+        - agno = 1
+        - agno = 2
+        - agno = 3
+Phase 5 - rebuild AG headers and trees...
+        - reset superblock...
+Phase 6 - check inode connectivity...
+        - resetting contents of realtime bitmap and summary inodes
+        - traversing filesystem ...
+        - traversal finished ...
+        - moving disconnected inodes to lost+found ...
+disconnected inode 4196426, moving to lost+found
+Phase 7 - verify and correct link counts...
+Maximum metadata LSN (7:11849) is ahead of log (1:2).
+Format log to cycle 10.
+done
+```
+
 # after this a mount should work
 
 ```
@@ -208,33 +252,13 @@ see https://github.com/zeekus/textfiles/blob/master/aws_ami_howto_fix_duplicate_
 umount /mnt/mysource
 ```
 
-did the grub install this way
-
-```
-[root@mysourcehost ~]# rm /mnt/myroot/boot/grub/grub.conf
-rm: remove regular file ‘/mnt/myroot/boot/grub/grub.conf’? y
-[root@mysourcehost ~]# grub2-mkconfig -o /mnt/myroot/boot/grub/grub.conf
-Generating grub configuration file ...
-Found linux image: /boot/vmlinuz-3.10.0-1127.el7.x86_64
-Found initrd image: /boot/initramfs-3.10.0-1127.el7.x86_64.img
-Found linux image: /boot/vmlinuz-0-rescue-cab9605edaa5484da7c2f02b8fd10762
-Found initrd image: /boot/initramfs-0-rescue-cab9605edaa5484da7c2f02b8fd10762.img
-Found CentOS Linux release 7.8.2003 (Core) on /dev/xvdf2
-done
-[root@mysourcehost ~]# grub2-mkconfig -o /mnt/myroot/boot/grub/grub.conf^C
-[root@mysourcehost ~]# grub2-install --target=i386-pc --directory=/mnt/myroot/usr/lib/grub/i386-pc --recheck --boot-directory=/mnt/myroot/boot /dev/xvdf
-Installing for i386-pc platform.
-Installation finished. No error reported.
-```
-
-
 # mount live kernel subsystems so we can run grub without having to jump around
 
 ```
 mkdir -p /mnt/myroot/proc /mnt/myroot/dev /mnt/myroot/sys
 mount -o bind /proc /mnt/myroot/proc
-mount -o bind /dev /mnt/myroot/dev
 mount -o bind /sys /mnt/myroot/sys
+mount -o bind /dev /mnt/myroot/dev
 mount -o bind /dev/shm /mnt/myroot/dev/shm
 ```
 
@@ -276,22 +300,25 @@ UUID=c3d42a89-72be-44d3-a974-9fd4ee98074d /tmp xfs defaults 0 0
 #find first partitioning
 
 ```
-[root@mysourcehost grub]# blkid | grep -i xvdf1
-/dev/xvdf1: PARTLABEL="bbp" PARTUUID="e5a85641-c1da-4a8d-9e9c-df7823702208"
+[root@ip-172-31-43-87 EFI]# blkid  | grep -i root
+/dev/xvdf2: UUID="13ddc01c-7085-4ef7-9419-acc9d3419a85" TYPE="xfs" PARTLABEL="root" PARTUUID="33c8962a-d042-47fb-adae-df23322e76d1"
 ```
 
-# run make grub using the uuid flag and point to first partition for this os
+# verify the kernel running and check UUID mapping
+
 
 ```
-[root@mysourcehost grub]# grub2-mkconfig -o /boot/grub/grub.conf uuid=e5a85641-c1da-4a8d-9e9c-df7823702208
-Generating grub configuration file ...
-Found linux image: /boot/vmlinuz-3.10.0-1127.el7.x86_64
-Found initrd image: /boot/initramfs-3.10.0-1127.el7.x86_64.img
-Found linux image: /boot/vmlinuz-0-rescue-cab9605edaa5484da7c2f02b8fd10762
-Found initrd image: /boot/initramfs-0-rescue-cab9605edaa5484da7c2f02b8fd10762.img
-Found CentOS Linux release 7.8.2003 (Core) on /dev/xvdg1
-done
+[root@mysource]# awk '/\s*kernel/{print}' /boot/grub/menu.lst
+	kernel /boot/vmlinuz-3.10.0-1127.el7.x86_64 ro root=UUID=6cd50e51-cfc6-40b9-9ec5-f32fa2e4ff02 console=hvc0 LANG=en_US.UTF-8
+```
 
+# *DANGER* manually fix grub entry if needed
+
+*note we kept the root disk the same number /dev/xvda2*
+
+```
+sed -i 's/6cd50e51-cfc6-40b9-9ec5-f32fa2e4ff02/13ddc01c-7085-4ef7-9419-acc9d3419a85/g' /boot/grub/grub.conf
+sed -i 's/6cd50e51-cfc6-40b9-9ec5-f32fa2e4ff02/13ddc01c-7085-4ef7-9419-acc9d3419a85/g' /boot/grub2/grub.cfg
 ```
 
 # run make grub install
@@ -302,92 +329,15 @@ Installing for i386-pc platform.
 Installation finished. No error reported.
 ```
 
-# verify grub.conf file was generated correct
 
-on centos7 mine was pointing to the wrong uuid and drive.
+# don't run grub2-mkconfig if you have your files available.
 
-Here is the output from cat -n grub.conf
-
-```
-126  ### BEGIN /etc/grub.d/30_os-prober ###
- 127  menuentry 'CentOS Linux release 7.8.2003 (Core) (on /dev/xvdg1)' --class gnu-linux --class gnu --class os $menuentry_id_option 'osprober-gnulinux-simple-3c285cd2-de98-46c5-86f3-2df58f18e5c7' {
- 128          insmod part_msdos
- 129          insmod xfs
- 130          if [ x$feature_platform_search_hint = xy ]; then
- 131            search --no-floppy --fs-uuid --set=root  3c285cd2-de98-46c5-86f3-2df58f18e5c7
- 132          else
- 133            search --no-floppy --fs-uuid --set=root 3c285cd2-de98-46c5-86f3-2df58f18e5c7
- 134          fi
- 135          linux /boot/vmlinuz-3.10.0-1127.el7.x86_64 ro root=UUID=6cd50e51-cfc6-40b9-9ec5-f32fa2e4ff02 console=hvc0 LANG=en_US.UTF-8
- 136          initrd /boot/initramfs-3.10.0-1127.el7.x86_64.img
- 137  }
- 138  submenu 'Advanced options for CentOS Linux release 7.8.2003 (Core) (on /dev/xvdg1)' $menuentry_id_option 'osprober-gnulinux-advanced-3c285cd2-de98-46c5-86f3-2df58f18e5c7' {
- 139          menuentry 'CentOS Linux 7 (3.10.0-1127.el7.x86_64) (on /dev/xvdg1)' --class gnu-linux --class gnu --class os $menuentry_id_option 'osprober-gnulinux-/boot/vmlinuz-3.10.0-1127.el7.x86_64--3c285cd2-de98-46c5-86f3-2df58f18e5c7' {
- 140                  insmod part_msdos
- 141                  insmod xfs
- 142                  if [ x$feature_platform_search_hint = xy ]; then
- 143                    search --no-floppy --fs-uuid --set=root  3c285cd2-de98-46c5-86f3-2df58f18e5c7
- 144                  else
- 145                    search --no-floppy --fs-uuid --set=root 3c285cd2-de98-46c5-86f3-2df58f18e5c7
- 146                  fi
- 147                  linux /boot/vmlinuz-3.10.0-1127.el7.x86_64 ro root=UUID=6cd50e51-cfc6-40b9-9ec5-f32fa2e4ff02 console=hvc0 LANG=en_US.UTF-8
- 148                  initrd /boot/initramfs-3.10.0-1127.el7.x86_64.img
- 149          }
- 150  }
-```
-
-# make a backup of the grub.configuration
-
-```
-cd /boot/grub
-cp grub.conf grub.conf.bak
-```
-
-# fix the grub.conf and rerun grub Installing
-
-The root file system has this uuid on our system
-```
-[root@mysourcehost ~]# blkid | grep -i root
-/dev/xvdf2: UUID="e893b495-27e7-4f1f-83af-f68f8344974a" TYPE="xfs" PARTLABEL="root" PARTUUID="d86d1843-b737-47f2-aa9d-a0f71611eb96"
-```
-
-Sed can be used to change it easily
-
-```
-[root@mysourcehost grub]# sed -i 's/e5a85641-c1da-4a8d-9e9c-df7823702208/d86d1843-b737-47f2-aa9d-a0f71611eb96/g' grub.conf
-```
-
-# do the same for the drive
-
-```
-sed -i 's/xvdg1/xvda1/g' grub.conf
-```
-
-# change to root path on grub.cfg
-
-```
-cd /boot/grub2
-sed -i 's/e5a85641-c1da-4a8d-9e9c-df7823702208/d86d1843-b737-47f2-aa9d-a0f71611eb96/g' grub.cfg
-```
-
-# redo the grub Installing
-
-```
-[root@mysourcehost grub]# grub2-install /dev/xvdg
-Installing for i386-pc platform.
-Installation finished. No error reported.
-```
-
-# exit out of chroot
-
-```
-exit
-```
-
+*doing this can make a mess of the grub config because os-prober will probe the wrong disks*
 
 # unmount file systems and reboot
 
 ```
+sync && umount /mnt/myroot/dev/shm
 sync && umount /mnt/myroot/dev
 sync && umount /mnt/myroot/proc
 sync && umount /mnt/myroot/sys
@@ -398,3 +348,5 @@ sync && umount /mnt/myroot
 
 
 source: https://www.daniloaz.com/en/partitioning-and-resizing-the-ebs-root-volume-of-an-aws-ec2-instance/
+
+ref: Dean Cloud Support Engineer from AWS: https://www.youtube.com/watch?v=QiMpJi2YWxA
