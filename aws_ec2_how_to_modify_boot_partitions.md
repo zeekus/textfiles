@@ -334,6 +334,12 @@ Installation finished. No error reported.
 
 *doing this can make a mess of the grub config because os-prober will probe the wrong disks*
 
+# reset the autolabel on selinux or the host may not become available
+
+```
+touch /mnt/myroot/.autorelabel
+```
+
 # unmount file systems and reboot
 
 ```
