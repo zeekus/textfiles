@@ -1,12 +1,21 @@
 # You can use Yaml to manage multiple zones.
+*last updated 11/18/2020* 
 
 It is a bit tricky.
+
+# Note puppet needs a lot of ports open to work properly.
+
+The ports needed are documented here: https://puppet.com/docs/pe/2019.8/system_configuration.html
 
 Here is a working example.
 
 # 2 zones
   * public
   * monitoring for Nagios 
+
+
+
+
 
 # YAML
 
@@ -29,9 +38,26 @@ firewalld::services:
     ensure: present
     service: ssh
     zone: monitoring
-  cockpit:
+  puppetmaster: #wording changing in 2019.8.3
     ensure: present
-    service: cockpit
+    service: puppetmaster
+    zone: public
+firewalld::ports:
+  port_4443:
+    ensure: present
+    port: 4433
+    zone: public
+  port_8140:
+    ensure: present
+    port: 8140
+    zone: public
+  port_8142:
+    ensure: present
+    port: 8142
+    zone: public
+  port_8443:
+    ensure: present
+    port: 8443
     zone: public
 firewalld::zones:
   public:
@@ -57,9 +83,8 @@ monitoring (active)
   target: default
   icmp-block-inversion: no
   interfaces: eth0
-  sources: 10.128.0.13/32
-  services: nrpe ssh
-  ports:
+  services:  nrpe  ssh
+  ports: 4433/tcp 8140/tcp 8142/tcp 
   protocols:
   masquerade: no
   forward-ports:
@@ -73,7 +98,7 @@ public
   icmp-block-inversion: no
   interfaces:
   sources:
-  services: cockpit http ssh
+  services:  dhcpv6-client http https ssh puppetmaster
   ports:
   protocols:
   masquerade: no
@@ -82,3 +107,6 @@ public
   icmp-blocks: router-advertisement
   rich rules:
 ```
+
+
+
