@@ -14,9 +14,6 @@ Here is a working example.
   * monitoring for Nagios 
 
 
-
-
-
 # YAML
 
 ```
@@ -63,17 +60,23 @@ firewalld::zones:
   public:
     target: '%%REJECT%%'
     ensure: present
+    interfaces:
+       - eth0
     purge_ports: true
-    interfaces: eth0
     purge_rich_rules: true
     purge_services: true
     icmp_blocks: router-advertisement
   monitoring: 
     target: default 
-    interfaces: eth0
+    ensure: present
     sources: 10.128.0.13/32
     icmp_blocks: echo-reply
+sudo::configs:
 ```
+
+*Setting the interface on two or more zones seems to break firewalld implementations with puppet.*
+related source: https://serverfault.com/questions/654097/can-multiple-firewalld-zones-be-active-at-any-given-time
+
 
 How to verify.
 
@@ -84,7 +87,7 @@ monitoring (active)
   icmp-block-inversion: no
   interfaces: eth0
   services:  nrpe  ssh
-  ports: 4433/tcp 8140/tcp 8142/tcp 
+  ports: 4433/tcp 8140/tcp 8142/tcp 8443/tcp 
   protocols:
   masquerade: no
   forward-ports:
