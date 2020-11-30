@@ -53,13 +53,13 @@ firewalld::zones:
     icmp_blocks: echo-reply
 
 firewalld::rich_rules:
-   'Accept SSH from nagios1p':
+   'Accept SSH from nagios':
       ensure: present
       zone:  monitoring
       source: '10.128.0.13/32'
       service: 'ssh'
       action: 'accept'
-   'Accept NRPE from nagios1p':
+   'Accept NRPE from nagios':
       ensure: present
       zone: monitoring
       source: '10.128.0.13/32'
@@ -129,7 +129,7 @@ public (active)
 
 # Basic testing
 
-*remove montioring zone and test*
+*remove 'monitoring zone' and test*
 
 ```
 [root@myhost ~]# firewall-cmd --permanent --delete-zone=monitoring
@@ -140,7 +140,7 @@ success
 Error: INVALID_ZONE: monitoring
 ```
 
-*remove a rule in from the services area* 
+*remove a rule in from the services area to verify puppet puts it back* 
 
 ```
 firewall-cmd --zone=public --remove-service=http --permanent
