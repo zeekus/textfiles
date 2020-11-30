@@ -1,4 +1,4 @@
-# You can use Yaml to manage multiple zones, but the firewalld configuration has some limitions.
+# You can use Yaml to manage multiple zones, but the firewalld configuration has some limitations.
 
 *Limitation: it seems you can't put multiple zones in the 'firewalld::services' area. But, 'rich_rules' can provide a work around. 
 
