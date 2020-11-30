@@ -1,16 +1,24 @@
 # Reload the rules:
-firewall-cmd --reload
-
-# Get a list of the active rules:
+*very important after changes are made*
 ```
-[root@lpe2d ~]# firewall-cmd --get-active-zones
+firewall-cmd --reload
+```
+# Get a list of all the zones defined:
+
+```
+firewall-cmd --list-all-zones
+```
+
+# Get a list of the active rules *better than above*
+```
+[root@myhost ~]# firewall-cmd --get-active-zones
 public
   interfaces: eth0
  ```
 
 # List the rules from the public zone:
 ```
-[root@lpe2d ~]# firewall-cmd --list-all --zone=public
+[root@myhost ~]# firewall-cmd --list-all --zone=public
 public (active)
   target: %%REJECT%%
   icmp-block-inversion: no
@@ -27,36 +35,42 @@ public (active)
 ```
 # Manually allow port 25:
 ```
-[root@lpe2d ~]# firewall-cmd --zone=public --permanent --add-port=25/tcp
+[root@myhost ~]# firewall-cmd --zone=public --permanent --add-port=25/tcp
+success
+firewall-cmd --reload
 success
 ```
 
 # Manually remove port 25:
 ```
-[root@lpe2d ~]# firewall-cmd --zone=public --permanent --remove-port=25/tcp
+[root@myhost ~]# firewall-cmd --zone=public --permanent --remove-port=25/tcp
+success
+firewall-cmd --reload
 success
 ```
 # List services allowed:
 ```
-[root@lpe2d ~]# firewall-cmd --list-services
+[root@myhost ~]# firewall-cmd --list-services
 ```
 
 # manually remove service dhcpv6-client
 ```
 firewall-cmd --zone=public --permanent --remove-service=dhcpv6-client
+success
+firewall-cmd --reload
+success
 ```
 
-# Check configuration files: Centos8
+# Files that are modified with firewalld: Centos8
 file: /etc/firewalld/firewalld.conf
 zone files: /etc/firewalld/zones
 ```
-[root@lpe2d zones]# ls
+[root@myhost zones]# ls
 block.xml  dmz.xml  drop.xml  external.xml  home.xml  internal.xml  public.xml  public.xml.old  trusted.xml  work.xml
-[root@lpe2d zones]# pwd
+[root@myhost zones]# pwd
 ```
 
-
-# Reset firewall to defaults installation files:
+# Manaully Reset firewall to defaults installation files when things get FUBAR:
 ```
 #!/bin/bash
 #filename: reset_firewalld_to_default.sh
