@@ -6,6 +6,10 @@
 Ctrl+K+C
 ```
 
+```
+Ctrl / #also works
+```
+
 # block uncomment code
 ```
 Ctlr+U+C
