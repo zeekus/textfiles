@@ -18,7 +18,7 @@ wget https://chocolatey.org/install.ps1
 *source: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.1*
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
 
-# run the instlall.ps1 script
+# run the instlall.ps1 script from power shell window as admin
 
 ```
 cd mysave_dir
@@ -26,13 +26,13 @@ rename install.ps1.txt install.ps1
 ./install.ps1
 ```
 
-# verify it was installed properly
+# verify it was installed properly from powershell window as admin
 
 ```
 choco upgrade chocolatey --pre 
 ```
 
-# install pdk
+# install pdk from power shell window as admin 
 
 ```
 choco install pdk
