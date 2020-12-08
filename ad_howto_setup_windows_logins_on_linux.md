@@ -83,7 +83,7 @@ adcli info example.net
 realm list
 ```
 
-# refreshink a kerbose key
+# refres kerbose key
 ```
 kinit -R
 ```
@@ -98,6 +98,20 @@ Principal name                 Cache name
 --------------                 ----------
 
 ```
+
+# we should see this if things are setup right.
+
+```
+
+[zeekus@myserver0p ~]$ kmyserver
+Ticket cache: FILE:/tmp/krb5cc_1382418527_HGXGh1
+Default principal: zeekus@EXAMPLE.NET
+
+Valid starting       Expires              Service principal
+12/08/2020 17:20:34  12/09/2020 03:20:34  krbtgt/EXAMPLE.NET@EXAMPLE.NET
+        renew until 12/15/2020 17:20:34
+```
+
 
 # a manual kinit may help
 
@@ -125,7 +139,7 @@ Valid starting       Expires              Service principal
 #!/bin/bash
 #filename: cleanup_kerbose.sh
 echo "clean up kerbose stuff"
-cleanup="/root/.ssh/known_hosts /etc/krb5.conf.d/kcm_default_ccache /etc/krb5.keytab /etc/sssd/sssd.conf"
+cleanup="/root/.ssh/known_hosts /etc/krb5.conf.d/kcm_default_ccache /etc/krb5.keytab"
 for myfile in $cleanup
   do
     if [ -f "$myfile" ]; then
@@ -137,10 +151,15 @@ for myfile in $cleanup
   done
 ```
 
-# clean up ad entry for host if it exists. 
 
-# re-joining a domain with adcli
+# manually re-joining a domain with adcli
 
 ```
 adcli join  --domain-controller=dce.example.net --domain-ou='ou=Computers,ou=Linux,dc=example,dc=net' --login-user='zeekus'
+```
+
+# manually removing computer from AD
+
+```
+adcli delete-computer myserver1p --domain-controller=dcf.example.net --login-user='zeekus'
 ```
