@@ -99,6 +99,25 @@ Principal name                 Cache name
 
 ```
 
+# a manual kinit may help
+
+```
+[zeekus@myhost1 ~]$ kinit
+Password for ted.knab@CHESAPEAKEBAY.NET:
+[zeekus@myhost1 ~]$ kinit -R
+kinit: KDC can't fulfill requested option while renewing credentials
+```
+
+```
+[zeekus@myhost1] ~]$ klist
+Ticket cache: KEYRING:persistent:1382418527:krb_ccache_I2xVwrl
+Default principal: zeekus@EXAMPLE.NET
+
+Valid starting       Expires              Service principal
+12/08/2020 14:46:24  12/09/2020 00:46:24  krbtgt/example.NET@example.NET
+        renew until 12/15/2020 14:46:13
+```
+
 
 # clean up old kerbose stuff to retry
 
