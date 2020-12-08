@@ -71,3 +71,39 @@ These should appear after a Linux host is joined to a domain.
 
 ```
 
+# refreshink a kerbose key
+```
+kinit -R
+```
+
+
+
+
+
+
+
+# clean up old kerbose stuff to retry
+
+```
+#!/bin/bash
+#filename: cleanup_kerbose.sh
+echo "clean up kerbose stuff"
+cleanup="/root/.ssh/known_hosts /etc/krb5.conf.d/kcm_default_ccache /etc/krb5.keytab /etc/sssd/sssd.conf /etc/hostname"
+for myfile in $cleanup
+  do
+    if [ -f "$myfile" ]; then
+      echo removing $myfile
+      rm -f $myfile
+    else
+      echo "didn't find $myfile"
+    fi
+  done
+```
+
+# clean up ad entry for host if it exists. 
+
+# re-joining a domain with adcli
+
+```
+adcli join  --domain-controller=dce.example.net --domain-ou='ou=Computers,ou=Linux,dc=example,dc=net' --login-user='zeekus'
+```
