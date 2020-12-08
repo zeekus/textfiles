@@ -57,3 +57,37 @@ jira::homedir:       '/var/atlassian/application-data/jira'
 [root@mypuppetserver ~]# puppet lookup jira::javahome --node jira1d.example.net
 --- "/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre/bin/java"
 ```
+
+#add a notify statement to your code
+
+If we have a class called, 'config' where we define a variable binary_filename, we can call it elsewhere using the fully qualified path. 
+
+```
+ notify { "debug: install class ${cloudwatch::config::binary_filename}":}
+```
+
+
+Example from a class
+
+```
+class cloudwatch::install {
+  #get RPM from amazon and place in /var/tmp 
+  # include ::archive
+  include ::cloudwatch::config
+  include ::cloudwatch::service
+
+
+
+  notify { "debug: install class ${cloudwatch::config::binary_filename}":}
+
+  #install rpm 
+  package { "install ${cloudwatch::config::binary_filename}":
+    provider => 'rpm',
+    ensure   => present,
+    source   => "${cloudwatch::config::filepath}",
+  }
+
+
+
+}
+```
