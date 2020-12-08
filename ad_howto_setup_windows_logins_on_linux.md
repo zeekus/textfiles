@@ -71,15 +71,33 @@ These should appear after a Linux host is joined to a domain.
 
 ```
 
+# verifying that adcli is connected/setup
+
+```
+adcli info example.net
+```
+
+# verifiying if the realm is connected
+
+```
+realm list
+```
+
 # refreshink a kerbose key
 ```
 kinit -R
 ```
 
+# if you see this, it may need a reboot
 
+```
+[root@myserver ~]# klist
+klist: No credentials cache found (filename: /tmp/krb5cc_0)
+[root@myserver ~]# klist -l
+Principal name                 Cache name
+--------------                 ----------
 
-
-
+```
 
 
 # clean up old kerbose stuff to retry
@@ -88,7 +106,7 @@ kinit -R
 #!/bin/bash
 #filename: cleanup_kerbose.sh
 echo "clean up kerbose stuff"
-cleanup="/root/.ssh/known_hosts /etc/krb5.conf.d/kcm_default_ccache /etc/krb5.keytab /etc/sssd/sssd.conf /etc/hostname"
+cleanup="/root/.ssh/known_hosts /etc/krb5.conf.d/kcm_default_ccache /etc/krb5.keytab /etc/sssd/sssd.conf"
 for myfile in $cleanup
   do
     if [ -f "$myfile" ]; then
