@@ -15,14 +15,17 @@ Linux can use AD as a authentication method. There are multiple tools that can b
 # Linux tools to 'join a domain'
 
 ```
-adcli - mostly widely used
+adcli - mostly widely used in Centos7, Centos8
 realmmd -
 authconfig - 
 ```
 
-# configuration files that control domain registration create
+# configuration files that control domain registration need to be created
 
-These should appear after a Linux host is joined to a domain. 
+# Main: #file: /etc/kerb5.conf
+
+The '/etc/kerb5.conf' gets created after joining the domain. 
+Note the renewal will fail if the DNS is setup oddly.
 
 
 ```
@@ -71,6 +74,11 @@ These should appear after a Linux host is joined to a domain.
 
 ```
 
+# /etc/resolv.conf
+
+Make sure the DNS is setup to only search your domain.
+If you use a secondary domain like AWS, this could cause renewals to fail. 
+
 # verifying that adcli is connected/setup
 
 ```
@@ -83,12 +91,19 @@ adcli info example.net
 realm list
 ```
 
-# refres kerbose key
+# refreshes kerbose key on Centos6/7
+
 ```
-kinit -R
+kinit -R 
 ```
 
-# if you see this, it may need a reboot
+
+# refreshes kerbose key on Centos8
+```
+kinit -R -p zeekus@EXAMPLE.NET
+```
+
+# if you see this, it may need a reboot or a refresh failed. 
 
 ```
 [root@myserver ~]# klist
