@@ -178,3 +178,26 @@ adcli join  --domain-controller=dce.example.net --domain-ou='ou=Computers,ou=Lin
 ```
 adcli delete-computer myserver1p --domain-controller=dcf.example.net --login-user='zeekus'
 ```
+
+
+
+
+# possible reasons for AD failing on linux
+
+1. *DNS is screwy* 
+     check /etc/resolv.conf 
+
+2. *hostname is not delgated in the domain*
+     check hostname and /etc/hosts file
+
+3. *host is already registered in AD* 
+      ocassionally an orphan entry gets created in AD.
+    A) check to see if host is listed. If you see something about the domain, maybe you have a #1 or #2 issue. 
+    ```
+     adcli show-computer --login-user='zeekus'
+    ```
+
+    B) delete ophan entry if you can't see your 'cached Kerbose tickets' with klist.
+    ```
+    adcli delete-computer --login-user='zeekus'
+    ```
