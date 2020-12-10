@@ -107,4 +107,33 @@ packages { "/var/tmp/myfile.rpm":
   }
 ```     
 
+# defining hiera variables in a function
 
+
+```
+class mymodule (
+   $loglevel_new_syntax = lookup('mymodule::loglevel_lookup'),
+   $loglevel_old_syntax = hiera('mymodule::loglevel_hiera'),
+) { }
+```
+
+```
+---
+#filename common.yaml
+mymodule::loglevel_lookup 'info'
+mymodule::loglevel_hiera'debug'
+
+```
+
+# variable sytle in puppet use single quotes most of the time. But, despite the warnings double quotes will still work.  
+
+*note* single quotes are primarily used for variables.
+When an outside variables is called we tend to use double qoutes.
+
+```
+$myvalue="some text"
+```
+
+```
+$myvalue="${mymodule::config::filepath}"
+```
