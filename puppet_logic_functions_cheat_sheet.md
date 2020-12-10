@@ -65,7 +65,9 @@ packages { "/var/tmp/myfile.rpm":
 	  $binary_filename='amazon-cloudwatch-agent.rpm'
 	  $filepath="/var/tmp/${binary_filename}"
   } 
+```
   
+```
   #filename: install.pp
   #path: mymodule/manifest/install.pp
   class mymodule::install { 
@@ -76,7 +78,9 @@ packages { "/var/tmp/myfile.rpm":
       source   => "${mymodule::config::filepath}",
     }
   }
+```
   
+```
   #filename: service.pp
   #path: mymodule/manifest/service.pp
   class mymodule::service {
@@ -86,8 +90,10 @@ packages { "/var/tmp/myfile.rpm":
     hasstatus  => true,
     hasrestart => true,
    }
-  } 
-  
+  }
+```
+ 
+```
   #filename: init.pp
   #path: module/manifest/init.pp
   class mymodule { 
