@@ -15,9 +15,25 @@ lrwxrwxrwx. 1 root root   14 Dec  9 16:29 /etc/issue -> /etc/issue.net
 
 # File: install an RPM from a local file.
 
+```
+#simple
+packages { "/var/tmp/myfile.rpm":
+    provider => 'rpm',
+    ensure   => present,
+}
+```
 
 ```
-  #install rpm 
+#standard with modifed package name for debugging
+  package { "install myfile.rpm":
+    provider => 'rpm',
+    ensure   => present,
+    source   => "/var/tmp/myfile.rpm",
+  }
+```
+
+```
+  #install rpm using outside variables  
   package { "install ${mymodule::config::binary_filename}":
     provider => 'rpm',
     ensure   => present,
@@ -26,8 +42,13 @@ lrwxrwxrwx. 1 root root   14 Dec  9 16:29 /etc/issue -> /etc/issue.net
 ```
 
 
-# Notify: send a message when something is run
+# Notify: standard notify message
 
+```
+  notify { "debug: hello world":}
+```
+
+# Nofify: with variables from a different class 
 
 ```
   notify { "debug: install class ${mymodule::config::binary_filename}":}
