@@ -28,13 +28,20 @@ source: https://www.it3.be/2019/01/09/change-uuid-on-xfs-filesystem/
 /dev/xvdb3: UUID="dVce5c-YAh7-sDmT-NtDx-zPze-oF16-k9Yh8d" TYPE="LVM2_member"
 ```
 
+## Solution: create a new UUID 
+
+```
+uuidgen
+657ecf72-3823-49e7-904d-4f94d743ceea
+```
+
 ## Solution: rename UUID and mount.
 
 ```
-[root@myhost ~]# xfs_admin -f -U ebc90d35-de21-4466-9304-28cf0a0907a7 /dev/xvdb1
+[root@myhost ~]# xfs_admin -f -U 657ecf72-3823-49e7-904d-4f94d743ceea /dev/xvdb1
 Clearing log and setting UUID
 writing all SBs
-new UUID = ebc90d35-de21-4466-9304-28cf0a0907a7
+new UUID = 657ecf72-3823-49e7-904d-4f94d743ceea
 ```
 
 
