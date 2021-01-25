@@ -100,12 +100,16 @@ logs:
 [root@myhost media]# umount /media/mount1/
 ```
 
+## renameing the drive back to the original name. 
+
 ```
 [root@myhost media]# xfs_admin -L 8ac4868e-a16f-4559-bcb4-5da83479cb0e -f -U 8ac4868e-a16f-4559-bcb4-5da83479cb0e /dev/nvme1n1p2
 ```
 
+## fix the logs or the drive will not mount on reboot
+
 ```
-[root@myhost media]# xfs_repair -L /dev/xvdb1
+[root@myhost media]# xfs_repair -L /dev/nvme1n1p2
 Phase 1 - find and verify superblock...
 Phase 2 - using internal log
         - zero log...
