@@ -1,4 +1,4 @@
-## AMI images create all the machines with same UUID. This is fine 
+## AMI images create all the machines with same UUID. 
 ## Problem: can't mount filesystem due to having the same UUID
 
 source: https://www.it3.be/2019/01/09/change-uuid-on-xfs-filesystem/
@@ -11,21 +11,12 @@ source: https://www.it3.be/2019/01/09/change-uuid-on-xfs-filesystem/
 
 ```
 [root@myhost ~]# blkid | grep -i UUID
-/dev/xvda1: UUID="8ac4868e-a16f-4559-bcb4-5da83479cb0e" TYPE="xfs"
-/dev/xvda2: UUID="hYRpWX-wurW-WXDb-W84g-Prht-jadA-KXlyNa" TYPE="LVM2_member"
-/dev/xvda3: UUID="dVce5c-YAh7-sDmT-NtDx-zPze-oF16-k9Yh8d" TYPE="LVM2_member"
-/dev/mapper/OS-root: UUID="9e77d1b0-5364-4c91-8895-fee49bf8513e" TYPE="xfs"
-/dev/mapper/OS-swap: UUID="6094839d-53fc-4953-bca8-00ef792823af" TYPE="swap"
-/dev/mapper/OS-tmp: UUID="02316dd0-9b8b-43a0-ab35-0efabf4b2ae8" TYPE="xfs"
-/dev/mapper/OS-var: UUID="501a9f86-8ff0-4244-9921-1eef78a0199d" TYPE="xfs"
-/dev/mapper/OS-var_tmp: UUID="c4186236-4134-45c0-98a5-b4be21137fb8" TYPE="xfs"
-/dev/mapper/OS-var_log: UUID="a683c6b8-46fd-4fd1-b7ed-88bfa3d7a833" TYPE="xfs"
-/dev/mapper/OS-var_log_audit: UUID="cb2e4394-b6a0-4971-aa3f-c7bbaa22d849" TYPE="xfs"
-/dev/mapper/Data-home: UUID="e6c37c7e-49d2-445b-ba01-7795b2d22eb5" TYPE="xfs"
-/dev/mapper/Data-var_www: UUID="22f48d9c-ccf0-453a-8492-bde2a4efc8d3" TYPE="xfs"
-/dev/xvdb1: UUID="8ac4868e-a16f-4559-bcb4-5da83479cb0e" TYPE="xfs"
-/dev/xvdb2: UUID="hYRpWX-wurW-WXDb-W84g-Prht-jadA-KXlyNa" TYPE="LVM2_member"
-/dev/xvdb3: UUID="dVce5c-YAh7-sDmT-NtDx-zPze-oF16-k9Yh8d" TYPE="LVM2_member"
+/dev/nvme0n1p2: UUID="b437cbaa-8fe5-49e4-8537-0895c219037a" BLOCK_SIZE="512" TYPE="xfs" PARTUUID="a323d5eb-02"
+/dev/nvme1n1p2: LABEL="-f" UUID="b437cbaa-8fe5-49e4-8537-0895c219037a" BLOCK_SIZE="512" TYPE="xfs" PARTUUID="a323d5eb-02"
+/dev/nvme0n1: PTUUID="a323d5eb" PTTYPE="dos"
+/dev/nvme0n1p1: PARTUUID="a323d5eb-01"
+/dev/nvme1n1: PTUUID="a323d5eb" PTTYPE="dos"
+/dev/nvme1n1p1: PARTUUID="a323d5eb-01"
 ```
 
 ## Solution: create a new UUID 
@@ -38,7 +29,7 @@ uuidgen
 ## Solution: rename UUID and mount.
 
 ```
-[root@myhost ~]# xfs_admin -f -U 657ecf72-3823-49e7-904d-4f94d743ceea /dev/xvdb1
+[root@myhost ~]# xfs_admin -L "657ecf72-3823-49e7-904d-4f94d743ceea" -f -U 657ecf72-3823-49e7-904d-4f94d743ceea /dev/nvme1n1p2
 Clearing log and setting UUID
 writing all SBs
 new UUID = 657ecf72-3823-49e7-904d-4f94d743ceea
@@ -48,36 +39,17 @@ new UUID = 657ecf72-3823-49e7-904d-4f94d743ceea
 ## Mount Filesystem should work now. 
 
 ```
-[root@myhost ~]# mount /dev/xvdb1 /media/mount1/
-[root@myhost ~]# cd /media/mount1/
+[root@myhost ~]# mount /dev/nvme1n1p2  /media/recover/
+[root@myhost ~]# cd /media/recover
 ```
 
 ## What about LVM ?
 LVM partitions need to be renamed to be mountable.
 
 ```
-[root@myhost]# vgimportclone /dev/xvdb3
-[root@myhost]# vgimportclone /dev/xvdb3
+[root@myhost]# vgimportclone /dev/nvme1n1p2
 ```
 
-```
-[root@myhost ]# blkid | grep -i UUID
-/dev/xvda1: UUID="8ac4868e-a16f-4559-bcb4-5da83479cb0e" TYPE="xfs"
-/dev/xvda2: UUID="hYRpWX-wurW-WXDb-W84g-Prht-jadA-KXlyNa" TYPE="LVM2_member"
-/dev/xvda3: UUID="dVce5c-YAh7-sDmT-NtDx-zPze-oF16-k9Yh8d" TYPE="LVM2_member"
-/dev/mapper/OS-root: UUID="9e77d1b0-5364-4c91-8895-fee49bf8513e" TYPE="xfs"
-/dev/mapper/OS-swap: UUID="6094839d-53fc-4953-bca8-00ef792823af" TYPE="swap"
-/dev/mapper/OS-tmp: UUID="02316dd0-9b8b-43a0-ab35-0efabf4b2ae8" TYPE="xfs"
-/dev/mapper/OS-var: UUID="501a9f86-8ff0-4244-9921-1eef78a0199d" TYPE="xfs"
-/dev/mapper/OS-var_tmp: UUID="c4186236-4134-45c0-98a5-b4be21137fb8" TYPE="xfs"
-/dev/mapper/OS-var_log: UUID="a683c6b8-46fd-4fd1-b7ed-88bfa3d7a833" TYPE="xfs"
-/dev/mapper/OS-var_log_audit: UUID="cb2e4394-b6a0-4971-aa3f-c7bbaa22d849" TYPE="xfs"
-/dev/mapper/Data-home: UUID="e6c37c7e-49d2-445b-ba01-7795b2d22eb5" TYPE="xfs"
-/dev/mapper/Data-var_www: UUID="22f48d9c-ccf0-453a-8492-bde2a4efc8d3" TYPE="xfs"
-/dev/xvdb1: UUID="ebc90d35-de21-4466-9304-28cf0a0907a7" TYPE="xfs"
-/dev/xvdb2: UUID="6cMAiz-41NM-pVxA-gx5L-u8sg-UmWK-KF2VDk" TYPE="LVM2_member"
-/dev/xvdb3: UUID="5GEzG8-l1xQ-queN-KAhX-HpPp-1JHD-iyGwCd" TYPE="LVM2_member"
-```
 
 ## The cloned filesystems should be accessible now but inactive. 
 
@@ -120,21 +92,6 @@ logs:
 [ 9888.615030] XFS (dm-9): Filesystem has duplicate UUID 9e77d1b0-5364-4c91-8895-fee49bf8513e - can't mount
 ```
 
-```
-[root@myhost ]# blkid | grep 9e77d
-/dev/mapper/OS-root: UUID="9e77d1b0-5364-4c91-8895-fee49bf8513e" TYPE="xfs"
-/dev/mapper/OS1-root: UUID="9e77d1b0-5364-4c91-8895-fee49bf8513e" TYPE="xfs"
-```
-
-
-```
-[root@myhost ]# uuidgen
-1749489e-14b5-4974-9fa4-6ce7ef38ae5d
-[root@myhost ]# xfs_admin -f -U 1749489e-14b5-4974-9fa4-6ce7ef38ae5d /dev/OS1/root
-Clearing log and setting UUID
-writing all SBs
-new UUID = 1749489e-14b5-4974-9fa4-6ce7ef38ae5d
-```
 
 ## Umount Filestem and rename back 
 
@@ -144,7 +101,7 @@ new UUID = 1749489e-14b5-4974-9fa4-6ce7ef38ae5d
 ```
 
 ```
-[root@myhost media]# xfs_admin -f -U 8ac4868e-a16f-4559-bcb4-5da83479cb0e /dev/xvdb1
+[root@myhost media]# xfs_admin -L 8ac4868e-a16f-4559-bcb4-5da83479cb0e -f -U 8ac4868e-a16f-4559-bcb4-5da83479cb0e /dev/nvme1n1p2
 ```
 
 ```
