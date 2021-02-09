@@ -1,12 +1,12 @@
-# How to create new enviornment in puppet enterprise with code-manager enabled.
+# How to create new environment in puppet enterprise with code-manager enabled.
 
-## 1. add a branch to your repo 
+## 1. add a branch to your 'Control-repo' 
    Production  -> Create branch from here
 
-## 2. set name to awslinux2 
+## 2. set branch name to what you want. I used 'awslinux2' in this example.  
    *note "-" characters are invalid on branches.
    
-## 3. run puppet-code deploy on the new environment
+## 3. run 'puppet-code deploy' on the new environment should get added to your puppet server. 
 
 ```
 [root@mypuppetserver ~]# puppet-code  deploy awslinux2
@@ -25,3 +25,5 @@ Found 1 environments.
  select 'Environment' The new 'awslinux2' environment should be selectable. 
  enter a group name 
  click on enviornment group 
+
+finished :-)
