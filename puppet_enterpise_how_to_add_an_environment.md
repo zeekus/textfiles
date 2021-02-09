@@ -1,4 +1,5 @@
-# How to create new environment in puppet enterprise with code-manager enabled.
+# How to create new environment 
+## puppet enterprise with code-manager enabled.
 
 ## 1. add a branch to your 'Control-repo' 
    Production  -> Create branch from here
