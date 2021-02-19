@@ -1,4 +1,4 @@
-# basic puppet restore info
+# basic puppet enterprise restore info date: 2/19/2021
 This document explains how to restore puppet enterprise to a Centos7 instance.
 
 
