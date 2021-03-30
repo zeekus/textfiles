@@ -1,7 +1,7 @@
 # How to setup a HPC cluster using AWS Parrallel
 
 
-#1. verify you have admin aws credentials or create them.
+## 1. verify you have admin aws credentials or create them.
 
 ```
 (newcluster) [myuser@myserver1 .parallelcluster]$ aws configure
@@ -11,7 +11,7 @@ Default region name [us-east-1]:
 Default output format [None]:
 ```
 
-#2. install the pcluster cli
+## 2. install the pcluster cli
 
 The pcluster cli is a python application that allows you build a HPC cluster from a configuration file.
 
@@ -26,7 +26,7 @@ source ~/newcluster/bin/activate
 python3 -m pip install --upgrade aws-parallelcluster
 ```
 
-#3. create a basic ini file.
+## 3. create a basic ini file.
 
 We are using micro instances for testing.
 
@@ -56,13 +56,13 @@ min_vcpus = 0
 desired_vcpus = 2
 ```
 
-#4 convert your file to a standard file. ( Not necessary. )
+## 4 convert your file to a standard file. ( Not necessary. )
 
 ```
  pcluster-config convert -c simple_cluster.ini -o parsed_simple_cluster.ini
 Section [cluster default] from file simple_cluster.ini has been converted and saved into parsed_simple_cluster.ini.
 ```
-#5 start the culter build using the pcluster cl
+## 5 start the culter build using the pcluster cl
 
 *note the builds take about 10 minutes*
 
@@ -77,7 +77,7 @@ ClusterUser: ec2-user
 MasterPrivateIP: 10.128.64.49
 ```
 
-#6 list the builds and clean up any orphans if they exist.
+## 6 list the builds and clean up any orphans if they exist.
 
 ```
 (newcluster) [myuser@myserver1 .parallelcluster]$ pcluster list --color
@@ -85,7 +85,7 @@ mydefault1cluster  CREATE_COMPLETE    2.10.3
 mydefault          ROLLBACK_COMPLETE  2.10.3
 ```
 
-#delete of an orphan
+## delete of an orphan
 
 ```
 (newcluster) [myuser@myserver1 .parallelcluster]$ pcluster delete mydefault
@@ -97,14 +97,14 @@ Checking if there are running compute nodes that require termination...
 Compute fleet cleaned up.
 ```
 
-#7 verify cleanup
+## 7 verify cleanup
 
 ```
 (newcluster) [myuser@myserver1 .parallelcluster]$ pcluster list --color
 mydefault1cluster  CREATE_COMPLETE  2.10.3
 ```
 
-#8 log into the newly created master node
+## 8 log into the newly created master node
 
 ```
 (newcluster) [myuser@myserver1 ~]$ pcluster ssh mydefault1cluster -i ~/.ssh/mykey.pem
@@ -126,7 +126,7 @@ Run "sudo yum update" to apply all updates.
 
 source: https://www.hpcworkshops.com/03-hpc-aws-parallelcluster-workshop/07-logon-pc.html
 
-#9. on the master node verify the cluster was built to specificaitons
+## 9. on the master node verify the cluster was built to specificaitons
 
 ```
 [ec2-user@ip-10-128-64-49 ~]$ sinfo
@@ -138,7 +138,7 @@ compute*     up   infinite      2   idle compute-dy-t3micro-[1-2]
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
 ```
 
-#9. verify the modules are installed and active
+## 9. verify the modules are installed and active
 
 ```
 [root@ip-10-128-64-49 ~]# module av
@@ -155,7 +155,7 @@ intelmpi
 /opt/intel/compilers_and_libraries_2020.2.254/linux/mpi/intel64/bin/mpirun
 ```
 
-#10. verfiy the mount points.
+## 10. verfiy the mount points.
 
 ```
 [root@ip-10-128-64-49 ~]# showmount -e localhost
@@ -166,7 +166,7 @@ Export list for localhost:
 /shared    10.128.64.0/20
 ```
 
-#11. run some basic tests to vefifyt the cluster is working.
+## 11. run some basic tests to vefifyt the cluster is working.
 
 
 
@@ -211,5 +211,5 @@ compute*     up   infinite      8  idle~ compute-dy-t3micro-[3-10]
 source: https://www.hpcworkshops.com/03-hpc-aws-parallelcluster-workshop/08-run-1stjob.html
 
 
-#12 clean up test cluster
+## 12 clean up test cluster
 
