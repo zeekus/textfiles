@@ -75,3 +75,12 @@ yum install git
 cd /opt
 git clone https://github.com/spack/spack.git
 
+
+
+
+Good sources of info:
+
+Youtube: 
+    https://www.youtube.com/watch?v=Qok-nXfIWfg
+
+    https://www.youtube.com/watch?v=edpgwyOD79E
