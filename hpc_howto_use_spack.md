@@ -51,34 +51,13 @@ source ./spack/share/spack/setup-env.sh
 
 3. start installing.
 
+```
+spack install zlib
+```
 
 
 
-https://linuxize.com/post/how-to-install-gcc-compiler-on-centos-7/
-
-yum install gcc-c++ libstdc++ -y
-yum  install openmpi
-yum groupinstall "Development Tools" "Development Libraries" -y
-yum install gcc-objc++
-compat-gcc-44-c++.x86_64
-yum install haxe-stdlib
-yum install libstdc++-static
-compat-libstdc++-33
-yum install devtoolset-7
-#newer compiler
-scl enable devtoolset-7 bash
-#gcc7
-yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum install gcc* #gets everything.
-yum install git
-
-cd /opt
-git clone https://github.com/spack/spack.git
-
-
-
-
-Good sources of info:
+Good English sources of info:
 
 Youtube: 
     https://www.youtube.com/watch?v=Qok-nXfIWfg
