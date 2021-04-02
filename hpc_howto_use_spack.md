@@ -63,11 +63,10 @@ source ./spack/share/spack/setup-env.sh
 spack install zlib
 ```
 
-## Good [English] sources of info:
+# Good [English] sources of info:
 
-# Youtube: 
+## Youtube:
 
-    https://www.youtube.com/watch?v=Qok-nXfIWfg
+https://www.youtube.com/watch?v=Qok-nXfIWfg
 
-    https://www.youtube.com/watch?v=edpgwyOD79E
-
+https://www.youtube.com/watch?v=edpgwyOD79E
