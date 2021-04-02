@@ -22,22 +22,26 @@ yum compat-gcc-44-c++.x86_64
 yum install haxe-stdlib
 yum install libstdc++-static
 compat-libstdc++-33
-yum install devtoolset-7
-```
-
-## Enable the newer compiler
 
 ```
-scl enable devtoolset-7 bash
-```
+
+
 
 ## using gcc7
 
 ```
+yum install devtoolset-7
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum install gcc* #gets everything.
 yum install git
 ```
+
+## Enable the newer gcc7 compiler
+
+```
+scl enable devtoolset-7 bash
+```
+source: https://linuxize.com/post/how-to-install-gcc-compiler-on-centos-7/
 
 
 # How to use spack
