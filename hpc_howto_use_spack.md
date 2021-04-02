@@ -74,3 +74,10 @@ spack install zlib
 https://www.youtube.com/watch?v=Qok-nXfIWfg
 
 https://www.youtube.com/watch?v=edpgwyOD79E
+
+
+# Other good sources of info
+
+A Scientist's Guide to Cloud-HPC: example with AWS parallelcluster, slurm, spack and WRF. 
+https://jiaweizhuang.github.io/blog/aws-hpc-guide/
+
