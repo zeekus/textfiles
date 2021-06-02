@@ -16,7 +16,7 @@ or
 # disable colors
 
 ```
-:set syntax off
+:syntax off
 ```
 
 # delete range of lines
