@@ -1,6 +1,9 @@
 
 How to harden apache to use better SSL. 
 
+problem: it may be possible to break the encryption on some apache SSL configuations.
+
+
 
 From Website: 
 
