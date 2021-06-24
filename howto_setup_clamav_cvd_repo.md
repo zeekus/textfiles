@@ -44,7 +44,7 @@ crontab -e
 # copy data to s3 if needed
 
 ```
-aws s3 sync /var/tmp/clamav/ s3://cccc-puppet-backup/clamav
+aws s3 sync /var/tmp/clamav/ s3://mystore/clamav
 ```
 
 
