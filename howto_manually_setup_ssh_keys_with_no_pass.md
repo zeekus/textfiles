@@ -41,8 +41,10 @@ How to append.
 cat >> ~/.ssh/authorized_keys < my_rsa_key.pem.pub
 ```
 
-# 5 test on machine that has the private key. 
+# 4 test on machine that has the private key. 
 
 ```
 ssh -i myprivate_key.pem myuser@myhost
 ```
+
+**Note if you can logon the remote host all this can be done with 'ssh-copy-id'**
