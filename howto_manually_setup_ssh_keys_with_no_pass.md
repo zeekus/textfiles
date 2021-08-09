@@ -30,9 +30,10 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjejpDIaYrcFVOcmaAJYmUZbv2m1bXeNFGoL7HPJEk
 ```
 
 
-# 3 Append the public key to the host you wish to connect to authorized keys.
+# 3 Append the public key to the authorized_key file on the **destination** host. 
 
 Destination: myuser@myserver
+Source: myuser@myhost
 
 Allows access from a remote host. 
 ```
@@ -51,7 +52,7 @@ source: myuser@myhost
 dest:   myuser@myserver
 
 ```
-ssh -i myprivate_key.pem myuser@myserver
+[myuser@myhost]$ ssh -i myprivate_key.pem myuser@myserver
 ```
 
 **Note if you can logon the remote host all this can be done with 'ssh-copy-id'**
