@@ -1,6 +1,8 @@
 # manually setup ssh keys for passwordless login
 
 **in this example, we will be creating the private key on the orginating machine.**
+**note the ssh key can be generated anywhere.**
+**Manual generation of keys is ocassionally needed when a system that doesn't allow users to login with regular credentals.**
 
 # 1. run key gen to get an rsa key with the filename my_rsa_key.pem
 
