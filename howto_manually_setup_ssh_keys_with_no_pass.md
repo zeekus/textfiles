@@ -53,7 +53,7 @@ cat >> ~/.ssh/authorized_keys < my_rsa_key.pem.pub
 ```
 *cut and paste contents of private key*
 
-*press control d*
+*press control d to exit*
 
 # 5 test on machine that has the private key. 
 
