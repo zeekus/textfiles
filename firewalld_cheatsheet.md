@@ -16,6 +16,21 @@ public
   interfaces: eth0
  ```
 
+# Create a monitoring zone
+
+```
+firewall-cmd --zone=monitoring --add-source=10.16.48.90/24
+firewall-cmd --runtime-to-permanent
+```
+
+# add icmp to zone
+
+```
+firewall-cmd --zone=monitoring --permanent --add-protocol icmp
+firewall-cmd --runtime-to-permanent
+```
+
+
 # List the rules from the public zone:
 ```
 [root@myhost ~]# firewall-cmd --list-all --zone=public
