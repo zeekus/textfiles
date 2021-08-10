@@ -16,7 +16,7 @@ public
   interfaces: eth0
  ```
 
-# Create a monitoring zone and allow specific source to ping
+# Create a monitoring zone and allow the monitoring host of 10.16.18.90 to ping, connect via ssh, and use nrpe
 
 ```
 firewall-cmd --permanent --new-zone=monitoring
