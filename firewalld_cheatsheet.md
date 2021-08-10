@@ -76,7 +76,7 @@ file: /etc/firewalld/firewalld.conf
 zone files: /etc/firewalld/zones
 ```
 [root@myhost zones]# ls
-block.xml  dmz.xml  drop.xml  external.xml  home.xml  internal.xml  public.xml  public.xml.old  trusted.xml  work.xml
+block.xml  dmz.xml  drop.xml  external.xml  home.xml  internal.xml  public.xml  public.xml.old  trusted.xml  work.xml  monitoring.xml
 [root@myhost zones]# pwd
 ```
 
