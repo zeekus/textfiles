@@ -22,7 +22,28 @@ public
 firewall-cmd --permanent --new-zone=monitoring
 firewall-cmd --zone=monitoring --add-source=10.16.48.90/24
 firewall-cmd --zone=monitoring --permanent --add-protocol icmp
+firewall-cmd --zone=monitoring --permanent --add-service=nrpe
+firewall-cmd --zone=monitoring --permanent --add-service=ssh
 firewall-cmd --runtime-to-permanent
+```
+
+# list monitring zone
+
+```
+[root@myhost ~]# firewall-cmd --list-all --zone=monitoring
+monitoring (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces:
+  sources: 10.16.48.90/24
+  services: nrpe ssh
+  ports:
+  protocols: icmp
+  masquerade: no
+  forward-ports:
+  source-ports:
+  icmp-blocks: echo-reply
+  rich rules:
 ```
 
 
