@@ -27,7 +27,7 @@ firewall-cmd --zone=monitoring --permanent --add-service=ssh
 firewall-cmd --runtime-to-permanent
 ```
 
-# list monitring zone
+# list monitoring zone
 
 ```
 [root@myhost ~]# firewall-cmd --list-all --zone=monitoring
