@@ -15,7 +15,7 @@ net user myuser /domain
 activate account 
 
 ```
-net user myuser /domain /active:yest
+net user myuser /domain /active:yes
 ```
 
 deactive user
