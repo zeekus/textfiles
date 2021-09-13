@@ -1,24 +1,24 @@
-# Cheat Sheet for AD CMD line tools
+## Cheat Sheet for AD CMD line tools
 
-find options for users
+# 1. find options for users
 
 ```
 net user /help
 ```
 
-list user
+# 2. list user
 
 ```
 net user myuser /domain
 ```
 
-activate account 
+# 3. activate account 
 
 ```
 net user myuser /domain /active:yes
 ```
 
-deactive user
+# 4. deactive user
 
 ```
 net user myuser /domain /active:no
