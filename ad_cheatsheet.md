@@ -24,7 +24,7 @@ net user myuser /domain /active:yes
 net user myuser /domain /active:no
 ```
 
-# 5. change the user interactively from the command line
+# 5. change the user's password interactively from the command line
 
 ```
 net user myuser * /domain
