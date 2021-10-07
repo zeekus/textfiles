@@ -19,7 +19,10 @@ ctrl+b d #detach from session
 ```
 ctrl+b p #previous window
 ctrl+b n #next window
-ctrl_b 1 #window 1
+ctrl+b 1 #window 1
+ctrl+b , #rename window
+ctrl+b w #list all windows
+
 ```
 
 # Other cheatsheets:
