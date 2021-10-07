@@ -22,6 +22,8 @@ ctrl+b n #next window
 ctrl+b 1 #window 1
 ctrl+b , #rename window
 ctrl+b w #list all windows
+ctrl+b & #kill windows
+ctrl+b f #find windows
 
 ```
 
