@@ -36,6 +36,18 @@ $ pcluster configure --config cluster-config.yaml
 source https://docs.aws.amazon.com/parallelcluster/latest/ug/install-v3-configuring.html
 ***
 
+# 5. build your first cluster
+
+```
+pcluster create-cluster --cluster-configuration ./mypcluster3.yaml --cluster-name firstcluster --region us-east-1  
+```
+
+# 6. describe your cluster
+
+```
+pcluster describe-cluster --cluster-name firstcluster --region us-east-1         
+````
+
 # source tree to aws-parallelcluster documentation
 
 https://github.com/awsdocs/aws-parallelcluster-user-guide/tree/main/doc_source
