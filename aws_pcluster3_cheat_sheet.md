@@ -48,6 +48,8 @@ pcluster create-cluster --cluster-configuration ./mypcluster3.yaml --cluster-nam
 pcluster describe-cluster --cluster-name firstcluster --region us-east-1         
 ````
 
+
+
 # source tree to aws-parallelcluster documentation
 
 https://github.com/awsdocs/aws-parallelcluster-user-guide/tree/main/doc_source
