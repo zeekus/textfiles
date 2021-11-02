@@ -42,12 +42,12 @@ source https://docs.aws.amazon.com/parallelcluster/latest/ug/install-v3-configur
 pcluster create-cluster --cluster-configuration ./mypcluster3.yaml --cluster-name firstcluster --region us-east-1  
 ```
 
+***
 # 6. describe your cluster
 
 ```
 pcluster describe-cluster --cluster-name firstcluster --region us-east-1         
 ````
-
 
 
 # source tree to aws-parallelcluster documentation
