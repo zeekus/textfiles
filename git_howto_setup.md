@@ -23,7 +23,13 @@ git push
  git log --oneline
 ```
 
-## this is a mistake
+## undo local changes
+
+```
+git reset
+```
+
+
 
 
 
