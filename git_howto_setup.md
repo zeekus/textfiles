@@ -29,6 +29,7 @@ git push
 git reset
 ```
 
+34jlfjdslkfjadj;34 typo 
 
 ## how to delete a remote branch
 
