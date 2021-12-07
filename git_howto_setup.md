@@ -23,6 +23,7 @@ git push
  git log --oneline
 ```
 
+<<<<<<< HEAD
 ## undo local changes
 
 ```
@@ -33,6 +34,8 @@ git reset
 
 
 
+=======
+>>>>>>> parent of e1db6d2... edit
 ## how to delete a remote branch
 
 #List the branches you are working.
