@@ -1,7 +1,4 @@
-#draft 
-
-##how to setup git
-
+### Git Cheatsheet
 
 # git basics 
 
@@ -18,11 +15,15 @@ cd textfiles
 touch mynew_file.txt
 git add --all
 git commit -m "added debug file" 
- git push
+git push
+```
+
+## list edits and chage history
+```
+ git log --oneline
 ```
 
 ## how to delete a remote branch
-
 
 #List the branches you are working.
 ```
