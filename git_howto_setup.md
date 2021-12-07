@@ -29,6 +29,21 @@ git push
 git reset
 ```
 
+## undo last change
+
+get last commit number. This is were the change description becomes important.
+
+``` 
+git log --online 
+```
+
+revert the commit you want to undo.  In this example, the last commit was '19fb737'.
+
+```
+revert 19fb737
+push git
+```
+
 
 ## how to delete a remote branch
 
@@ -49,5 +64,7 @@ git push origin --delete test2
 
 
 
-
+REF:
 source: https://www.educative.io/edpresso/how-to-delete-remote-branches-in-git
+
+Best REF for undoing changes: https://www.atlassian.com/git/tutorials/undoing-changes
