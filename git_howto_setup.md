@@ -18,6 +18,19 @@ git commit -m "added debug file"
 git push
 ```
 
+# an alias for your bashrc to remind you of the commands
+
+```
+alias gitty="echo 'git add --all';echo 'git commit -m \"edit message\"';echo 'git push'"
+```
+shell:~$ gitty
+```
+git add --all
+git commit -m "edit message"
+git push
+```
+
+
 ## list edits and chage history
 ```
  git log --oneline
@@ -29,7 +42,7 @@ git push
 git reset
 ```
 
-## undo last change
+## remove last change - git doesn't have an 'undo' per say - see REF to undoing changes below
 
 get last commit number. This is were the change description becomes important.
 
