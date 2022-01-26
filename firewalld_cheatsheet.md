@@ -92,6 +92,23 @@ firewall-cmd --reload
 success
 ```
 
+# manually add a rich rule 
+```
+firewall-cmd --zone=public --permanent --add-rich-rule='rule family="ipv4" destination address="169.254.169.254/24" port protocol="tcp" port="80" accept'
+success
+firewall-cmd --reload
+success
+```
+
+# manually remove a rich rule
+
+```
+firewall-cmd --zone=public --permanent --remove-rich-rule='rule family="ipv4" destination address="169.254.169.254/24" port protocol="tcp" port="80" accept'
+success
+firewall-cmd --reload
+success
+```
+
 # Files that are modified with firewalld: Centos8
 file: /etc/firewalld/firewalld.conf
 zone files: /etc/firewalld/zones
