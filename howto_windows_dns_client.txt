@@ -4,3 +4,21 @@
 ipconfig /registerdns
 ```
 
+# flush DNS records
+
+```
+ipconfig /flushdns
+```
+
+# myhostname
+
+```
+host
+```
+
+# my network info
+
+```
+ipconfig
+```
+
