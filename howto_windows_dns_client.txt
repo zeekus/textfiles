@@ -1,0 +1,6 @@
+# re-register machine with the DNS
+
+```
+ipconfig /registerdns
+```
+
