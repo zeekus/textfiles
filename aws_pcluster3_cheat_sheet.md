@@ -1,7 +1,21 @@
 # AWS Pcluster3 cheat sheet.
 
 ***
-# setup install pcluster using a python virtual env
+
+# prerequisite update pip
+
+```
+python3 -m pip install --upgrade pip
+```
+
+# prerequisite update pip in a virtual environment
+
+```
+python3 -m pip install --user --upgrade virtual
+```
+
+
+# setup install pcluster client using a python virtual env
 
 ```
 $ python3 -m pip install --upgrade pip
@@ -60,7 +74,10 @@ pcluster delete-cluster --cluster-name firstcluster --region us-east-1
 https://github.com/awsdocs/aws-parallelcluster-user-guide/tree/main/doc_source
 ***
 
+# install an older version of pcluster [ downgrade ]
 
-
+```
+python3 -m pip install --upgrade "aws-parallelcluster<3.0"     
+```
 
 
