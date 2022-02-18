@@ -19,6 +19,24 @@ D. Level Specialty ( very deep )
   3. Advanced Networking Specialty
 
 
+# Foundation level ref: 
+https://aws.amazon.com/certification/
+
+Recommended White Papers reads:
+Overview of AWS https://docs.aws.amazon.com/whitepapers/latest/aws-overview/introduction.html
+Architecting for the Cloud: AWS Best Practices https://aws.amazon.com/blogs/aws/new-whitepaper-architecting-for-the-cloud-best-practices/
+How AWS pricing works https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/introduction.html
+Compare AWS support plans: https://aws.amazon.com/premiumsupport/plans/
+
+Exam info
+*90 mins
+*65 questions
+*multiple choice
+*required score 700 out of 1000
+
+
+
+
 # source: AWS Certification Preparation Guide - https://learn.acloud.guru/course/aws-certification-preparation/dashboard
 
 # references: 
