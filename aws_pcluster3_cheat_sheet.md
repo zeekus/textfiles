@@ -80,4 +80,37 @@ https://github.com/awsdocs/aws-parallelcluster-user-guide/tree/main/doc_source
 python3 -m pip install --upgrade "aws-parallelcluster<3.0"     
 ```
 
+# creating a custom AMI
 
+1. build an image in ec2
+
+
+2. create a build file for pcluster
+
+```
+Region: us-east-1
+Image:
+  Name: "custom AMI for Pcluster 3"
+Build:
+  ParentImage: ami-0c5967ba802384505
+  InstanceType: c4.8xlarge
+```
+
+3. convert AMI from EC2 into cloudwatch
+
+```
+(apc-ve) usermy@myuser:/mnt/c/Users/myuser/git/bluefish-scripts$ pcluster build-image --image-id myfirst --image-configuration ./buildcustomami.yaml
+{
+  "image": {
+    "imageId": "myfirst",
+    "imageBuildStatus": "BUILD_IN_PROGRESS",
+    "cloudformationStackStatus": "CREATE_IN_PROGRESS",
+    "cloudformationStackArn": "arn:aws:cloudformation:us-east-1:663667428198:stack/myfirst/85870930-a3aa-11ec-9b07-12c1ac6e884f",
+    "region": "us-east-1",
+    "version": "3.1.1"
+  }
+}
+(apc-ve) usermy@myuser:/mnt/c/Users/myuser/git/bluefish-scripts$ 
+```
+
+ref: https://aws.amazon.com/blogs/hpc/custom-amis-with-parallelcluster-3/
