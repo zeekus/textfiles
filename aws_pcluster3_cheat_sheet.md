@@ -120,4 +120,32 @@ upon completetion the pcluster cli will spit out a new ami
 "ami-070973291a18a60e8"
 ```
 
+clean up old clusters/images
+
+```(apc-ve) usermy@myuser:/mnt/c/Users/myuser/git/bluefish-scripts$ pcluster delete-cluster -n testami
+{
+  "cluster": {
+    "clusterName": "testami",
+    "cloudformationStackStatus": "DELETE_IN_PROGRESS",
+    "cloudformationStackArn": "arn:aws:cloudformation:us-east-1:663667428198:stack/testami/1f9fc2c0-a3b3-11ec-bc5b-0ad021a4c485",
+    "region": "us-east-1",
+    "version": "3.1.1",
+    "clusterStatus": "DELETE_IN_PROGRESS"
+  }
+}
+
+delete the image
+
+````
+(apc-ve) usermy@myuser:/mnt/c/Users/myuser/git/bluefish-scripts$ pcluster delete-image -i myfirst
+{
+  "image": {
+    "imageId": "myfirst",
+    "imageBuildStatus": "DELETE_IN_PROGRESS",
+    "region": "us-east-1",
+    "version": "3.1.1"
+  }
+}
+```
+
 ref: https://aws.amazon.com/blogs/hpc/custom-amis-with-parallelcluster-3/
