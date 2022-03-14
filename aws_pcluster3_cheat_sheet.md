@@ -113,4 +113,11 @@ Build:
 (apc-ve) usermy@myuser:/mnt/c/Users/myuser/git/bluefish-scripts$ 
 ```
 
+upon completetion the pcluster cli will spit out a new ami 
+
+```
+(apFc-ve) usermy@myuser:/mnt/c/Users/myuser/git/textfiles$ pcluster describe-image --image-id myfirst --query 'ec2AmiInfo.amiId'
+"ami-070973291a18a60e8"
+```
+
 ref: https://aws.amazon.com/blogs/hpc/custom-amis-with-parallelcluster-3/
