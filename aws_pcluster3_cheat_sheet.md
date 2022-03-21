@@ -123,6 +123,10 @@ upon completetion the pcluster cli will spit out a new ami
 clean up old clusters/images
 
 ```(apc-ve) usermy@myuser:/mnt/c/Users/myuser/git/bluefish-scripts$ pcluster delete-cluster -n testami
+
+```
+OUTPUT: 
+```
 {
   "cluster": {
     "clusterName": "testami",
