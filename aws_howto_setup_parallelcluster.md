@@ -1,10 +1,10 @@
-# How to setup a HPC cluster using AWS Parrallel
+# How to setup a HPC cluster using AWS Parallel
 
 
 ## 1. verify you have admin aws credentials or create them.
 
 ```
-(newcluster) [myuser@myserver1 .parallelcluster]$ aws configure
+(newcluster) [myuser@myserver1 .Parallelcluster]$ aws configure
 AWS Access Key ID [****************T42J]:
 AWS Secret Access Key [****************c3hX]:
 Default region name [us-east-1]:
@@ -62,7 +62,7 @@ desired_vcpus = 2
  pcluster-config convert -c simple_cluster.ini -o parsed_simple_cluster.ini
 Section [cluster default] from file simple_cluster.ini has been converted and saved into parsed_simple_cluster.ini.
 ```
-## 5. start the culter build using the pcluster cl
+## 5. start the cluster build using the pcluster cli
 
 *note the builds take about 10 minutes*
 
@@ -85,7 +85,7 @@ mydefault1cluster  CREATE_COMPLETE    2.10.3
 mydefault          ROLLBACK_COMPLETE  2.10.3
 ```
 
-## delete of an orphan
+## delete an orphan cluster
 
 ```
 (newcluster) [myuser@myserver1 .parallelcluster]$ pcluster delete mydefault
@@ -126,7 +126,7 @@ Run "sudo yum update" to apply all updates.
 
 source: https://www.hpcworkshops.com/03-hpc-aws-parallelcluster-workshop/07-logon-pc.html
 
-## 9. on the master node verify the cluster was built to specificaitons
+## 9. on the master node verify the cluster was built to specifications
 
 ```
 [ec2-user@ip-10-128-64-49 ~]$ sinfo
