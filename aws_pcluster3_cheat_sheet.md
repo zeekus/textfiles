@@ -173,8 +173,12 @@ OUTPUT:
 
 delete the image
 
-````
+```
 (apc-ve) usermy@myuser:/mnt/c/Users/myuser/git/bluefish-scripts$ pcluster delete-image -i myfirst
+```
+
+ouput from delete
+```
 {
   "image": {
     "imageId": "myfirst",
@@ -186,6 +190,7 @@ delete the image
 ```
 
 Aliases to activate the pcluster cli
+
 ```
 #pcluster stuff and move to pcluster dir
 alias pcluster_active="source ~/apc-ve/bin/activate"
