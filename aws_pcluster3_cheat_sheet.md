@@ -158,7 +158,7 @@ clean up old clusters/images
 ```(apc-ve) usermy@myuser:/mnt/c/Users/myuser/git/bluefish-scripts$ pcluster delete-cluster -n testami
 
 ```
-OUTPUT: 
+output: 
 ```
 {
   "cluster": {
