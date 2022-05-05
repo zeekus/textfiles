@@ -120,6 +120,39 @@ upon completetion the pcluster cli will spit out a new ami
 "ami-070973291a18a60e8"
 ```
 
+list images that are available
+
+```
+pcluster list-images -r us-east-1 --image-status AVAILABLE
+```
+
+output
+```
+(apc-ve) usermy@myuser:~/apc-ve/bin$ pcluster list-images -r us-east-1 --image-status AVAILABLE
+{
+  "images": [
+    {
+      "imageId": "mysecond",
+      "imageBuildStatus": "BUILD_COMPLETE",
+      "ec2AmiInfo": {
+        "amiId": "ami-0849b3cca0757b921"
+      },
+      "region": "us-east-1",
+      "version": "3.1.2"
+    },
+    {
+      "imageId": "hpc05032022",
+      "imageBuildStatus": "BUILD_COMPLETE",
+      "ec2AmiInfo": {
+        "amiId": "ami-0dd23be82f10e402c"
+      },
+      "region": "us-east-1",
+      "version": "3.1.3"
+    }
+  ]
+}
+```
+
 clean up old clusters/images
 
 ```(apc-ve) usermy@myuser:/mnt/c/Users/myuser/git/bluefish-scripts$ pcluster delete-cluster -n testami
@@ -150,6 +183,12 @@ delete the image
     "version": "3.1.1"
   }
 }
+```
+
+Aliases to activate the pcluster cli
+```
+#pcluster stuff and move to pcluster dir
+alias pcluster_active="source ~/apc-ve/bin/activate"
 ```
 
 ref: https://aws.amazon.com/blogs/hpc/custom-amis-with-parallelcluster-3/
