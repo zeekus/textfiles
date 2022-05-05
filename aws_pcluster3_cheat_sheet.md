@@ -170,6 +170,7 @@ OUTPUT:
     "clusterStatus": "DELETE_IN_PROGRESS"
   }
 }
+```
 
 delete the image
 
