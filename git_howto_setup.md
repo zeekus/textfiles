@@ -2,6 +2,25 @@
 
 # git basics 
 
+pre) git configuration info
+
+#configure user
+```
+git config --global user.name "zeekus"
+```
+
+#confirm with
+```
+git config --global user.name
+```
+ref https://docs.github.com/en/get-started/getting-started-with-git/setting-your-username-in-git
+
+#configure the unix style whitespaces
+```
+git config --global core.autocrlf true
+```
+
+
 a) clone a repo
 
 ```
