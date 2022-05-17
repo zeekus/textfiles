@@ -16,7 +16,7 @@ Idle,System,smss,csrss,wininit,csrss,winlogon,services,lsass,svchost,svchost,Log
 NSClient++ 0.4.3.143 2015-04-29
 ```
 
-# get uptiem
+# get uptime
 
 ```
 [root@myserver ~]# /usr/lib64/nagios/plugins/check_nt -H domaincontroller.example.net -p 12489 -v UPTIME
