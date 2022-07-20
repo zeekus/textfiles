@@ -1,5 +1,7 @@
 # How to setup a HPC cluster using AWS Parallel
 
+**note for use with pcluster2**
+
 
 ## 1. verify you have admin aws credentials or create them.
 
