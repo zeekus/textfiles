@@ -6,6 +6,8 @@ Quick rebuild plan for Arch
 
 ```
   archinstall
+  -set timezone
+  -set repo source 
 ```
 
   *extra packages to add in the installer*
@@ -36,8 +38,13 @@ sudo pacman -S --needed wine-staging giflib lib32-giflib libpng lib32-libpng lib
 # 4. install accessories.
 
 ```
-pacman -S man jruby firefox chromium xfce4 lightdm lightdm-gtk-greeter mumble discord xorg python-pip code 
+pacman -S man jruby firefox chromium xfce4 lightdm lightdm-gtk-greeter mumble discord xorg python-pip code espeak-ng python-opencv
+
+pip install virtualenv pyautogui
+
 ```
+
+
 
 # 5. setup nvidia hooks for cpio and initram disk
 
