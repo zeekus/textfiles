@@ -36,7 +36,7 @@ sudo pacman -S --needed wine-staging giflib lib32-giflib libpng lib32-libpng lib
 # 4. install accessories.
 
 ```
-pacman -S man jruby firefox chromium xfce4 lightdm lightdm-gtk-greeter mumble discord xorg
+pacman -S man jruby firefox chromium xfce4 lightdm lightdm-gtk-greeter mumble discord xorg python-pip code 
 ```
 
 # 5. setup nvidia hooks for cpio and initram disk
