@@ -4,6 +4,13 @@
 
 Linux can use AD as a authentication method. There are multiple tools that can be used to this.
 
+## dependancies
+```
+kinit  - to initialized domain logins.
+adcli - an ad cli tool. 
+realmd - 
+```
+
 
 ## steps
 ```
