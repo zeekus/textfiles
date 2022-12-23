@@ -76,6 +76,18 @@ revert 19fb737
 push git
 ```
 
+# list branches
+```
+git branch
+```
+
+
+# create a branch for the parent of main
+
+``
+git  checkout -b test
+```
+
 
 ## how to delete a remote branch
 
