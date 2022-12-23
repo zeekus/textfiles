@@ -137,6 +137,12 @@ git  checkout -b test
   master
 ```
 
+# push your new branch
+
+```
+ git push --set-upstream origin test
+```
+
 # delete the remote branch you want dropped
 ```
 git push origin --delete test1
