@@ -150,6 +150,19 @@ git push origin --delete test1
 git diff test master
 ```
 
+## Switching to a different branch
+*to change to master*
+```
+git checkout master
+```
+
+## merging changes. 
+*once changes a finalized in your brach merge the changes back to main.
+```
+git checkout master
+git merge test master
+```
+
 # How to work with Aliases
 
 ## create some git aliases
