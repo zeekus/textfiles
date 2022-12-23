@@ -150,8 +150,6 @@ git push origin --delete test1
 git diff test master
 ```
 
-
-
 # How to work with Aliases
 
 ## create some git aliases
