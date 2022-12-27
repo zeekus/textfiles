@@ -163,6 +163,12 @@ git checkout master
 git merge test master
 ```
 
+## initializing a new local repo
+
+```
+git init mynewrepo
+```
+
 # How to work with Aliases
 
 ## create some git aliases
