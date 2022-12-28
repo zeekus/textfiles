@@ -1,17 +1,17 @@
 # Goal Get Certfied in AWS at Professional level
 
-# Mapping a Certification journey
+## Mapping a Certification journey
 
-A. Level Foundation - AWS Certfied Cloud Practitioner ( basic essentials ) ( goal by 3/1/22)
+A. Level Foundation - AWS Certfied Cloud Practitioner ( basic essentials ) ( goal by 3/1/23)
 
 B. Level: Associate ( broad scope, shallow depth )
-  1. AWS Certfied Solution Architect     (4/1/22)
-  2. AWS Certfied Developer              (5/1/22)
-  3. AWS Certified SysOps Adminstrator   (6/1/22)
+  1. AWS Certfied Solution Architect     (4/1/23)
+  2. AWS Certfied Developer              (5/1/23)
+  3. AWS Certified SysOps Adminstrator   (6/1/23)
 
-C. Level: Professional ( broad scope and deep ) ( End Goal by 12/22 ) 
-  1. Solutions Architect   (9/22)
-  2. DevOps Engineer       (11/22)
+C. Level: Professional ( broad scope and deep ) ( End Goal by 12/23 ) 
+  1. Solutions Architect   (9/23)
+  2. DevOps Engineer       (11/23)
 
 D. Level Specialty ( very deep )
   1. Security Specialty 
@@ -19,7 +19,7 @@ D. Level Specialty ( very deep )
   3. Advanced Networking Specialty
 
 
-# Foundation level ref: 
+## Foundation level ref: 
 https://aws.amazon.com/certification/
 
 Recommended White Papers reads:
@@ -37,11 +37,11 @@ Exam info
 
 
 
-# source: AWS Certification Preparation Guide - https://learn.acloud.guru/course/aws-certification-preparation/dashboard
+### source: AWS Certification Preparation Guide - https://learn.acloud.guru/course/aws-certification-preparation/dashboard
 
-# references: 
+### references: 
 
-## AWS Documenation for answering questions and checking facts. 
+### AWS Documenation for answering questions and checking facts. 
 https://aws.amazon.com/documenation
 
 ## AWS FAQs
