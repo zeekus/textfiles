@@ -1,0 +1,2 @@
+#here is how we check the syntax of an ERB file
+erb -x -T '-' file.erb | ruby -c
