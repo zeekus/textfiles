@@ -191,6 +191,16 @@ git config --list | grep -i alias
 ```
 
 
+## git cheat sheet items
+
+### list branches
+``` git branch -a ```
+
+### delete a remote branch 
+``` git push origin --delete centos8_env ```
+
+### delete a local branch
+``` git branch -d centos_env ```
  
 
 REF:
