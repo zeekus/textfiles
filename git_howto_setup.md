@@ -202,6 +202,13 @@ git config --list | grep -i alias
 ### delete a local branch
 ``` git branch -d centos_env ```
  
+### change your orgin to use ssh
+```
+cd #to local python repo
+#set remote url. This should use SSH. 
+git remote set-url origin git@github.com:zeekus/python.git
+```
+
 
 REF:
 source: https://www.educative.io/edpresso/how-to-delete-remote-branches-in-git
