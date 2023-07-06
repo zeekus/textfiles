@@ -24,7 +24,7 @@ puppet node deactivate 'myhost.myserver.net'
 puppet node purge 'myhost.myserver.net'
 ```
 
-# Purge  the last host added completely (depricated)
+# Purge  the last host added completely (depreciated)
 
 ```
 puppetserver node purge --certname $(puppetserver ca list --all | grep -v 'pe-int\|console-cert'| tail -n 1| awk '{print $1}' )
