@@ -1,0 +1,15 @@
+#filename: /etc/netplan/01-netcfg.yaml
+network:
+  version: 2
+  render: networkd
+  ethernets:
+    eth0:
+      addresses:
+        - 10.1.1.155/24
+      routes:
+        - to:  default
+          via: 10.1.1.1
+      nameservers:
+         addresses: [8.8.8.8, 10.16.1.15 ]
+      search:
+        - example.net
