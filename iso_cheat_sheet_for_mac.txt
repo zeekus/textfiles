@@ -1,0 +1,9 @@
+Create a bootable CD
+```
+dd if=/path/to/boot_image of=/dev/cdrom bs=4M
+```
+
+Commands:
+1. Turn on your mac.
+2. Press the option key as soon as you see the apple logo.
+3. select the drive from the boot menu
