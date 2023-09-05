@@ -1,0 +1,15 @@
+Windows notes.
+
+PowerShell commands: 
+      Description: find out the password policy. 
+      Command: Get-ADDefaultDomainPasswordPolicy 
+	   
+Windows commands: 
+    mmc.exe  - opens snap-in launcher panel
+	Lusrmgr.msc  - Opens the local users and groups
+	Eventvwr.msc - Opens the event viewer.
+	Devmgmt.msc - Opens the device manager.
+	dsa.msc - open ad 
+	virtmgmt.msc - opens hyperv console 
+	Secpol.msc - opens security policy console
+    dnsmgmt.msc - dns management 	
