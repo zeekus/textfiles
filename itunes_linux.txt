@@ -1,0 +1,20 @@
+https://gist.github.com/gipert/787af7512875e522b87256a1ec30fccb
+
+Itunes 12.x seems to run in wine.
+https://appdb.winehq.org/objectManager.php?sClass=version&iId=31322
+
+Open source tools to backup Iphones nad Apple devices.
+
+RescueSync
+iBackupBot
+
+Commericial tools to backup Iphones and apple devices
+iMazing
+Syncios Manager
+
+
+Archtools for backing up iphones
+https://aur.archlinux.org/packages/iphonebackuptools
+
+
+
