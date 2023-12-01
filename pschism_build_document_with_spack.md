@@ -1,10 +1,13 @@
+# PSCHISM install guide for AWS pcluster
+Last edit: 12/1/23
+Quality: Draft
+
 ## Executive Summary
 - Install spack and setup HDF5, netcdf-c, and netcdf-fortan with Intel MPI (AWS specific)
 - Build pschism with software stack
-- Used by the Pschism software stack
 - What this does not cover. How setup a cluster using pcluster or Azure. 
 
-# Document Header - What we cover.
+## Document Header - What we cover.
 - Install spack from git.
   *We explain how install spack* 
 - Configure spack so that it is aware of the current system packages, compilers, modules, and how to run compiles. 
