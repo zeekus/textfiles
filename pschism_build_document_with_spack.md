@@ -796,10 +796,10 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
 
 ### Step 14: Pre-preperation- test MPI on the system.
 ---
-*pschism uses/requires mpi, we should test this first*
-*if it works, this is a good indication it should work for pchism*
+ - pschism uses/requires mpi, we should test this first. 
+ - If Mpi works, this is a good indication MPI should work for pchism.
 
-*create a simple mpi test*
+ - create a simple mpi test
 ```
 #include <mpi.h>
 #include <stdio.h>
@@ -818,13 +818,14 @@ int main(int argc, char** argv) {
 }
 ```
 
-*compile the code with the intel-mpi compiler from spack*
+- compile the MPI test code with the intel-mpi compiler from spack
 ```
  $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpicc /modeling/pschism/mpi_test.c -o /modeling/pschism/hello_out
 ```
 
-*setup a simple sbatch file to test mpi*
-*note we set the path for the module path in here*
+- setup a simple sbatch file to test mpi
+  Note, we set the path for the module path in here. This may need updating.
+
 ```
 #!/bin/bash
 
@@ -878,13 +879,14 @@ srun --mpi=pmi2 /modeling/pschism/hello_out
 ## PSCHISM specific information
 ---
 
-*SNAFU with complier : Compile the pschism code -  A: Load the modules for the code building*
+- SNAFU with complier : Compile the pschism code -  A: Load the modules for the code building.
+- verify that the compiler module is not loaded this will mess up the environment
+echo $CXX - SNAFU - We don't want this.
 
-*verify that the compiler module is not loaded this will mess up the environment*
-echo $CXX - SNAFU - We don't want this. 
 ```
-[myhost Test_ICM_ChesBay]$ echo $CXX
+[myhost]$ echo $CXX
 /modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.2.0-bbwg6kp4drnfbamarwg2dtnr64ulqv3i/compiler/2022.2.0/linux/bin/icpx
+unset $CCX # if needed
 ```
 
 ### Step 15: Prep verify the modules used for pschism exist in spack and can be accessed. 
@@ -943,7 +945,7 @@ CMAKE_PREFIX_PATH
 
 - list modules from the os. Are they loaded ? 
 ```
->$ module list
+[myhost] $ module list
 Currently Loaded Modulefiles:
   1) libfabric/1.18.2-oneapi-2021.2.0-nfoyn4        8) snappy/1.1.10-oneapi-2021.2.0-4ne2lt
   2) intel-mpi/2019.10.317-oneapi-2021.2.0-5uvyw3   9) zstd/1.5.5-oneapi-2021.2.0-gei5ma
@@ -958,7 +960,7 @@ Currently Loaded Modulefiles:
 ---
 
 
-*get the [latest] source code* 
+- get the [latest] source code
 ```
 [myhost pschism]$ git clone https://github.com/schism-dev/schism.git
 Cloning into 'schism'...
@@ -970,7 +972,9 @@ Receiving objects: 100% (20465/20465), 247.86 MiB | 41.81 MiB/s, done.
 Resolving deltas: 100% (14501/14501), done.
 ```
 
-*list the branches we want to use icm_Balg*
+- list the branches. In this example,  we want to use icm_Balg.
+  This is how we would select the branch.
+  Note this branch is a dev branch. The master branch should work.
 
 ```
 [myhost pschism]$ cd schism/
@@ -999,7 +1003,7 @@ Resolving deltas: 100% (14501/14501), done.
   remotes/origin/variable_settling
 ```
 
-*checkout Balg version: Snafu: Check with Nicole to see if this will work before testing.*
+- Snafu - checkout Balg version: Check with Nicole to see if this will work before testing.
 ```
 [myhost schism]$ git checkout -b remotes/origin/icm_Balg
 Switched to a new branch 'remotes/origin/icm_Balg'
@@ -1008,8 +1012,7 @@ Switched to a new branch 'remotes/origin/icm_Balg'
 ### Step 17: Pschism: Prep and build the Source code.
 ---
 
-*remove build folder and recreate if needed.*
-
+- remove build folder and recreate each build
 ```
 cd /modeling/pschism/schism/src
 rm -fr build; mkdir build
@@ -1163,21 +1166,19 @@ make -j8 pschism
 
 ### Step 21: - refresh the data.
 ---
-*Data setup*
-- Each directory needs and outputs folder. This is omitted in the data.
-- The param.nml file is the configuration file.
-   *change rnday from 'rnday = 365'  to 'rnday = 1' to reduce cost* 
+- Data Setup
+  1. Each directory needs and outputs folder. This is omitted in the data.
+  2. The param.nml file is the configuration file.
+      change rnday from 'rnday = 365'  to 'rnday = 1' to reduce cost
+       a one day run on ChesBay test should take about 5 mins on AWS.
    
-*Basic test. Test CORIE*
-
+- Get Test Data - for basic tests
 ```
 [myhost pschism] svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_CORIE
 mkdir Test_CORE/outputs
 ```
 
-*ICM TESTS*
-
-*Chesapeake bay data*
+- Get ICM Test data - source chesapeake bay
 
 ```
  [myhost pschism] svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_ICM_ChesBay
@@ -1194,9 +1195,11 @@ touch sbatch_file_goes_here
 
 ### Step 22 - Final Step - Running the code.
 ---
-*to run the code you will need a sbatch file*
+- to run the code you will need a sbatch file
+
 Note, the sbatch file needs to be run from the directory holding the data.
 For example, we have the data in a folder called: 
+
 Data dir: /modeling/pschism/Test_ICM_ChesBay
 
 #ref files in cmake_info for latest copies. 
