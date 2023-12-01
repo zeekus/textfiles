@@ -777,12 +777,19 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
    module avail
    ```
    - After the modules install properly, update the spack environment to set the path. Before we know the path, we need to rebuild the modules.
+
+   - Find the path
+   ```
+   module avail #lists the paths
+   ```
+
+   - append the path in ~/.bashrc
    ``` 
    export MODULEPATH=/usr/share/Modules/modulefiles:/opt/intel/mpi/2021.9.0/modulefiles:/modeling/spack/share/spack/modules/linux-centos7-skylake_avx512
-    ```
-
+   ```
 
    - update the setup-env.sh to use have the new path.
+
    ```
    echo "export MODULEPATH=/usr/share/Modules/modulefiles:/opt/intel/mpi/2021.9.0/modulefiles:/modeling/spack/share/spack/modules/linux-centos7-skylake_avx512" >> $SPACK_ROOT/share/spack/setup-env.sh  
    ```
@@ -798,8 +805,8 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
 ---
  - pschism uses/requires mpi, we should test this first. 
  - If Mpi works, this is a good indication MPI should work for pchism.
-
  - create a simple mpi test
+ 
 ```
 #include <mpi.h>
 #include <stdio.h>
@@ -819,6 +826,7 @@ int main(int argc, char** argv) {
 ```
 
 - compile the MPI test code with the intel-mpi compiler from spack
+
 ```
  $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpicc /modeling/pschism/mpi_test.c -o /modeling/pschism/hello_out
 ```
