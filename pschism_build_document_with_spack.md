@@ -1,41 +1,45 @@
+## Executive Summary
+- Install spack and setup HDF5, netcdf-c, and netcdf-fortan with Intel MPI (AWS specific)
+- Build pschism with software stack
+- Used by the Pschism software stack
+- What this does not cover. How setup a cluster using pcluster or Azure. 
+
 # Document Header - What we cover.
 - Install spack from git.
-  *explain how install spack* 
+  *We explain how install spack* 
 - Configure spack so that it is aware of the current system packages, compilers, modules, and how to run compiles. 
-  *explain how to modify the packages.yaml, compilers.yaml, config.yaml, modules.yaml*
-  *explain how to tell spack about libfabric [external], intelmpi [external]*
+  *We explain how to modify the packages.yaml, compilers.yaml, config.yaml, modules.yaml*
+  *We explain how to tell spack about libfabric [external], intelmpi [external]*
 - Use Spack to install Intel compilers.
-  *explain how to install the intel compiler*
+  *We explain how to install the intel compiler*
 - Configure Intel-MPI wrappers to point to Intel compiler *dependant on compilers.yaml*
-  *explain how to make MPII (Intel MPI) point to the proper intel compilers*
+  *We explain how to make MPII (Intel MPI) point to the proper intel compilers*
   *MPIIFORT* -  'spack location ifort'
   *MPIICC*   -  'spack location cc'
   *MPIICX*   -  'spack location icpc'
 - Test MPI 
-   *explain how to test MPI - hello world test in c*
+   *We explain how to test MPI - hello world test in c included with sbatch script.*
 - Install hdf5, netfortran-c, and netfortran - with spack.
-  *explain steps on how to install the main software stack with intelmpi* 
+  *We explain steps on how to install the main software stack with intelmpi* 
 - Pschism setup
-   *explain how to build pschism with cmake*
-   *explain how to get the data tests from subversions* 
-   *explain how run pschism tests and provide sbatch script* 
-- Scope: Covers AWS and Azure [ Mostly AWS specific ]
+   *We explain how to build pschism with cmake*
+   *We explain how to get the tests datasets for pschism from subversions* 
+   *We explain how run pschism tests and provide sbatch script* 
+- Scope: Covers AWS and Azure [ Mostly AWS specific ] 
+- Todo: get the Azure specific part of this document updated. 
 - Last Edit: 11/30/2023 - TJK
 
-## Executive Summary
-- Install spack and setup HDF5, netcdf-c, and netcdf-fortan with Intel MPI
-- Build pschism with software stack
-- Used by the Pschism software stack
+Use case: Cloud based HPC clusters with Pschism  
 
-Use case: HPC clusters 
-
-# Software Stack Requirements
+# Software Stack Requirements (Intel specific)
 - Pschism software stack build requires:
   - Intel compiler oneapi@2021.1.0 (classic version)
   ``` spack install intel-oneapi-compilers@2022.1.0%gcc@9.2.0 cflags="-O3"
   ```
   - packages.yaml setup for externals: pmix, slurm, openmpi, libfabric
   - compiler.yaml setup with mpi, and libary paths.
+
+  *Snafu: With spack we need to tell it where to find the Slurm MPI libraries.*
   ```
   ...
   environment:
@@ -44,21 +48,28 @@ Use case: HPC clusters
       set:
         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
   ```
-  - Installation of pmix, slurm, and libfabric for 'intel@2021.6.0
- ' (intel classic)
-  - MPI: intel-mpi@2019.10.317 or intel-oneapi-mpi with EFA or high-speed network require libfabric
-  - HDF5 hdf5@1.14.3 (requires diffutils@3.8, intel classic compiler)
-  - netcdf-c netcdf-c@4.9.2 (requires intel classic compiler)
-  - netcdf-fortran netcdf-fortran@4.5.4 (requires intel classic compiler)
+  - External packages to spack: pmix, slurm, libfabric, and intelmpi.
+    Packages that are on the system are treaded as external packages in spack.
+    They need to be identified in a packages.yaml file for spack to use them.
+  - Internal package: hdf5,netcdf-c,netcdf-fortran
+    Packages that installed through spack are considered native/internal packages.
+    *Note, ```spack find``` will display both the external and internal packages. 
+
+  - Other Notes:
+     1. IntelMPI: seems to have a number of wrapper files that need to be configured to use the compiler.
+        MPI: intel-mpi@2019.10.317 or intel-oneapi-mpi with EFA or high-speed network require libfabric
+     2. HDF5 hdf5@1.14.3 (requires diffutils@3.8, intel classic compiler)
+     3. netcdf-c netcdf-c@4.9.2 (requires intel classic compiler)
+     4. netcdf-fortran netcdf-fortran@4.5.4 (requires intel classic compiler)
   
 
   # Know snafus
 
-  1. Hardware. The main reason for failures is the compute and controller hardware don't match. 
-  If you are using spack to create your software stack, you are going to want to match the hardware 
-  on both the controllers and compute nodes. Check your hardware before running. 
+  1. *Hardware* You can get odd error that don't make any sense running the compiled binary. 
+  Make sure your hardware matches on both the head nodes and compute nodes. Spack will automatically add
+  cflags to the packages compiled, so you could have trouble if you attempt to run them on different hardware that expects different cflags. 
 
-  2. If EFA is not setup with IntelMPI, we have trouble getting pschism to run on AWS.
+  2. *MPII and EFA* If EFA is not setup with IntelMPI, MPI will either not work or will be very slow. 
   Check EFA to make sure you don't get a network connection error. This will break MPI.
   
   ```
@@ -66,9 +77,10 @@ Use case: HPC clusters
    fi_getinfo: -61
   ```
 
-  3. Cmake will fail with *no error* if you refence a custom cmake file that doesn't exist.
+  3. *Cmake build fails* Cmake will fail with *no error* if you reference a custom cmake file that doesn't exist.
 
-  4. Pshism requires 4 modules enabled in the SCHISM.local.build file to run our model.
+  4. *Pshism modules* For the ICM test we need 4 modules enabled in the SCHISM.local.build.
+     Note ParMETRIS is referenced as off to build ParMETIS and subpart.
 ```
 set(NO_PARMETIS OFF CACHE BOOLEAN "Turn off ParMETIS")
 set (OLDIO ON CACHE BOOLEAN "Old nc output (each rank dumps its own data)")
@@ -76,17 +88,17 @@ set (PREC_EVAP ON CACHE BOOLEAN "Include precipitation and evaporation calculati
 set( USE_ICM ON CACHE BOOLEAN "Use ICM module")
 ```
 
-  5. diffutls@3.9 - As of spack v.20, diffutils3.9 is part of the bundle this is not compatible with hdf5@1.14.1-2.
+  5. *spack issue* diffutls@3.9 - As of spack v.20, diffutils3.9 is part of the bundle this is not compatible with hdf5@1.14.1-2.
   Use, diffutils@3.8 instead. 
 
-  6. MPI - Libfabric is not part of the Azure cluster. 
+  6. *MPI on Azure( - Libfabric is not part of the Azure cluster. 
       To use Libfabric on Azure, some post install magic needs to ocurr to install this subsystem on the head and compute nodes.
        The package information needs to be defined in packages.yaml.
 
-  7. Compiler binaries - Compilers.yaml on Spack v.20. Seems to point to newer intel compiler binaries. These need to be modified to point to the intel64 variants for things to compile.
+  7. *Compiler binaries* - Compilers.yaml on Spack v.20. Seems to point to newer intel compiler binaries by default. These need to be modified to point to the intel64 variants for things to compile.
 
-  8. Compiler info
-    *only intel@2021.6.0 has been tested as working with pschism*
+  8. *Compiler info* 
+    *I only tested intel@2021.6 with pschism. This version comes from intel-oneapi-compilers@2022.1.0.
 
     *Compiler Flags needed none* 
     *be careful with compiler flags. The first install, you may want to compile everything without flags.*
@@ -108,13 +120,14 @@ set( USE_ICM ON CACHE BOOLEAN "Use ICM module")
            Link an RTP executable against shared libraries rather than static libraries.  The options -static and -shared can
            also be used for RTPs; -static is the default.
 ```
-  9. make install without some tweaking
+  9. *make runs* make install runs faster if you add -j8 or higher. 
   ```
-  make -j18 pshism #works but requires root perms to install the parmetis libaries.
+  make -j8 pshism #works but requires root perms to install the parmetis libaries.
   ```
-    # pschism install snafu
 
-  Signiture: 
+  10. *Pametris* - external binary for MPI needing elevated privileges.  
+      It seems schism relies on this binary. On Centos7, ldconfig seems to want to place the compiled libaries into the system area.
+
 ```
   [100%] Built target pschism
 Install the project...
@@ -129,13 +142,13 @@ Call Stack (most recent call first):
   ParMetis-4.0.3/cmake_install.cmake:49 (include)
   cmake_install.cmake:47 (include)
 ```
- *work around for parmetris*
+ *Simplest: work around for parmetris*
 ```
    sudo chown centos /usr/local/include/parmetis.h
    sudo chown centos /usr/local/lib/libparmetis.a
 ```
 
- *tell cmake to compile parmetris in a different location: not tested*
+ *Better Solution: tell cmake to compile parmetris in a different location: not tested*
 ```
   mkdir -p /var/tmp/libparmetis
  -D CMAKE_INSTALL_PREFIX=/var/tmp/libparmetis
@@ -149,9 +162,9 @@ Call Stack (most recent call first):
         # discovered some compatiblity issues with newer gcc - 
         ref: https://www.intel.com/content/www/us/en/developer/articles/system-requirements/intel-oneapi-iot-toolkit-system-requirements-2022.html
   
-
-
 ## Spack area - Spack - Cheat Sheet of commands 
+
+*This area gives a cheat sheet of spack commands.*
     
 list compilers : spack compilers
 ```
@@ -196,7 +209,7 @@ or spack dependencies --installed name
    ```
    cat /proc/cpuinfo  | grep -i model\ name | head -1
    ``` 
-# Step 1: Pre-work - base redhat software 
+# Step 1: Pre-work - base redhat software (may not be needed. )
 
 ```
 sudo yum -y install epel-release
@@ -205,14 +218,16 @@ sudo yum group install -y "Development Tools"
 sudo yum install -y curl findutils gcc-gfortran gnupg2 hostname iproute redhat-lsb-core python3 python3-pip python3-setuptools unzip python3-boto3 ninja-build
 ```
 
-# Step 2: Spack download
+# Step 2: Spack download - spack from git
+
+*set installation path and clone the the git repo.*
 
 ```
 export SPACK_ROOT=/modeling/spack
 git clone -c feature.manyFiles=true https://github.com/spack/spack $SPACK_ROOT
 ```
 
-# Step 3: Spack configuration: switch to last stable release of v.19.2
+# Step 3: Spack configuration: switch to last stable release
 
 ```
 cd /modeling/spack
@@ -231,9 +246,10 @@ do so (now or later) by using -b with the checkout command again. Example:
   git checkout -b new_branch_name
 ```
 
-
-
 # Step 4: Spack setup: the SPACK environment
+
+*load the spack environment load script. Set the .bashrc to load this automatically.*
+*SNAFU: Azure doesn't seem to have a shared home directory like AWS Pcluster does.* 
 
 ```
 source /modeling/spack/share/spack/setup-env.sh
@@ -259,7 +275,12 @@ spack compiler find --scope site
 
 ```
 
-# Step 6: {NEW}- configure spack to use the existing system binaries instead of adding new versions.
+# Step 6: Spack Configuration
+
+ - Configure spack to use the existing system binaries instead of adding new versions. 
+ - Tell spack where the compiler is and configure the compiler.yaml so spack can find the mpi libs that slurm provides. 
+ - Tell spack where to stage the packages with the config.yaml
+ - The modules.yaml was copied from NOAA with only a minimal understanding of what it does.
 
 *most of this is copied from NOAA*
 source - https://github.com/JCSDA/spack-stack/tree/develop/configs/sites/aws-pcluster
@@ -394,6 +415,8 @@ packages:
 
 # Step 7 [AWS specific] install a newer gcc compiler 9.2.0 or 9.4.x
 
+Centos7 on AWS had gcc4.8.5 it is a bit dated. We add a newer one.
+
 ```
 [myhost spack]$ cat /modeling/spack/etc/spack/compilers.yaml                                                  
 compilers:
@@ -420,7 +443,7 @@ spack compiler find --scope site $(spack location -i gcc@9.2.0)/bin #AWS specifi
 spack compiler add --scope site  $(spack location -i /6gpygsu)/bin
 ```
 
-# Step 8: Installing and configuring Intel compilers.
+# Step 8: Installing and configuring Intel compilers. [proof reading stopped here.]
 
 
 * intel-oneapi-compilers@2022.1.0 - for mpi intel-oneapi-mpi-2021.7.1
