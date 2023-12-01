@@ -587,7 +587,7 @@ There are 3 seperate versions of the Intel compiler in each version of the intel
 - Pschism requires the 'classic intel compiler' which is listed as intel@2021.6.0 but renamed to intel@=2022.1.0 like NOAA in this installation. 
 - The software stack for hdf5, and netcdf-c/fortran require the 'classic intel compiler' to compile. 
 
-### Step 10:  Configure the spack compilers.yaml on compilers, so they know where the slurm mpi libraries are located.
+### Step 10: Configure the spack compilers.yaml on compilers, so they know where the slurm mpi libraries are located.
 ----
 *do this for all compilers that compiler mpi and their dependancies* 
 
@@ -733,7 +733,7 @@ ifort (IFORT) 2021.6.0 20220226
 Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 ```
 
-### Step 12: Build the software stack that is required to run pschism. 
+### Step 12: Spack related: Build the software stack that is required to run pschism. 
 ---
    - mpi %oneapi@2021.7.1 - is external on AWS previously built this. 
    - netcdf-fortran@4.5.4 may needs intel classic compiler
@@ -743,17 +743,17 @@ Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 - compile everything at once 
   netcdf@4.9.0, hdf5@1.12.2, netcdf-fortran@4.6.0, and install external mpi so spack can see it.
 
-  *Centos7 snafu /usr/bin/cmake is cmake2 rather than /usr/bin/cmake [version 3]*
-  *might be better to tell spack to use a version of cmake3 that the system doesh't have than hack up the filesystem*
-  *EFA - network stuff depends on cmake2* 
+- Cmake
+  Centos7 snafu /usr/bin/cmake is cmake2 rather than /usr/bin/cmake [version 3].
+  It might be better to tell spack to use a seperate version of cmake.
+  EFA - network stuff depends on cmake2 on centos7.
 
 
 ```
 spack install -j48 --reuse netcdf-fortran@4.6.0%intel@2022.1.0 ^hdf5+fortran+hl%intel@2022.1.0 ^netcdf-c@4.9.0%intel@2022.1.0 ^hdf5@1.12.2%intel@2022.1.0 ^intel-oneapi-mpi@2021.9.0%intel@2022.1.0+external-libfabric cflags="-O3,-shared,-static"
 ```
 
-
-*Sucessful results of the command* 
+- Sucessful results should look like this. 
 ```
 [myhost]$ spack find
 -- linux-centos7-x86_64_v3 / gcc@4.8.5 --------------------------
@@ -768,7 +768,7 @@ bzip2@1.0.8     cmake@3.17.5   gmake@3.82   intel-oneapi-mpi@2021.9.0  lz4@1.9.4
 c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@4.9.0  pkgconf@1.9.5         zlib-ng@2.1.4
 ```
 
-### Step 13: Refresh the modules
+### Step 13: Spack related: Refresh the modules
 ---
    - From spack version 19 and on we are required to refresh the module tree to get access to the modules. 
    ```
@@ -946,10 +946,10 @@ echo $CXX - SNAFU - We don't want this.
 /modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.2.0-bbwg6kp4drnfbamarwg2dtnr64ulqv3i/compiler/2022.2.0/linux/bin/icpx
 ```
 
-### Step 16: Prep verify the modules used for pschism exist in spack and can be accessed 
+### Step 16: Prep verify the modules used for pschism exist in spack and can be accessed. 
 ---
 
-*list the modules available*
+- list the modules available
 
 ```
 module avail
@@ -973,7 +973,7 @@ intel-oneapi-compilers-classic/2021.1.2-gcc-9.2.0-cj3gte  zstd/1.5.5-oneapi-2021
 libaec/1.0.6-oneapi-2021.2.0-knwa6h
 ```
 
-*load the modules needed to compile and run pschism* 
+- load the modules needed to compile and run pschism 
 ```
 module load libfabric/1.18.2-oneapi-2021.2.0-nfoyn4
 module load intel-mpi/2019.10.317-oneapi-2021.2.0-5uvyw3
@@ -1000,7 +1000,7 @@ LD_LIBRARY_PATH
 PATH
 CMAKE_PREFIX_PATH
 
-*list modules*
+- list modules from the os. Are they loaded ? 
 ```
 >$ module list
 Currently Loaded Modulefiles:
@@ -1013,7 +1013,7 @@ Currently Loaded Modulefiles:
   7) lz4/1.9.4-oneapi-2021.2.0-om4aan
 ```
 
-### Step 17 *Get the pschism source code* 
+### Step 17 Pschism - Get the source code 
 ---
 
 
@@ -1064,7 +1064,7 @@ Resolving deltas: 100% (14501/14501), done.
 Switched to a new branch 'remotes/origin/icm_Balg'
 ```
 
-### Step 18: Prep and build the Source code.
+### Step 18: Pschism: Prep and build the Source code.
 ---
 
 *remove build folder and recreate if needed.*
@@ -1074,12 +1074,14 @@ cd /modeling/pschism/schism/src
 rm -fr build; mkdir build
 ```
 
-### Step 19: Prep and build the source Code - create a bash script to do the compiling for you.
+### Step 19: Pschism: Prep and build create a bash script to do the compiling for you.
 ---
 
-*check all these paths before attempting to run* 
+- check all these paths before attempting to run.
 
+```
 vim /modeling/pschism/Test_ICM_ChesBay/load_modules_aws_intel.sh
+```
 
 ```
 #!/usr/bin/bash
@@ -1096,7 +1098,7 @@ module load netcdf-c/4.9.2-oneapi-2021.2.0-lga6xt
 module load netcdf-fortran/4.5.4-oneapi-2021.2.0-eys2rz
 ```
 
-*This will run the cmake stuff needed to compile the source code*
+- This will run the cmake stuff needed to compile the source code. 
 Filename:  /modeling/pschism/Test_ICM_ChesBay/compile_pschism_aws_intel-mpi.sh
 #tested 11/16/23
 
