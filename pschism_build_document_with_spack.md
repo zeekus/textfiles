@@ -1,13 +1,23 @@
 # PSCHISM install guide for AWS pcluster
-Last edit: 12/1/23
-Quality: Draft
+========================================
+- Last edit: 12/1/23
+- Quality: Draft
+- Software used: 
+   - pcluster 3.9.0 https://github.com/aws/aws-parallelcluster/blob/develop/CHANGELOG.md
+- Hardware: 
+   - Head-node: AWS - hpc6a48x 
+   - Compute-nodes: AWS - hpc6a48x
+- Run time: 
+    10 day test 33 mins. 
 
 ## Executive Summary
+--------------------
 - Install spack and setup HDF5, netcdf-c, and netcdf-fortan with Intel MPI (AWS specific)
 - Build pschism with software stack
 - What this does not cover. How setup a cluster using pcluster or Azure. 
 
 ## Document Header - What we cover.
+-----------------------------------
 - Install spack from git.
   *We explain how install spack* 
 - Configure spack so that it is aware of the current system packages, compilers, modules, and how to run compiles. 
@@ -35,6 +45,7 @@ Quality: Draft
 Use case: Cloud based HPC clusters with Pschism  
 
 # Software Stack Requirements (Intel specific)
+----------------------------------------------
 - Pschism software stack build requires:
   - Intel compiler oneapi@2021.1.0 (classic version)
   ``` spack install intel-oneapi-compilers@2022.1.0%gcc@9.2.0 cflags="-O3"
@@ -66,7 +77,8 @@ Use case: Cloud based HPC clusters with Pschism
      4. netcdf-fortran netcdf-fortran@4.5.4 (requires intel classic compiler)
   
 
-  # Know snafus
+  ## Know snafus
+  --------------
 
   1. *Hardware* You can get odd error that don't make any sense running the compiled binary. 
   Make sure your hardware matches on both the head nodes and compute nodes. Spack will automatically add
@@ -165,7 +177,8 @@ Call Stack (most recent call first):
         # discovered some compatiblity issues with newer gcc - 
         ref: https://www.intel.com/content/www/us/en/developer/articles/system-requirements/intel-oneapi-iot-toolkit-system-requirements-2022.html
   
-## Spack area - Spack - Cheat Sheet of commands 
+## Spack area - Spack - Cheat Sheet of commands
+----------------------------------------------- 
 
 *This area gives a cheat sheet of spack commands.*
     
@@ -206,13 +219,15 @@ spack dependencies --installed /hash
 or spack dependencies --installed name
 ```
 
-# Step 0: HARDWARE CHECKS 
+### Step 0: HARDWARE CHECKS 
+---------------------------
 - After building your HPC cluster, verify the hardware on both the compute nodes and controllers is the same. 
 - Do a cat /proc/cpuinfo on controller/compute node. 
    ```
    cat /proc/cpuinfo  | grep -i model\ name | head -1
    ``` 
-# Step 1: Pre-work - base redhat software (may not be needed. )
+### Step 1: Pre-work - base redhat software (may not be needed. )
+----------------------------------------------------------------
 
 ```
 sudo yum -y install epel-release
@@ -221,7 +236,8 @@ sudo yum group install -y "Development Tools"
 sudo yum install -y curl findutils gcc-gfortran gnupg2 hostname iproute redhat-lsb-core python3 python3-pip python3-setuptools unzip python3-boto3 ninja-build
 ```
 
-# Step 2: Spack download - spack from git
+### Step 2: Spack download - spack from git
+--------------------------------------------
 
 *set installation path and clone the the git repo.*
 
