@@ -7,6 +7,7 @@
    - pcluster 3.9.0 https://github.com/aws/aws-parallelcluster/blob/develop/CHANGELOG.md
    - spack  v0.21.0 https://github.com/spack/spack
    - pschism (develop git hash 1b4188b) https://github.com/schism-dev/schism
+   - Centos 7 OS - good until 6/24
 - Hardware: 
    - Head-node: AWS - hpc6a48x - OHIO with EFA
    - Compute-nodes: AWS - hpc6a48x - OHIO with EFA
