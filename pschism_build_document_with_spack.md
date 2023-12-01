@@ -780,80 +780,21 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
    ``` 
    export MODULEPATH=/usr/share/Modules/modulefiles:/opt/intel/mpi/2021.9.0/modulefiles:/modeling/spack/share/spack/modules/linux-centos7-skylake_avx512
     ```
-   *Snafu - Once the module tree is refeshed a new session needs to be created.* 
-   For example, we can log out and log back in or open a bash session. 
+
+
    - update the setup-env.sh to use have the new path.
    ```
    echo "export MODULEPATH=/usr/share/Modules/modulefiles:/opt/intel/mpi/2021.9.0/modulefiles:/modeling/spack/share/spack/modules/linux-centos7-skylake_avx512" >> $SPACK_ROOT/share/spack/setup-env.sh  
    ```
 
+  - Snafu - Once the module tree is refeshed a new session needs to be created.
+     For example, we can log out and log back in or open a bash session. 
 
-### Step 14: editing the mpi wrapper files so they use the proper compiler. 
+
+## Test MPI
 ---
 
-*Setting Default FC varible name for Fortran compiler in mpif77, mpif90, and mpifort wrappers*
-*SNAFU most intel mpi have two different versions of mpi to update.
-
-REF: two Locations need to be updated. 
-
-```
-      ls -lah $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/linux/mpi/intel64/bin/
-      ls -lah $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/
-```
-
-  FC=/modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-jssnrphlzbq2ojnlq4fgkyfaznfjcqcc/compiler/2021.2.0/linux/bin/intel64/ifort
-
-*for intel-mpi edit these files*
-```
-vim $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpif77
-vim $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpif90
-vim $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpiifort
-vim $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/linux/mpi/intel64/bin/mpif77
-vim $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/linux/mpi/intel64/bin/mpif90
-vim $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/linux/mpi/intel64/bin/mpiifort
-```
-
-
-*Setting Default Ifort compiler_name in mpifc wrapper*
-
-default_compiler_name="/modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-jssnrphlzbq2ojnlq4fgkyfaznfjcqcc/compiler/2021.2.0/linux/bin/intel64/ifort"
-
-*for intel-mpi edit this file*
-
-```
-vim $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpifc
-vim $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/linux/mpi/intel64/bin/mpifc
-```
-
-*Setting Default ICC compiler_name in mpicc wrapper*
-
-default_compiler_name="/modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-4pjd5dcymlvje6f7yohtwl7wsm6foy5k/compiler/2021.2.0/linux/bin/intel64/icc"
-
-*for intel-mpi edit this file*
-```
-vim $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpicc  #edt default compiler
-vim $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpiicc #edit CC
-vim $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/linux/mpi/intel64/bin/mpicc
-vim $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/linux/mpi/intel64/bin/mpiicc
-```
-
-*Setting Default CXX default_compiler in mpicxx wrapper*
-
-CCXX=default_compiler_name="/modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-4pjd5dcymlvje6f7yohtwl7wsm6foy5k/compiler/2021.2.0/linux/bin/intel64/icpc"
-
-*for intel-mpi edit this file*
-
-```
-vim $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpicxx
-vim  $(spack location -i intel-mpi@2019.10.317)/impi/2019.10.317/intel64/bin/mpiicpc #edit CCX
-vim $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/linux/mpi/intel64/bin/mpicxx
-vim $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/linux/mpi/intel64/bin/mpiicpc
-```
-
-## TEST MPI
----
-
-### Step 15: Pre-preperation- test MPI on the system.
+### Step 14: Pre-preperation- test MPI on the system.
 ---
 *pschism uses/requires mpi, we should test this first*
 *if it works, this is a good indication it should work for pchism*
@@ -946,7 +887,7 @@ echo $CXX - SNAFU - We don't want this.
 /modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.2.0-bbwg6kp4drnfbamarwg2dtnr64ulqv3i/compiler/2022.2.0/linux/bin/icpx
 ```
 
-### Step 16: Prep verify the modules used for pschism exist in spack and can be accessed. 
+### Step 15: Prep verify the modules used for pschism exist in spack and can be accessed. 
 ---
 
 - list the modules available
@@ -1013,7 +954,7 @@ Currently Loaded Modulefiles:
   7) lz4/1.9.4-oneapi-2021.2.0-om4aan
 ```
 
-### Step 17 Pschism - Get the source code 
+### Step 16 Pschism - Get the source code 
 ---
 
 
@@ -1064,7 +1005,7 @@ Resolving deltas: 100% (14501/14501), done.
 Switched to a new branch 'remotes/origin/icm_Balg'
 ```
 
-### Step 18: Pschism: Prep and build the Source code.
+### Step 17: Pschism: Prep and build the Source code.
 ---
 
 *remove build folder and recreate if needed.*
@@ -1074,7 +1015,7 @@ cd /modeling/pschism/schism/src
 rm -fr build; mkdir build
 ```
 
-### Step 19: Pschism: Prep and build create a bash script to do the compiling for you.
+### Step 18: Pschism: Prep and build create a bash script to do the compiling for you.
 ---
 
 - check all these paths before attempting to run.
@@ -1207,20 +1148,20 @@ set(NetCDF_C_DIR "$ENV{NetCDF_C_DIR}" CACHE PATH "Path to NetCDF C library")
 set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fPIC -no-prec-sqrt -no-prec-div -align all -assume buffered_io -assume byterecl" CACHE STRING "Fortran flags" FORCE)
 ```
 
-###  Step 20: Prep and build the source Code - Compile using bash script or some other method.
+###  Step 19: Prep and build the source Code - Compile using bash script or some other method.
 ---
 ```
 bash compile_pschism_aws_intel-mpi.sh
 ```
 
-### Step 21: Compile schism from the build directory using make. 
+### Step 20: Compile schism from the build directory using make. 
 ---
 ```
 cd /modeling/pschism/schism/src/build
 make -j8 pschism
 ```
 
-### Step 22: - refresh the data.
+### Step 21: - refresh the data.
 ---
 *Data setup*
 - Each directory needs and outputs folder. This is omitted in the data.
@@ -1251,7 +1192,7 @@ touch sbatch_file_goes_here
 ```
 
 
-### Step 23 - Final Step - Running the code.
+### Step 22 - Final Step - Running the code.
 ---
 *to run the code you will need a sbatch file*
 Note, the sbatch file needs to be run from the directory holding the data.
