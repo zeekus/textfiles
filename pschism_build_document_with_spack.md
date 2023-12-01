@@ -44,7 +44,7 @@
 
 Use case: Cloud based HPC clusters with Pschism  
 
-# Software Stack Requirements (Intel specific)
+## Software Stack Requirements (Intel specific)
 ----------------------------------------------
 - Pschism software stack build:
   - Intel compiler oneapi@2021.1.0 (classic version)
@@ -230,6 +230,9 @@ spack dependencies --installed /hash
 or spack dependencies --installed name
 ```
 
+## Step by Step setup of Spack, MPI, and Pschism
+---
+
 ### Step 0: *HARDWARE CHECKS*
 ---------------------------
 - After building your HPC cluster, verify the hardware on both the compute nodes and controllers is the same. 
@@ -258,6 +261,7 @@ git clone -c feature.manyFiles=true https://github.com/spack/spack $SPACK_ROOT
 ```
 
 ### Step 3: Spack configuration: switch to last stable release
+---
 
 ```
 cd /modeling/spack
@@ -277,6 +281,7 @@ do so (now or later) by using -b with the checkout command again. Example:
 ```
 
 ### Step 4: Spack setup: the SPACK environment
+---
 
 *load the spack environment. Set the .bashrc to load this automatically.*
 *SNAFU: Azure doesn't seem to have a shared home directory like AWS Pcluster does.* 
@@ -293,16 +298,15 @@ source /modeling/spack/share/spack/setup-env.sh
 
 ### Step 5: Setup the compilers you need to compile the intel compiler. 
 
-### AZURE SPECIFIC
---------------------
+### AZURE Specific 
 -  Azure comes with gcc9.2.0 pre installed
-
-*just need to add the compiler to spack
+-  just need to add the compiler to spack. 
 ```
 spack compiler find --scope site /opt/gcc-9.2.0/ #AZURE specific
 ```
 
-### AWS  SPECIFIC
+### AWS Specific
+----
   - AWS needs to be configured to use gcc@9.2.0.
   - First we tell AWS to find the local compilier.
 
@@ -344,8 +348,8 @@ spack compiler find --scope site $(spack location -i gcc@9.2.0)/bin #AWS specifi
 spack compiler add --scope site  $(spack location -i /6gpygsu)/bin
 ```
 
-# Step 6: Spack Configuration
----
+### Step 6: Spack Configuration
+----
 
  - Configure spack to use the existing system binaries instead of adding new versions. This reduces software stack build time. The packages.yaml is where this information is written. 
  - Tell spack where the compiler is and configure the compiler.yaml, so spack can find the mpi libs that slurm provides. 
@@ -484,10 +488,8 @@ packages:
 - this file will be configured later on.
 
 
-
-
 ### Step 7: Installing and configuring Intel compilers. 
----
+----
 
 - intel-oneapi-compilers@2022.1.0 - for mpi intel-oneapi-mpi-2021.7.1
 - install intel-oneapi-compilers using spack. 
@@ -510,7 +512,7 @@ spack find -dl
 ```
 
 ### Step 8: Test ALL Intel compilers after installing - outputs should look similar to this for all the versions 
----
+----
 
 - query the compiler by name
 ```
@@ -544,7 +546,7 @@ Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 
 
 ### step 9: Compiler configuration/ Spack Setup as site wide availability
----
+----
 
 *IMPORTANT* DO NOT ADD THE oneapi compilers spack gets confused later on. 
 
@@ -586,7 +588,7 @@ There are 3 seperate versions of the Intel compiler in each version of the intel
 - The software stack for hdf5, and netcdf-c/fortran require the 'classic intel compiler' to compile. 
 
 ### Step 10:  Configure the spack compilers.yaml on compilers, so they know where the slurm mpi libraries are located.
----
+----
 *do this for all compilers that compiler mpi and their dependancies* 
 
 - Identify where are the slurm MPI libraries are located.  
@@ -786,8 +788,6 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
    ```
 
 
-
-
 ### Step 14: editing the mpi wrapper files so they use the proper compiler. 
 ---
 
@@ -854,6 +854,7 @@ vim $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.31
 ---
 
 ### Step 15: Pre-preperation- test MPI on the system.
+---
 *pschism uses/requires mpi, we should test this first*
 *if it works, this is a good indication it should work for pchism*
 
@@ -946,6 +947,7 @@ echo $CXX - SNAFU - We don't want this.
 ```
 
 ### Step 16: Prep verify the modules used for pschism exist in spack and can be accessed 
+---
 
 *list the modules available*
 
@@ -1012,6 +1014,7 @@ Currently Loaded Modulefiles:
 ```
 
 ### Step 17 *Get the pschism source code* 
+---
 
 
 *get the [latest] source code* 
@@ -1062,6 +1065,7 @@ Switched to a new branch 'remotes/origin/icm_Balg'
 ```
 
 ### Step 18: Prep and build the Source code.
+---
 
 *remove build folder and recreate if needed.*
 
@@ -1071,7 +1075,7 @@ rm -fr build; mkdir build
 ```
 
 ### Step 19: Prep and build the source Code - create a bash script to do the compiling for you.
-
+---
 
 *check all these paths before attempting to run* 
 
@@ -1202,20 +1206,20 @@ set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fPIC -no-prec-sqrt -no-prec-div -align all
 ```
 
 ###  Step 20: Prep and build the source Code - Compile using bash script or some other method.
-
+---
 ```
 bash compile_pschism_aws_intel-mpi.sh
 ```
 
 ### Step 21: Compile schism from the build directory using make. 
-
+---
 ```
 cd /modeling/pschism/schism/src/build
 make -j8 pschism
 ```
 
 ### Step 22: - refresh the data.
-
+---
 *Data setup*
 - Each directory needs and outputs folder. This is omitted in the data.
 - The param.nml file is the configuration file.
@@ -1246,7 +1250,7 @@ touch sbatch_file_goes_here
 
 
 ### Step 23 - Final Step - Running the code.
-
+---
 *to run the code you will need a sbatch file*
 Note, the sbatch file needs to be run from the directory holding the data.
 For example, we have the data in a folder called: 
@@ -1348,6 +1352,8 @@ echo "Finished in $(printf '%02dh:%02dm:%02ds\n' $(($SECONDS/3600)) $(($SECONDS%
 
 ```
 
+### End of Step by Step guide
+
 ### Trouble shooting tips and snafus
 ---
 
@@ -1411,6 +1417,7 @@ $(spack location -i intel-mpi@2019.10.317)/compilers_and_libraries_2020.4.317/li
 ------ 
 
 ### 1. diffutils on hdf5 
+---
 
 Orginally was not able to get hdf5 to compile on the oneapi-compilers with spack version 0.20.3 until hte dependancy of ^diffutils@3.8 was added.
 
@@ -1422,6 +1429,7 @@ spack install netcdf-fortran%oneapi@2022.1.0
 ```
 
 ### 2. compiler.yaml fun. 
+----
 
 Seems the compiler.yaml for oneapi on spack got modifed. 
 Had to modify the compiler.yaml to point to the intel64 versions of the intel compilers to get hdf5 to compile.
@@ -1445,6 +1453,7 @@ oneapi@2022.1.0
 ```
 
 ### 3. Azure specific issues: Libfabric is missing. 
+---
 
 ####################################
 #Azure: LibFabric issues. Azure doesn't get the libfabic hooks unless they are installed at the OS level.
@@ -1473,6 +1482,7 @@ Installed size: 2.4 M
 ```
 
 ### 4. Spack sets the following environment variables when the modules are called.
+---
 
 Here is a list of values that Spack setups up when the modules are loaded. 
 
@@ -1495,6 +1505,7 @@ CMAKE_PREFIX_PATH
 ```
 
 ### 5. CMAKE doesn't seem link the HDF5 and NETCDF libraries properly. 
+---
 We see this error in the slurm output file. 
 
 
@@ -1540,6 +1551,7 @@ srun: error: compute2-dy-slurmworkers-1: task 0: Exited with exit code 168
 ```
 
 ### 6. cmake pulls in configurations that define what modules are loaded.
+---
 
  - cmake:SCHISM.local build needs the following for pschism to run right 
 *defines the modules in pshcism to load/compile*
@@ -1568,7 +1580,8 @@ set(NetCDF_C_DIR  "$ENV{NETCDF}"  CACHE PATH "Path to NetCDF C library")
 set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -mtune=skylake -init=zero -align array64byte -finline-functions" CACHE STRING "Fortran flags" FORCE)
 ```
 
-### 7. How NOAA is running this.
+### 7. How NOAA is running pshchism.
+---
 
  - NOAA run used this info.
 
@@ -1647,6 +1660,7 @@ make -j 6
 ```
 
 ### 8. Different ways to install the software stack
+---
 
 - Intel-oneapi-mpi build with one command
 ```
@@ -1686,6 +1700,7 @@ spack install --reuse-deps cdf-fortran@4.6.0%intel@2021.6.0
 ```
 
 ### References 
+---
 
 - old setup guide https://jiaweizhuang.github.io/blog/aws-hpc-guide/
 
