@@ -529,7 +529,8 @@ example for Intel compiler which is not installed yet:
 - intel-oneapi-compilers@2022.1.0 - for mpi intel-oneapi-mpi-2021.7.1
 - install intel-oneapi-compilers using spack.
 - tell spack about the new compiler using 'spack compiler add --scope site $(spack location -i /drusa5u)/compiler/latest/linux/bin/intel64'
-- setup the compiler.yaml so spack is aware what MPI libaries to use.  *SNAFU* MPI will not work with srun without this. It will work with mpiexec which is slower.
+- setup the compiler.yaml so spack is aware what MPI libaries to use.  *SNAFU* MPI will not work with srun without this. 
+  It will work with mpiexec which is slower.
 - We compile our intel compiler in spack using the gcc 9.2.0 and optimization flags. 
 - The software stack including pschism, hdf5, and netcdf-c/fortran require the 'classic intel compiler' to compile.  
 
@@ -1556,7 +1557,8 @@ set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -mtune=skylake -init=zero -align array64byt
 
  - NOAA run used this info.
 
-Ref: sbatch job
+Ref: sbatch job ref : export variables 
+```
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export I_MPI_ROOT=$(spack location -i intel-oneapi-mpi%oneapi@2022.1.0
  )/mpi/2021.7.0
@@ -1564,6 +1566,8 @@ export MPI_PMI_LIBRARY=/opt/slurm/lib/libpmi2.so #when using srun through Slurm
 export I_MPI_FABRICS="shm:ofi"
 export FI_LOG_LEVEL=debug
 export I_MPI_DEBUG=5
+```
+
 
 
 ####################
