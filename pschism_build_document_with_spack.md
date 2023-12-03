@@ -514,6 +514,7 @@ packages:
 - This will be touched upon more later since we do not have the intel compiler configured. But, if were were using gcc to compile mpi code we may need to add an entry like this:
 
 example for Intel compiler which is not installed yet:
+```
   ...
   environment:
       prepend_path:
