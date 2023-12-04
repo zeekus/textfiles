@@ -156,7 +156,7 @@
     
 - list compilers : *spack compilers*
 ```bash
-[myhost Test_ICM_ChesBay]$ spack compilers
+spack compilers
 ==> Available compilers
 -- gcc centos7-x86_64 -------------------------------------------
 gcc@9.2.0  gcc@4.8.5
@@ -167,7 +167,7 @@ intel@2021.6.0
 
 - list files installed  - *spack find*
 ```bash
-[myhost Test_ICM_ChesBay]$ spack find
+spack find
 -- linux-centos7-x86_64_v3 / gcc@4.8.5 --------------------------
 autoconf@2.69  automake@1.13.4  binutils@2.27.44  diffutils@3.3  gawk@4.0.2  gcc@9.2.0  gmake@3.82  gmp@6.2.1  libtool@2.4.7  m4@1.4.16  mpc@1.1.0  mpfr@3.1.6  perl@5.16.3  texinfo@5.1  zlib-ng@2.1.4
 
@@ -218,7 +218,7 @@ spack dependencies --installed name
 ---------------------------
 - After building your HPC cluster, ensure hardware consistency between the compute nodes and head nodes. Spack automatically applies CFLAGS based on the node's hardware during installation. Mismatched hardware may lead to software stack issues, posing challenges for later debugging. 
 
-- Do a cat /proc/cpuinfo on controller/compute node. 
+- [ ] Do a cat /proc/cpuinfo on controller/compute node. 
    ```bash
    cat /proc/cpuinfo  | grep -i model\ name | head -1
    ``` 
@@ -228,11 +228,13 @@ spack dependencies --installed name
 
 The first step is to install spack on your system. To install spack from the github this is how to do it.
 
-- define your SPACK_ROOT
-- clone the git repo 
+- [ ] define your SPACK_ROOT
+```bash 
+export SPACK_ROOT=/modeling/spack
+```
+- [ ] clone the git repo 
 
 ```bash
-export SPACK_ROOT=/modeling/spack
 git clone -c feature.manyFiles=true https://github.com/spack/spack $SPACK_ROOT
 ```
 
@@ -242,6 +244,7 @@ git clone -c feature.manyFiles=true https://github.com/spack/spack $SPACK_ROOT
 - The git repo will come with multiple versions. We are going to want one that is stable.
 - Use 'git branch -r -v' to view the versions. 
 - Use 'git checkout origin/releases/v0.21' to checkout version 21 of spack. 
+- [ ] Checkout the version 21 release of spack 
 
 ```bash
 cd /modeling/spack
@@ -264,6 +267,8 @@ do so (now or later) by using -b with the checkout command again. Example:
 ---
 
 To load the Spack environment from the command line, use 'source $SPACK_ROOT/share/spack/setup-env.sh'. Additionally, to add the Spack environment call script to .bashrc, use the following commands:
+
+[ ] Setup the spack environment.
 
 ```bash
 echo "export SPACK_ROOT=$SPACK_ROOT" >> $HOME/.bashrc
