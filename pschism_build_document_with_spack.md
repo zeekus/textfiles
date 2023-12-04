@@ -1,33 +1,38 @@
 # PSCHISM install guide for AWS pcluster
 --------------------
-- Last edit: 12/1/23
+- Last edit: 12/4/23
 - Quality: Draft
-- Version: draftv2
+- Version: draftv3
 - Software used in build: 
    - pcluster 3.9.0 https://github.com/aws/aws-parallelcluster/blob/develop/CHANGELOG.md
    - spack  v0.21.0 https://github.com/spack/spack
    - pschism (develop git hash 1b4188b) https://github.com/schism-dev/schism
-   - Centos 7 OS - good until 6/24
+   - Intel MPI from AWS   
+   - Intel Compiler from Spack 
+   - CentOS Linux release 7.9.2009 (Core)
 - Hardware: 
-   - Head-node: AWS - hpc6a48x - OHIO with EFA
-   - Compute-nodes: AWS - hpc6a48x - OHIO with EFA
-- Run time: 
-    10 day test 33 mins. 
+   - Head-node: AWS     - hpc6a48x - OHIO with EFA  - 96 cores AMD. 
+   - Compute-nodes: AWS - hpc6a48x - OHIO with EFA  - 96 cores AMD.
+- Model Run time: ref - params.nml in the data directory to change the defaults of 365 days. 
+    10 day test 33 mins with 96 cpus in sbatch.( possible issues with MPI chatter. )
+    10 day test 30 mins with 72 cpus in sbatch.
+    1  day test 5 minutes with 72 cpus in sbatch.   
 
 ## Executive Summary
 
 - Install spack and setup HDF5, netcdf-c, and netcdf-fortan with Intel MPI (AWS specific)
 - Build pschism with software stack with a step-by-step guide. 
-- What this does not cover. How setup a cluster using pcluster or Azure. 
+- What this does not cover. How setup a cluster using pcluster or Azure.
+- Todo: remove the Azure references or implement the Azure details.  
 
 ## Software Stack Requirements (Intel specific)
 ----------------------------------------------
 - Pschism software stack build:
-  - Intel compiler oneapi@2021.1.0 (classic version)
-  - Intel MPI - depends on Libfabric 
-  - HDF5 
-  - NetCDF-C 
-  - NetCDF-Fortran 
+  - Intel compiler intel-oneapi-compilers@2022.1.0 (classic version)
+  - Intel MPI intel-oneapi-mpi@2021.9. - depends on Libfabric 
+  - HDF5 - hdf5@1.12.2
+  - NetCDF-C - netcdf-c@4.9.0
+  - NetCDF-Fortran - netcdf-fortran@4.6.0
 
 ## Details on What we cover.
 -----------------------------------
@@ -1541,15 +1546,17 @@ set( USE_ICM ON CACHE BOOLEAN "Use ICM module")
 ```
 [myhost schism]$ cat /modeling/pschism/SCHISM_local.cmake.bluefish.intel
 ###AWS SKYLAKE CLUSTER
-
+#Name the binary
 set (SCHISM_EXE_BASENAME pschism_AWS_SKYLAKE CACHE STRING "Base name (modules and file extension to be added of the executable. If you want a machine name, add it here")
-
 ###Relative paths won't work
-set(CMAKE_Fortran_COMPILER ifort CACHE PATH "Path to serial Fortran compiler")
+set(CMAKE_Fortran_COMPILER "ENV{CMAKE_Fortran_COMPILER}" CACHE PATH "Path to serial Fortran compiler")
+set(CMAKE_C_COMPILER "$ENV{CMAKE_C_COMPILER}"  CACHE PATH "Path to serial Fortran compiler")
 set(NetCDF_FORTRAN_DIR "$ENV{NETCDF_FORTRAN}" CACHE PATH "Path to NetCDF Fortran library")
 set(NetCDF_C_DIR  "$ENV{NETCDF}"  CACHE PATH "Path to NetCDF C library")
 ###Compile flags. If USE_WWM, change to -O2
-set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -mtune=skylake -init=zero -align array64byte -finline-functions" CACHE STRING "Fortran flags" FORCE)
+#set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -mtune=skylake -init=zero -align array64byte -finline-functions" CACHE STRING "Fortran flags" FORCE)
+#base compiler configuration is simple
+set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -debug minimal" CACHE STRING "Fortran flags" FORCE)
 ```
 
 ### 7. How NOAA is running pshchism.
