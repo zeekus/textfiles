@@ -268,7 +268,7 @@ do so (now or later) by using -b with the checkout command again. Example:
 
 To load the Spack environment from the command line, use 'source $SPACK_ROOT/share/spack/setup-env.sh'. Additionally, to add the Spack environment call script to .bashrc, use the following commands:
 
-[ ] Setup the spack environment.
+- [ ] Setup the spack environment.
 
 ```bash
 echo "export SPACK_ROOT=$SPACK_ROOT" >> $HOME/.bashrc
@@ -296,6 +296,8 @@ Citations:
 ### Step 5: Setup the compilers you need to compile the intel compiler. 
 
 To enable Spack to find the local compiler on AWS, use the command 'spack compiler find --scope site'. This command adds the compiler to the compilers.yaml file. For example, it may add 'gcc@4.8.5' to the file. This ensures that Spack is aware of the installed compiler. Note that on AWS, home directories are shared, allowing changes made on the head node to propagate to the compute area. 
+
+- [ ] Tell spack to find your default gcc4.8.5 compiler
 
 ```bash
 spack compiler find --scope site
@@ -336,11 +338,12 @@ Centos7 on AWS has gcc4.8.5, but is a bit dated. This is how we may add a newer 
 - Select the version you want. We use 9.2.0 in this example and use 8 cores to compile it with the "-O3" [oscar 3] compiler flag. Note, '-O2' is the default flag.
   [ Read the man for gcc for more information on the compiler flags available. ]
 
+- [ ] compile and install a new version of your gcc compiler in spack 
 ```bash
 spack install -j8 gcc@9.2.0+binutils cflags="-O3"
 ```
 
-- Then we add it the spack complier.yaml file with this processor.
+- [ ] Then we add it the spack complier.yaml file with this processor.
 ```bash
 spack compiler find --scope site $(spack location -i gcc@9.2.0)/bin #AWS specific
 ```
@@ -437,7 +440,7 @@ In the following section, we will edit and create the following files:
 - /modeling/spack/etc/spack/packages.yaml
 - /modeling/spack/etc/spack/compilers.yaml
 
-- Define your config.yaml 
+- [ ] Define your config.yaml 
 File: *config.yaml* - create this if it doesn't exit. This tells spack to use 48 cores when doing a build.
                       It also tells spack to stage the build on local storage. You may want to modify this 
                       place the spack staging info in a different location.
@@ -456,7 +459,7 @@ config:
   misc_cache: /tmp/spack-stack/cache/misc_cache
 ```
 
-- Define your modules.yaml 
+- [ ] Define your modules.yaml 
 File: *modules.yaml* - create this if doesn't exit. This tell spack to build modules using these specifications.
                       The file is configuring the Lmod module system. The lmod section which is defined as a default the Python module should be included. 
                       The Ecflow module will be excluded from the generated module files. 
@@ -473,7 +476,7 @@ modules:
       - ecflow
 ```
 
-- Define your packages.yaml
+- [ ] Define your packages.yaml
 *packages.yaml* - This file will be written to by the 'spack external find' command. After spack adds the lines, you will need to append some more information.
                   Note, we are putting everything in the "--scope site" just so we know where the file is generated.
           
@@ -481,7 +484,7 @@ modules:
  - This tells spack to use our system installed vesions of textlive, perl, python and some other libraries. 
   You will need to type these commands in your bash environment. 
 
--  These commands will generate some basic entries in your packages.yaml file. 
+-  [ ] These commands will generate some basic entries in your packages.yaml file. 
 ```bash
 export SPACK_SYSTEM_CONFIG_PATH=/modeling/spack/etc/spack
 spack external find --scope system
@@ -495,7 +498,7 @@ spack external find --scope system python
 
 File: *packages.yaml*  - base config AWS specific - add this to the top of the configuration or edit it to match.
 
-- Information that will need to be appended to your package.yaml file. 
+- [ ] Information that will need to be appended to your package.yaml file. 
 ```yaml
 packages:
   all:
@@ -556,7 +559,7 @@ packages:
 - Once the compiler is installed, configure the compilers.yaml with 'spack compiler add --scope site $(spack location -i intel-oneapi-compilers@2022.1.0)/compiler/latest/linux/bin/intel64'
 - Then, set up the compiler.yaml to ensure Spack is aware of which MPI libraries to use. Note that MPI will not work with srun without this configuration, but it will work with mpiexec, albeit at a slower pace. Additionally, compile the Intel compiler in Spack using gcc 9.2.0 and optimization flags. The software stack in this example uses pschism, hdf5, and netcdf-c/fortran, requires the 'classic intel compiler' to compile.
 
-- Base Intel Compiler install is done like this. Adjust the command based on your systems gcc compiler, which may be different.
+- [ ] Base Intel Compiler install is done like this. Adjust the command based on your systems gcc compiler, which may be different.
 
 ```bash
  spack install -j8 intel-oneapi-compilers@2022.1.0%gcc@9.2.0 cflags="-O3" #generic 
@@ -585,7 +588,7 @@ drusa5u intel-oneapi-compilers@2022.1.0
 xdflvpm         gmake@3.82
 ```
 
-- Classic compiler is referenced by the intel64 path. 
+- [ ] Classic compiler is referenced by the intel64 path. 
   To tell spack modify the *compiler.yaml*, we run this command: 
 
 ```bash
@@ -606,7 +609,7 @@ echo $PWD
 /modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/compiler/lib/intel64_lin
 ```
 
-- Modify the *config.yaml* so that the environment area is defined. 
+- [ ] Modify the *config.yaml* so that the environment area is defined. 
   The environment area should have the following info.
   
 *The LD PATH for the compilerneeds to be set. -source NOAA *
@@ -661,13 +664,13 @@ intel@2021.6.0:
 ----
 
 - This step is just a basic santity check. If your tests display the versions, you know the compiler should work.
-- query the compiler by name
-```
-[myhost ~]$ ls $(spack location -i intel-oneapi-compilers@2022.1.0)/compiler/latest/linux/bin/intel64
+- [ ] query the compiler by name
+```bash
+ls $(spack location -i intel-oneapi-compilers@2022.1.0)/compiler/latest/linux/bin/intel64
 codecov  fortcom  fpp  icc  icc.cfg  icpc  icpc.cfg  ifort  ifort.cfg  libcilkrts.so.5  map_opts  mcpcom  profdcg  profmerge  profmergesampling  proforder  tselect  xiar  xiar.cfg  xild  xild.cfg
 ```
 
-- Test the compiler by displaying the version info. 
+- [ ] Test the compiler by displaying the version info. 
 - You could go further an do a hello world if you wanted to be 100% certain things are working. 
 
 ```bash
@@ -710,8 +713,10 @@ Citations:
 - Since we have intelmpi pre-installed from AWS Pcluster on Centos, we just tell spack about it. 
   Note spack, replies back that it linking it with libfabric an external module. This gets linked due to the package.yaml dependancy we created earlier.
 
-```
-[myhost spack]$ spack install intel-oneapi-mpi@2021.9.0%intel@2021.6.0
+[ ] Tell spack to install the IntelMPI library. Note, we are using an external, so this just creates a refernce in the spack catalog.
+
+```bash
+spack install intel-oneapi-mpi@2021.9.0%intel@2021.6.0
 ==> intel-oneapi-mpi@2021.9.0 : has external module in ['libfabric-aws/1.17.1', 'intelmpi']
 [+] /opt/intel (external intel-oneapi-mpi-2021.9.0-ja3rl76w3kwiadg4gcp7vcramorar7es)
 ```
@@ -721,7 +726,7 @@ Citations:
  There may be a better way to do this. If you have one, please forward it on.
 
 
- *locate* The intel mpi wrapper files - in the bin folder.
+ - [ ] *locate* The intel mpi wrapper files - in the bin folder.
 
 ```bash
 [myhost spack]$ ls $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin
@@ -733,7 +738,7 @@ Reference the *compiler yaml* for the intel@2021.6.0
   (aka - intel-classic ) is used to these values. The references in the wrappers need to match up*
 
 
-- get the compiler info for later reference. 
+- [ ] get the compiler info for later reference. 
 
 ```bash
 spack compiler info intel@2021.6.0
@@ -750,7 +755,7 @@ intel@2021.6.0:
         operating system  = centos7
 ```
 
-- edit each of wrapper files 
+- [ ] edit each of wrapper files 
 
 *typically MPII files for MPI-Intel while the MPI files are for gcc*
 ```bash
@@ -760,7 +765,7 @@ intel@2021.6.0:
  vim $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpiicc
 ```
 
-- verify each of these point the expected compiler
+- [ ] verify each of these point the expected compiler
 ```bash
 $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpiifort --version
 $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpifc --version
@@ -809,6 +814,8 @@ Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
    '--reuse' tells spack to reuse the libaries rather than install new copies. This may change in the future. 
    -'^' is a dependency in spack. 
 
+[ ] compile the sfotware stack.  
+
 ```bash
 spack install --reuse netcdf-fortran@4.6.0%intel@2021.6.0 ^hdf5+fortran+hl%intel@2021.6.0 ^netcdf-c@4.9.0%intel@2021.6.0 ^hdf5@1.12.2%intel@2021.6.0 ^intel-oneapi-mpi@2021.9.0%intel@2021.6.0 cflags="-O3,-shared,-static"
 ```
@@ -831,7 +838,8 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
 ### Step 11: Spack related: Refresh the modules
 ---
    - From spack version 19 and on we are required to refresh the module tree to get access to the modules. 
-     Refersh the modules by doing this: 
+    
+  - [ ] Refresh the modules by doing this: 
 
    ```bash
    yes 'y' | spack module tcl refresh --delete-tree
@@ -850,7 +858,7 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
    export MODULEPATH=/usr/share/Modules/modulefiles:/opt/intel/mpi/2021.9.0/modulefiles:/modeling/spack/share/spack/modules/linux-centos7-zen2
    ```
 
-   - update the setup-env.sh to use have the new path.
+   - [ ]  update the setup-env.sh to use have the new path. (Optional)
 
    ```
    echo "export MODULEPATH=/usr/share/Modules/modulefiles:/opt/intel/mpi/2021.9.0/modulefiles:/modeling/spack/share/spack/modules/linux-centos7-zen2" >> $SPACK_ROOT/share/spack/setup-env.sh  
@@ -876,7 +884,7 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
 
 
 
-- create a simple hello_world.c program.
+- [ ] create a simple hello_world.c program.
   Here is the source code for simple MPI hello_world.c program.
 
 
@@ -899,23 +907,23 @@ int main(int argc, char** argv) {
 ```
 
 
-- list the mpi binaries on your system.
+- [ ] list the mpi binaries on your system.
 ```bash
 ls $(spack location -i intel-oneapi-mpi@2021.9.0)/mpi/latest/bin
 ```
 
-- prior to being able to compile mpi code you will need to call the load mpi module
+- [ ] prior to being able to compile mpi code you will need to call the load mpi module
 ```bash
    module load intelmpi
 ```
 
-- compile the MPI test code with the intel-mpi compiler from spack
+- [ ] compile the MPI test code with the intel-mpi compiler from spack
   You created c file so you will be using the mpiicc compiler to compile the code. 
 ```bash
 $(spack location -i intel-oneapi-mpi@2021.9.0)/mpi/latest/bin/mpicc modeling/pschism/mpi_test.c -o /modeling/pschism/hello_out
 ```
 
-- setup a simple sbatch file to test mpi
+- [ ] setup a simple sbatch file to test mpi
   Note, we set the path for the module path in here. This may need updating.
 
 ```bash
@@ -958,7 +966,7 @@ echo "Starting mpi test using slurm and pmi"
 srun --mpi=pmi2 /modeling/pschism/hello_out
 ```
 
-- verify the test by looking the slurm.err and slurm.out files.
+- [ ] verify the test by looking the slurm.err and slurm.out files.
 
 
 
@@ -972,7 +980,7 @@ srun --mpi=pmi2 /modeling/pschism/hello_out
 ### Step 13: Prep verify the modules used for pschism exist in spack and can be accessed. 
 ---
 
-- list the modules available
+- [ ] list the modules available
 
 ```bash
 module avail
@@ -996,7 +1004,7 @@ intel-oneapi-compilers-classic/2021.1.2-gcc-9.2.0-cj3gte  zstd/1.5.5-oneapi-2021
 libaec/1.0.6-oneapi-2021.2.0-knwa6h
 ```
 
-- load the modules needed to compile and run pschism 
+- [ ] load the modules needed to compile and run pschism 
 ```bash
 module load libfabric/1.18.2-oneapi-2021.2.0-nfoyn4
 module load intel-mpi/2019.10.317-oneapi-2021.2.0-5uvyw3
@@ -1023,7 +1031,7 @@ LD_LIBRARY_PATH
 PATH
 CMAKE_PREFIX_PATH
 
-- list modules from the os. Are they loaded ? 
+- [ ] list modules from the os. Are they loaded ? 
 ```bash
 module list
 Currently Loaded Modulefiles:
@@ -1040,7 +1048,7 @@ Currently Loaded Modulefiles:
 ---
 
 
-- get the [latest] source code
+- [ ] get the [latest] source code
 ```bash
 git clone https://github.com/schism-dev/schism.git
 Cloning into 'schism'...
@@ -1052,7 +1060,7 @@ Receiving objects: 100% (20465/20465), 247.86 MiB | 41.81 MiB/s, done.
 Resolving deltas: 100% (14501/14501), done.
 ```
 
-- list the branches. In this example,  we want to use icm_Balg.
+- [ ] list the branches. In this example,  we want to use icm_Balg.
   This is how we would select the branch.
   Note this branch is a dev branch. The master branch should work.
 
@@ -1083,7 +1091,7 @@ git branch -a
   remotes/origin/variable_settling
 ```
 
-- Snafu - checkout Balg version: Check with Nicole to see if this will work before testing.
+- [ ] Snafu - checkout Balg version: Check with Nicole to see if this will work before testing. (Optional )
 ```bash
 git checkout -b remotes/origin/icm_Balg
 Switched to a new branch 'remotes/origin/icm_Balg'
@@ -1092,7 +1100,7 @@ Switched to a new branch 'remotes/origin/icm_Balg'
 ### Step 15: Pschism: Prep and build the Source code.
 ---
 
-- We remove build folder and recreate each build.
+- [ ] We remove build folder and recreate each build.
 ```bash
 cd /modeling/pschism/schism/src
 rm -fr build; mkdir build
@@ -1101,10 +1109,10 @@ rm -fr build; mkdir build
 ### Step 16: Pschism: Prep and build create a bash script to do the compiling for you.
 ---
 
-- check all these paths before attempting to run.
-- type 'modules av' to get your modules. 
+- [ ] check all these paths before attempting to run.
+- [ ] type 'modules av' to get your modules. 
 
-
+- [ ] This file should hold your modules to load. 
 ```bash
 vim /modeling/pschism/Test_ICM_ChesBay/load_modules_aws_intel.sh
 ```
@@ -1127,7 +1135,7 @@ module load netcdf-c/4.9.2-oneapi-2021.2.0-lga6xt
 module load netcdf-fortran/4.5.4-oneapi-2021.2.0-eys2rz
 ```
 
-- This will run the cmake stuff needed to compile the source code. 
+- [ ] This will run the cmake stuff needed to compile the source code. 
 Filename:  /modeling/pschism/Test_ICM_ChesBay/compile_pschism_aws_intel-mpi.sh
 #tested 11/16/23
 
@@ -1222,7 +1230,7 @@ $CMAKE_BINARY -C $local_build_for_cmake -C $custom_build_for_cmake \
 *SNAFU* Remember to clean out the src/build before every cmake run. 
 *SNAFU* verify the configuration files you are references exist. If they don't exist, the cmake run will fail with no error file.
   
-/modeling/pschism/SCHISM.local.cmake.bluefish.skylake
+- [ ] create a custom cmake file defining the compiler details - /modeling/pschism/SCHISM.local.cmake.bluefish.skylake
 
 ```bash
 #Binary name
@@ -1238,12 +1246,16 @@ set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fPIC -no-prec-sqrt -no-prec-div -align all
 
 ###  Step 17: Prep and build the source Code - Compile using bash script or some other method.
 ---
+
+- [ ] compile pschism with your custom cmake file. 
 ```bash
 bash compile_pschism_aws_intel-mpi.sh
 ```
 
 ### Step 18: Compile schism from the build directory using make. 
 ---
+
+- [ ] build the binary with make 
 ```bash
 cd /modeling/pschism/schism/src/build
 make -j8 pschism
@@ -1257,13 +1269,13 @@ make -j8 pschism
       change rnday from 'rnday = 365'  to 'rnday = 1' to reduce cost
        a one day run on ChesBay test should take about 5 mins on AWS.
    
-- Get Test Data - for basic tests
+- [ ] Get Test Data - for basic tests
 ```bash
 svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_CORIE
 mkdir Test_CORE/outputs #create missing outputs directory
 ```
 
-- Get ICM Test data - source chesapeake bay
+- [ ] Get ICM Test data - source chesapeake bay
 
 ```bash
  svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_ICM_ChesBay
@@ -1271,6 +1283,7 @@ mkdir Test_CORE/outputs #create missing outputs directory
  ```
 
 *IMPORTANT the runs must occur in the target data directory*
+
 ```bash
 cd .Test_ICM_ChesBay
 mkdir outputs
@@ -1288,6 +1301,9 @@ For example, we have the data in a folder called:
 Data dir: /modeling/pschism/Test_ICM_ChesBay
 
 #ref files in cmake_info for latest copies. 
+
+- [ ] create a sbatch file and run the model 
+
 ```bash
 #!/usr/bin/bash
 #SBATCH --nodes=3
