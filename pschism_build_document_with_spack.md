@@ -75,24 +75,23 @@
 
   4. *Pshism modules* For the ICM test we need 4 modules enabled in the SCHISM.local.build.
      Note ParMETRIS is referenced as off to build ParMETIS and subpart.
-```
-set(NO_PARMETIS OFF CACHE BOOLEAN "Turn off ParMETIS")
-set (OLDIO ON CACHE BOOLEAN "Old nc output (each rank dumps its own data)")
-set (PREC_EVAP ON CACHE BOOLEAN "Include precipitation and evaporation calculation")
-set( USE_ICM ON CACHE BOOLEAN "Use ICM module")
-```
+     ```bash
+     set(NO_PARMETIS OFF CACHE BOOLEAN "Turn off ParMETIS")
+     set (OLDIO ON CACHE BOOLEAN "Old nc output (each rank dumps its own data)")
+     set (PREC_EVAP ON CACHE BOOLEAN "Include precipitation and evaporation calculation")
+     set( USE_ICM ON CACHE BOOLEAN "Use ICM module")
+     ```
 
   5. Use diffutils@3.8 instead of diffutils@3.9, as diffutils3.9 is part of the bundle and is not compatible with hdf5@1.14.1-2. If compilation issues persist, include diffutils@3.8 by adding '^diffutils@3.8' to your install command.
 
   6. To resolve issues with Spack v.20 and above, modify the compilers.yaml to point to the intel64 variants for successful compilation. Additionally, include the following change, which may be required:
-
-```yaml
-environment:
-  prepend_path:
+   ```yaml
+  environment:
+   prepend_path:
     LD_LIBRARY_PATH: '/modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-or3ebystfoy624o55d3sedgvwwxelhx7/compiler/2022.1.0/linux/compiler/lib/intel64_lin'
-  set:
+   set:
     I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
-```
+   ```
 
   7. *Compiler info and flags* 
     *I only tested intel@2021.6 0 (aka classic-oneapi-compiler) with pschism. This version comes from intel-oneapi-compilers@2022.1.0.
@@ -107,7 +106,7 @@ environment:
   
    source: *gcc* man page 
 
-```
+   ```
        -pthread
            Adds support for multithreading with the pthreads library.  This option sets flags for both the preprocessor and
            linker.
@@ -118,24 +117,24 @@ environment:
        -non-static
            Link an RTP executable against shared libraries rather than static libraries.  The options -static and -shared can
            also be used for RTPs; -static is the default.
-```
+   ```
 
-  9. *Pametris* - external binary for MPI needing elevated privileges.  
+  8. *Pametris* - external binary for MPI needing elevated privileges.  
       It seems schism relies on this binary. On Centos7, ldconfig seems to want to place the compiled libaries into the system area.
 
 ```bash
-  [100%] Built target pschism
-Install the project...
--- Install configuration: "Release"
--- Up-to-date: /usr/local/include/parmetis.h
--- Installing: /usr/local/lib/libparmetis.a
-CMake Error at ParMetis-4.0.3/libparmetis/cmake_install.cmake:46 (file):
-  file INSTALL cannot copy file
-  "/modeling/pschism/schism/src/build/lib/libparmetis.a" to
-  "/usr/local/lib/libparmetis.a": Permission denied.
-Call Stack (most recent call first):
-  ParMetis-4.0.3/cmake_install.cmake:49 (include)
-  cmake_install.cmake:47 (include)
+    [100%] Built target pschism
+    Install the project...
+    -- Install configuration: "Release"
+    -- Up-to-date: /usr/local/include/parmetis.h
+    -- Installing: /usr/local/lib/libparmetis.a
+    CMake Error at ParMetis-4.0.3/libparmetis/cmake_install.cmake:46 (file):
+    file INSTALL cannot copy file
+    "/modeling/pschism/schism/src/build/lib/libparmetis.a" to
+    "/usr/local/lib/libparmetis.a": Permission denied.
+    Call Stack (most recent call first):
+    ParMetis-4.0.3/cmake_install.cmake:49 (include)
+     cmake_install.cmake:47 (include)
 ```
  *Simplest: work around for parmetris*
 ```bash
