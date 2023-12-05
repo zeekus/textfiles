@@ -150,7 +150,7 @@
 
 *This area gives a cheat sheet of spack commands.*
     
-- list compilers : *spack compilers*
+- list compilers : *spack compilers* This tells you what compilers are registered with spack in a *compiler.yaml* file.
 ```bash
 spack compilers
 ==> Available compilers
@@ -161,7 +161,7 @@ gcc@9.2.0  gcc@4.8.5
 intel@2021.6.0
 ```
 
-- list files installed  - *spack find*
+- list files installed  - *spack find* This command tells you what packages spack is aware of. Some of these may be external. 
 ```bash
 spack find
 -- linux-centos7-x86_64_v3 / gcc@4.8.5 --------------------------
@@ -177,39 +177,42 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
 ==> 49 installed packages
 ```
 
-list the callpaths - Sometimes needed if multiple copies of the same softweare package is installed.
+list the files by `callpaths` - Sometimes needed if multiple copies of the same softweare package is installed.
 ```bash
 spack find -dl
 ```
 
 after getting the modules to install - rebuild the modules in spack
 *SNAFU* you will need to start a new bash instance to see the modules. Logging out and in works. 
+This builds tcl modules. The *modules.yaml* file controls how these are typically generated. 
 ```bash
 spack module tcl refresh --delete-tree
 ```
 
+If you update a file manually, you may need to write your changes to disk.
 write spack configs to disk after modifiying
 ```bash
 spack config --scope site update config
 ```
 
-uninstall all the spack packages in a group 
+uninstall all the spack packages in a group - sometimes you want remove a whole bunch of files.  
 ```bash
  spack uninstall --all %intel@2021.6.0
 ```
 
-look at dependancies on a package
+Inspect dependancies on a package
+- packages can be referenced by the hash
 ```bash
 spack dependencies --installed /hash
 ```
-or 
+- packages can be referenced by the common name
 ```bash
-spack dependencies --installed name
+spack dependencies --installed intel-oneapi-mpi@2021.9.0
 ```
 
 ## The main area: Step by Step setup of Spack, MPI, and Pschism
 
-Reader notes. 
+*Reader notes* 
 Please be aware the following notion tells the reader they need to take some action. 
 - [ ] Action item. This may keep you/me on task. 
 
