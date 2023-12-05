@@ -217,6 +217,8 @@ spack dependencies --installed intel-oneapi-mpi@2021.9.0
 Please be aware the following notion tells the reader they need to take some action. 
 - [ ] Action item. This may keep you/me on task. 
 
+- use a non-root user for your intall. 
+
 ### Step 1: *Hardware Checks*
 ------
 
@@ -230,6 +232,13 @@ Please be aware the following notion tells the reader they need to take some act
 ### Step 2: Spack download - spack from git
 ------
 The first step is to install spack on your system. To install spack from the github this is how to do it.
+
+- [ ] create a directory called /modeling/spack as root and set the user permisions so your non-root user can write to it.
+  ```
+    chown centos /modeling/spack -R
+  ```
+
+- [ ] switch back to your non-root user for the remainder of this build. 
 
 - [ ] define your SPACK_ROOT this will be used later in the document. 
 ```bash 
