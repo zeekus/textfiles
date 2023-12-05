@@ -1187,11 +1187,8 @@ vim /modeling/pschism/Test_ICM_ChesBay/load_modules_aws_intel.sh
 
 
 yes 'y'| module clear
-module load libfabric-aws/1.17.1 #external libfabric
-module load intelmpi #external mpi
-module load hdf5/1.12.2-intel-2021.6.0-uz2e74i
-module load netcdf-c/4.9.0-intel-2021.6.0-yii5utw
-module load netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
+#note all the modules are loaded on one line and libfabric is external with intelmpi
+module load libfabric-aws/1.17.1 intelmpi hdf5/1.12.2-intel-2021.6.0-uz2e74i netcdf-c/4.9.0-intel-2021.6.0-yii5utw netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
 ```
 
 - [ ] Before attempting to run cmake with the bash script clear your modules and load them manually.
@@ -1199,11 +1196,7 @@ module load netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
 
 ```bash
 yes 'y'| module clear
-module load libfabric-aws/1.17.1 #external libfabric
-module load intelmpi #external mpi
-module load hdf5/1.12.2-intel-2021.6.0-uz2e74i
-module load netcdf-c/4.9.0-intel-2021.6.0-yii5utw
-module load netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
+module load libfabric-aws/1.17.1 intelmpi hdf5/1.12.2-intel-2021.6.0-uz2e74i netcdf-c/4.9.0-intel-2021.6.0-yii5utw netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
 ```
 
 - [ ] Create a bash file to build the Cmake pschism parts.
