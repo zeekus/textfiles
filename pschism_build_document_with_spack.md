@@ -1,8 +1,11 @@
 # PSCHISM install guide for AWS pcluster
 --------------------
-- Last edit: 12/4/23
-- Quality: Draft
-- Version: Pre-production
+- Last edit: 12/5/23
+- Author: Theodore Knab aka Zeekus on github
+- Quality: Document was tested as functional by a third party. 
+- Version: v1.0
+- Licence: This program [document] is free software; 
+           you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation
 - Software used in build: 
    - pcluster 3.9.0 https://github.com/aws/aws-parallelcluster/blob/develop/CHANGELOG.md
    - spack  v0.21.0 https://github.com/spack/spack
@@ -1351,6 +1354,7 @@ Data dir: /modeling/pschism/Test_ICM_ChesBay
 
 ```bash
 #!/usr/bin/bash
+#filename: pschism_sbatch_job.sh
 #SBATCH --nodes=3
 #SBATCH --ntasks-per-node=72
 #SBATCH --threads-per-core=1
@@ -1434,6 +1438,13 @@ echo "finished with errors: $? "
 echo "Finished in $(printf '%02dh:%02dm:%02ds\n' $(($SECONDS/3600)) $(($SECONDS%3600/60)) $(($SECONDS%60)))"
 
 ```
+
+- [ ] run your batch file. 
+      You need to submit sbatch jobs with the 'sbatch' command. 
+
+   ```bash
+   sbatch pschism_sbatch_job.sh
+   ```
 
 ### End of Step by Step guide
 
