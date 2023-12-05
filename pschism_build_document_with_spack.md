@@ -1,5 +1,4 @@
 # PSCHISM install guide for AWS pcluster
-------
 - Last edit: 12/5/23
 - Author: Theodore Knab aka Zeekus on github
 - Quality: Document was tested. 
@@ -22,14 +21,11 @@
     1  day test 5 minutes with 72 cpus in sbatch.   
 
 ## Executive Summary
-------
-
 - Install spack and setup HDF5, netcdf-c, and netcdf-fortan with Intel MPI (AWS specific)
 - Build pschism with software stack with a step-by-step guide. Note action items are identified by a - [ ] in the text. 
 - What this does not cover. How setup a cluster using pcluster or Azure.
 
 ## Software Stack Requirements (Intel specific)
-------
 - Pschism software stack build:
   - Intel compiler intel-oneapi-compilers@2022.1.0 (classic version)
   - Intel MPI intel-oneapi-mpi@2021.9. - depends on Libfabric 
@@ -38,7 +34,6 @@
   - NetCDF-Fortran - netcdf-fortran@4.6.0
 
 ## Details on What we cover.
-------
 - Define snafus. This is intentially put at top to save the reader some time. 
 - Provide a step-by-step guide for installing and running Pschism - a hydro model with Intel MPI. 
 - Install spack from git.
@@ -60,8 +55,7 @@
    
 
   ## Extra Information: Know snafus
- ------
-
+ 
   1. Hardware Compatiblity - To ensure hardware compatibility and avoid unexpected errors when running compiled binaries, it's crucial to verify that the hardware matches on both the head nodes and compute nodes. Spack automatically adds CFLAGS to the compiled packages, which can lead to issues if the binaries are executed on hardware expecting different CFLAGS. To address this, it's essential to confirm hardware consistency across all nodes.
 
   2. EFA - To ensure proper functionality of MPI with EFA, it is important to verify EFA setup with IntelMPI. Failure to set up EFA with IntelMPI can result in   non-functional or significantly slow MPI performance. Checking EFA for network connection errors is crucial, as any issues can lead to MPI failure.
@@ -73,8 +67,6 @@
 
   Citations:
   [1] https://community.intel.com/t5/Intel-HPC-Toolkit/Installing-wrappers-for-using-Intel-MPI-with-the-PGI-compilers/td-p/1020565
-
-
 
   3.  When compilng the pshism binary, a custom CMake file that does not exist can cause CMake to fail without providing an error message. It is essential to   verify the existence of the custom CMake file to prevent potential issues.
 
@@ -155,7 +147,6 @@
 
   
 ## Extra Information: Spack area - Spack - Cheat Sheet of commands
-------
 
 *This area gives a cheat sheet of spack commands.*
     
@@ -217,7 +208,6 @@ spack dependencies --installed name
 ```
 
 ## The main area: Step by Step setup of Spack, MPI, and Pschism
----
 
 Reader notes. 
 Please be aware the following notion tells the reader they need to take some action. 
@@ -235,7 +225,6 @@ Please be aware the following notion tells the reader they need to take some act
 
 ### Step 2: Spack download - spack from git
 ------
-
 The first step is to install spack on your system. To install spack from the github this is how to do it.
 
 - [ ] define your SPACK_ROOT this will be used later in the document. 
@@ -250,7 +239,6 @@ git clone -c feature.manyFiles=true https://github.com/spack/spack $SPACK_ROOT
 
 ### Step 3: Spack configuration: switch to last stable release
 ------
-
 - The git repo will come with multiple versions. We are going to want one that is stable.
 - Use 'git branch -r -v' to view the versions. 
 - Use 'git checkout origin/releases/v0.21' to checkout version 21 of spack.
@@ -276,7 +264,6 @@ do so (now or later) by using -b with the checkout command again. Example:
 
 ### Step 4: Spack setup: the SPACK environment
 ------
-
 To load the Spack environment from the command line, use 'source $SPACK_ROOT/share/spack/setup-env.sh'. Additionally, to add the Spack environment call script to .bashrc, use the following commands:
 
 - [ ] Setup the spack environment.
@@ -297,15 +284,12 @@ Citations:
 [4] https://aws.amazon.com/blogs/hpc/install-optimized-software-with-spack-configs-for-aws-parallelcluster/
 [5] https://chtc.cs.wisc.edu/uw-research-computing/hpc-spack-setup
 
-
-
 ## Installing the Compilers
-------
 
 - for AWS with Centos7 we have an old version of GCC. 
 
 ### Step 5: Setup the compilers you need to compile the intel compiler. 
-
+------
 To enable Spack to find the local compiler on AWS, use the command 'spack compiler find --scope site'. This command adds the compiler to the compilers.yaml file. For example, it may add 'gcc@4.8.5' to the file. This ensures that Spack is aware of the installed compiler. Note that on AWS, home directories are shared, allowing changes made on the head node to propagate to the compute area. 
 
 - [ ] Tell spack where the Centos7 default gcc4.8.5 compiler is located. This adds it to the spack catalog of compilers.
@@ -562,8 +546,6 @@ packages:
 
 ### Step 7: Installing and configuring Intel compilers. 
 ------
-
-
 - To install the Intel-oneapi-compilers@2022.1.0 and intel-oneapi-mpi-2021.7.1, use Spack. 
 - Once the compiler is installed, configure the compilers.yaml with 'spack compiler add --scope site $(spack location -i intel-oneapi-compilers@2022.1.0)/compiler/latest/linux/bin/intel64'
 - Then, set up the compiler.yaml to ensure Spack is aware of which MPI libraries to use. Note that MPI will not work with srun without this configuration, but it will work with mpiexec, albeit at a slower pace. Additionally, compile the Intel compiler in Spack using gcc 9.2.0 and optimization flags. The software stack in this example uses pschism, hdf5, and netcdf-c/fortran, requires the 'classic intel compiler' to compile.
@@ -670,7 +652,6 @@ intel@2021.6.0:
         operating system  = centos7
 ```
 
-
 ### Step 8: Test ALL Intel compilers after installing 
 ------
 
@@ -700,9 +681,10 @@ Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 
 
 ## MPI WRAPPER SETUP
-------
 
 ### Step 9 - configure the MPI components, so the Intel(r) compilers a properly referenced. 
+------
+
 
 The Intel MPI Library provides a set of compiler wrapper scripts with the `mpi` prefix for all supported compilers. These wrapper scripts are designed to simplify the process of compiling and linking MPI programs with the appropriate compiler and settings. The wrapper scripts are available for different languages and compilers, and they ensure that the necessary MPI settings and libraries are used during the compilation and linking process.
 
@@ -890,9 +872,10 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
 
 
 ## Test MPI
-------
+
 
 ### Step 12: Pre-preperation- test MPI on the system.
+------
 
  - pschism uses/requires mpi, we should test this is working first. 
  - If Mpi works, this is a good indication MPI should work for pchism.
@@ -1000,13 +983,13 @@ srun --mpi=pmi2 /modeling/pschism/hello_out
 
 
 ## PSCHISM specific information
-------
+
 
 - SNAFU with complier : to Compile the pschism code we need to load all the modules used with pschism first.
 
 
 ### Step 13: Pschism: Prep verify the modules exist and are loadable. 
-
+------
 
 - [ ] list the modules available. Note, if you don't see the new modules, log out and log back in.
       That will refresh the environment or you simply type 'bash' to start a new nested bash session. 
@@ -1454,7 +1437,7 @@ Run completed successfully at 20231205, 161111.159
 
 ------
 ### End of Step by Step guide
-------
+======
 
 ### References 
 ------
@@ -1472,6 +1455,7 @@ Run completed successfully at 20231205, 161111.159
 - Spack github site https://github.com/spack/spack/
 
 ### Special Thanks
+------
 
 - Special thanks to Dave Kintgen for testing this document. 
 
