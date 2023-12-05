@@ -1185,13 +1185,25 @@ vim /modeling/pschism/Test_ICM_ChesBay/load_modules_aws_intel.sh
 # filename: /modeling/pschism/Test_ICM_ChesBay/load_modules_aws_intel.sh
 # holds a list of the moduels to load. Changes each time we rebuild the software stack.
 
+
 yes 'y'| module clear
-module load cmake/3.27.7-oneapi-2021.2.0-n4bs4n
-module load libfabric/1.18.2-oneapi-2021.2.0-nfoyn4
-module load intel-mpi/2019.10.317-oneapi-2021.2.0-5uvyw3
-module load hdf5/1.14.3-oneapi-2021.2.0-dkbvrl
-module load netcdf-c/4.9.2-oneapi-2021.2.0-lga6xt
-module load netcdf-fortran/4.5.4-oneapi-2021.2.0-eys2rz
+module load libfabric-aws/1.17.1 #external libfabric
+module load intelmpi #external mpi
+module load hdf5/1.12.2-intel-2021.6.0-uz2e74i
+module load netcdf-c/4.9.0-intel-2021.6.0-yii5utw
+module load netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
+```
+
+- [ ] Before attempting to run cmake with the bash script clear your modules and load them manually.
+      Here are the steps to clear the module and load all the modules manually.  
+
+```bash
+yes 'y'| module clear
+module load libfabric-aws/1.17.1 #external libfabric
+module load intelmpi #external mpi
+module load hdf5/1.12.2-intel-2021.6.0-uz2e74i
+module load netcdf-c/4.9.0-intel-2021.6.0-yii5utw
+module load netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
 ```
 
 - [ ] Create a bash file to build the Cmake pschism parts.
