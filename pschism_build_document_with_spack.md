@@ -1440,7 +1440,7 @@ echo "Finished in $(printf '%02dh:%02dm:%02ds\n' $(($SECONDS/3600)) $(($SECONDS%
 
 ------
 ### End of Step by Step guide
-======
+------
 
 ### References 
 ------
