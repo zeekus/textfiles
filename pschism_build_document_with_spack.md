@@ -763,7 +763,7 @@ intel@2021.6.0:
         operating system  = centos7
 ```
 
-- [ ] edit each of MPII wrapper files, so they paoint to the desired compiler. 
+- [ ] edit each of MPII wrapper files, so they point to the desired compiler. 
 
 The locations to the CC in mpiicc will need updating. The FC location in mpiifort will need updating. 
 Additionally, the location to CXX in the mpiicpc file will need updating. 
@@ -815,15 +815,12 @@ Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
      1. mpi %oneapi@2021.7.1 - is external on AWS previously built this.
      2. hdf5
      3. netcdf-c 
-     4. netcdf-fortran@4.5.4 - depends on hdf5+fortran+hl
-       
-
+     4. netcdf-fortran@4.5.4 - depends on hdf5+fortran+hl   
 
 - Cmake Snafu with centos7 
   Centos7 snafu /usr/bin/cmake is cmake2 rather than /usr/bin/cmake [version 3].
   It might be better to tell spack to use a seperate version of cmake.
   EFA - network stuff depends on cmake2 on centos7.
-
 
 - To install the software stack run this:
    Note, the command pulls libfabric info from packages.yaml
@@ -1009,36 +1006,38 @@ srun --mpi=pmi2 /modeling/pschism/hello_out
 
 - [ ] list the modules available. Note, if you don't see the new modules, log out and log back in.
       That will refresh the environment or you simply type 'bash' to start a new nested bash session. 
+      If one of the modules, you are seeking doesn't
 
 ```bash
-module avail
---------------------------------- /modeling/spack/share/spack/modules/linux-centos7-zen2 ----------------------------------
-berkeley-db/18.1.40-oneapi-2021.2.0-uevpnh                libfabric/1.18.2-oneapi-2021.2.0-nfoyn4
-bzip2/1.0.8-oneapi-2021.2.0-2zpaqr                        libiconv/1.17-oneapi-2021.2.0-wv7fh3
-ca-certificates-mozilla/2023-05-30-oneapi-2021.2.0-rr23yt lz4/1.9.4-oneapi-2021.2.0-om4aan
-c-blosc/1.21.5-oneapi-2021.2.0-jhwqel                     ncurses/6.4-oneapi-2021.2.0-b6j3se
-cmake/3.27.7-oneapi-2021.2.0-ejhvyr                       netcdf-c/4.9.2-oneapi-2021.2.0-g2kwkj
-cpio/2.13-oneapi-2021.2.0-6djeie                          netcdf-fortran/4.5.4-oneapi-2021.2.0-zr4nek
-curl/8.4.0-oneapi-2021.2.0-nvaxip                         nghttp2/1.57.0-oneapi-2021.2.0-noyvzc
-diffutils/3.8-oneapi-2021.2.0-4e7ate                      openssl/3.1.3-oneapi-2021.2.0-ym4a5g
-gdbm/1.23-oneapi-2021.2.0-2ybwu6                          patchelf/0.17.2-gcc-9.2.0-jrn2ni
-gmake/4.4.1-gcc-9.2.0-mrqghh                              pkgconf/1.9.5-oneapi-2021.2.0-ownafr
-gmake/4.4.1-oneapi-2021.2.0-3dqaev                        pmix/4.2.6-oneapi-2021.2.0-ypyayb
-hdf5/1.14.3-oneapi-2021.2.0-ici6jg                        readline/8.2-oneapi-2021.2.0-i4n2zg
-intel-mpi/2019.10.317-oneapi-2021.2.0-5uvyw3              slurm/23.02.6-oneapi-2021.2.0-2enehb
-intel-oneapi-compilers/2021.1.2-gcc-9.2.0-g462ti          snappy/1.1.10-oneapi-2021.2.0-4ne2lt
-intel-oneapi-compilers/2021.2.0-gcc-9.2.0-4pjd5d          zlib-ng/2.1.4-oneapi-2021.2.0-kxurjk
-intel-oneapi-compilers-classic/2021.1.2-gcc-9.2.0-cj3gte  zstd/1.5.5-oneapi-2021.2.0-gei5ma
-libaec/1.0.6-oneapi-2021.2.0-knwa6h
+module av
+
+---------------------------------------------- /usr/share/Modules/modulefiles -----------------------------------------------
+dot                  module-git           modules              openmpi/4.1.5
+libfabric-aws/1.17.1 module-info          null                 use.own
+
+-------------------------------------------- /opt/intel/mpi/2021.9.0/modulefiles --------------------------------------------
+intelmpi
+
+---------------------------------- /modeling/spack/share/spack/modules/linux-centos7-zen2 -----------------------------------
+bzip2/1.0.8-intel-2021.6.0-esuoxfm                libaec/1.0.6-intel-2021.6.0-cv2h7bd
+c-blosc/1.21.5-intel-2021.6.0-niqotqt             lz4/1.9.4-intel-2021.6.0-hvtwrt2
+cmake/3.27.7-intel-2021.6.0-hbyt6ed               ncurses/6.4-intel-2021.6.0-jvmqf7o
+curl/7.29.0-intel-2021.6.0-xljlfmh                netcdf-c/4.9.0-intel-2021.6.0-yii5utw
+diffutils/3.3-intel-2021.6.0-kbninbp              netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
+gmake/3.82-gcc-9.2.0-xdflvpm                      patchelf/0.17.2-gcc-9.2.0-52wa22r
+gmake/3.82-intel-2021.6.0-2vg32r4                 pkgconf/1.9.5-intel-2021.6.0-vyeh2zz
+hdf5/1.12.2-intel-2021.6.0-uz2e74i                snappy/1.1.10-intel-2021.6.0-riisc5q
+intel-oneapi-compilers/2022.1.0-gcc-9.2.0-drusa5u zlib-ng/2.1.4-intel-2021.6.0-v44hor5
+intel-oneapi-mpi/2021.9.0-intel-2021.6.0-hul6jpm  zstd/1.5.5-intel-2021.6.0-4dpbqto
 ```
 
 - [ ] load the modules needed to compile and run pschism *note* your names may differ. 
 ```bash
-module load libfabric/1.18.2-oneapi-2021.2.0-nfoyn4
-module load intel-mpi/2019.10.317-oneapi-2021.2.0-5uvyw3
-module load hdf5/1.14.3-oneapi-2021.2.0-ici6jg
-module load netcdf-c/4.9.2-oneapi-2021.2.0-g2kwkj
-module load netcdf-fortran/4.5.4-oneapi-2021.2.0-zr4nek
+module load libfabric-aws/1.17.1 #external libfabric
+module load intelmpi #external mpi
+module load hdf5/1.12.2-intel-2021.6.0-uz2e74i
+module load netcdf-c/4.9.0-intel-2021.6.0-yii5utw
+module load netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
 ```
 
 *note loading these spack modules will create the following environment variables*
@@ -1134,7 +1133,38 @@ cd /modeling/pschism/schism/src
 rm -fr build; mkdir build
 ```
 
-### Step 16: Pschism: Prep and build create a bash script to do the compiling for you.
+### Step 16: - refresh the data.
+---
+- Data Setup
+  1. Each directory needs and outputs folder. This is omitted in the data.
+  2. The param.nml file is the configuration file.
+      change rnday from 'rnday = 365'  to 'rnday = 1' to reduce cost
+       a one day run on ChesBay test should take about 5 mins on AWS.
+   
+- [ ] Get Test Data - for basic tests (Optional)
+```bash
+svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_CORIE
+mkdir Test_CORE/outputs #create missing outputs directory
+```
+
+- [ ] Get ICM Test data - source chesapeake bay (Our data)
+
+```bash
+ svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_ICM_ChesBay
+ mkdir Test_ICM_ChesBay/outputs # create missing outputs directory
+ ```
+
+*IMPORTANT the runs must occur in the target data directory*
+
+- [ ] Change into the data directory and create a outputs folder and a sbatch run file. 
+
+```bash
+cd Test_ICM_ChesBay
+mkdir outputs
+touch sbatch_file_goes_here #use what ever naming convention you desire.
+```
+
+### Step 17: Pschism: Prep and build create a bash script to do the compiling for you.
 
 This step can be done differently.
 ---
@@ -1275,7 +1305,7 @@ set(NetCDF_C_DIR "$ENV{NetCDF_C_DIR}" CACHE PATH "Path to NetCDF C library")
 set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fPIC -no-prec-sqrt -no-prec-div -align all -assume buffered_io -assume byterecl" CACHE STRING "Fortran flags" FORCE)
 ```
 
-###  Step 17: Prep and build the source Code - Compile using bash script or some other method.
+###  Step 18: Prep and build the source Code - Compile using bash script or some other method.
 ---
 
 - [ ] compile pschism with your custom cmake file. 
@@ -1283,7 +1313,7 @@ set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fPIC -no-prec-sqrt -no-prec-div -align all
 bash compile_pschism_aws_intel-mpi.sh
 ```
 
-### Step 18: Compile schism from the build directory using make. 
+### Step 19: Compile schism from the build directory using make. 
 ---
 
 - [ ] build the binary with make 
@@ -1291,38 +1321,6 @@ bash compile_pschism_aws_intel-mpi.sh
 cd /modeling/pschism/schism/src/build
 make -j8 pschism
 ```
-
-### Step 19: - refresh the data.
----
-- Data Setup
-  1. Each directory needs and outputs folder. This is omitted in the data.
-  2. The param.nml file is the configuration file.
-      change rnday from 'rnday = 365'  to 'rnday = 1' to reduce cost
-       a one day run on ChesBay test should take about 5 mins on AWS.
-   
-- [ ] Get Test Data - for basic tests (Optional)
-```bash
-svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_CORIE
-mkdir Test_CORE/outputs #create missing outputs directory
-```
-
-- [ ] Get ICM Test data - source chesapeake bay (Our data)
-
-```bash
- svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_ICM_ChesBay
- mkdir Test_ICM_ChesBay/outputs # create missing outputs directory
- ```
-
-*IMPORTANT the runs must occur in the target data directory*
-
-- [ ] Change into the data directory and create a outputs folder and a sbatch run file. 
-
-```bash
-cd Test_ICM_ChesBay
-mkdir outputs
-touch sbatch_file_goes_here #use what ever naming convention you desire.
-```
-
 
 ### Step 20 - Final Step - Running the code.
 ---
