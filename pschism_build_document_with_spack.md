@@ -1,8 +1,8 @@
 # PSCHISM install guide for AWS pcluster
---------------------
+------
 - Last edit: 12/5/23
 - Author: Theodore Knab aka Zeekus on github
-- Quality: Document was tested as functional by a third party. 
+- Quality: Document was tested. 
 - Version: v1.0
 - Licence: This program [document] is free software; 
            you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation
@@ -22,13 +22,14 @@
     1  day test 5 minutes with 72 cpus in sbatch.   
 
 ## Executive Summary
+------
 
 - Install spack and setup HDF5, netcdf-c, and netcdf-fortan with Intel MPI (AWS specific)
 - Build pschism with software stack with a step-by-step guide. Note action items are identified by a - [ ] in the text. 
 - What this does not cover. How setup a cluster using pcluster or Azure.
 
 ## Software Stack Requirements (Intel specific)
-----------------------------------------------
+------
 - Pschism software stack build:
   - Intel compiler intel-oneapi-compilers@2022.1.0 (classic version)
   - Intel MPI intel-oneapi-mpi@2021.9. - depends on Libfabric 
@@ -37,7 +38,7 @@
   - NetCDF-Fortran - netcdf-fortran@4.6.0
 
 ## Details on What we cover.
------------------------------------
+------
 - Define snafus. This is intentially put at top to save the reader some time. 
 - Provide a step-by-step guide for installing and running Pschism - a hydro model with Intel MPI. 
 - Install spack from git.
@@ -59,7 +60,7 @@
    
 
   ## Extra Information: Know snafus
-  --------------
+ ------
 
   1. Hardware Compatiblity - To ensure hardware compatibility and avoid unexpected errors when running compiled binaries, it's crucial to verify that the hardware matches on both the head nodes and compute nodes. Spack automatically adds CFLAGS to the compiled packages, which can lead to issues if the binaries are executed on hardware expecting different CFLAGS. To address this, it's essential to confirm hardware consistency across all nodes.
 
@@ -154,7 +155,7 @@
 
   
 ## Extra Information: Spack area - Spack - Cheat Sheet of commands
------------------------------------------------ 
+------
 
 *This area gives a cheat sheet of spack commands.*
     
@@ -223,7 +224,8 @@ Please be aware the following notion tells the reader they need to take some act
 - [ ] Action item. This may keep you/me on task. 
 
 ### Step 1: *Hardware Checks*
----------------------------
+------
+
 - After building your HPC cluster, ensure hardware consistency between the compute nodes and head nodes. Spack automatically applies CFLAGS based on the node's hardware during installation. Mismatched hardware may lead to software stack issues, posing challenges for later debugging. 
 
 - [ ] Do a cat /proc/cpuinfo on controller/compute node. 
@@ -232,7 +234,7 @@ Please be aware the following notion tells the reader they need to take some act
    ``` 
 
 ### Step 2: Spack download - spack from git
---------------------------------------------
+------
 
 The first step is to install spack on your system. To install spack from the github this is how to do it.
 
@@ -247,7 +249,7 @@ git clone -c feature.manyFiles=true https://github.com/spack/spack $SPACK_ROOT
 ```
 
 ### Step 3: Spack configuration: switch to last stable release
----
+------
 
 - The git repo will come with multiple versions. We are going to want one that is stable.
 - Use 'git branch -r -v' to view the versions. 
@@ -273,7 +275,7 @@ do so (now or later) by using -b with the checkout command again. Example:
 ```
 
 ### Step 4: Spack setup: the SPACK environment
----
+------
 
 To load the Spack environment from the command line, use 'source $SPACK_ROOT/share/spack/setup-env.sh'. Additionally, to add the Spack environment call script to .bashrc, use the following commands:
 
@@ -298,7 +300,7 @@ Citations:
 
 
 ## Installing the Compilers
---------------
+------
 
 - for AWS with Centos7 we have an old version of GCC. 
 
@@ -372,7 +374,7 @@ spack compiler add --scope site  $(spack location -i /6gpygsu)/bin
 ```
 
 ### Step 6: Spack Configuration
-----
+------
 
 In this section, we create four configuration files: `config.yaml`, `modules.yaml`, `packages.yaml`, and `compilers.yaml. These files are initially created in '/$SPACK_ROOT/etc/spack/'. Each of these files serves different configuration purposes in Spack. We defined the $SPACK_ROOT in step 2. 
 
@@ -559,7 +561,7 @@ packages:
 
 
 ### Step 7: Installing and configuring Intel compilers. 
-----
+------
 
 
 - To install the Intel-oneapi-compilers@2022.1.0 and intel-oneapi-mpi-2021.7.1, use Spack. 
@@ -669,8 +671,8 @@ intel@2021.6.0:
 ```
 
 
-### Step 8: Test ALL Intel compilers after installing - outputs should look similar to this for all the versions 
-----
+### Step 8: Test ALL Intel compilers after installing 
+------
 
 - This step is just a basic santity check. If your tests display the versions, you know the compiler should work.
 - [ ] query the compiler by name
@@ -698,7 +700,7 @@ Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 
 
 ## MPI WRAPPER SETUP
-----
+------
 
 ### Step 9 - configure the MPI components, so the Intel(r) compilers a properly referenced. 
 
@@ -811,7 +813,7 @@ Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 ```
 
 ### Step 10: Spack related: Build the software stack that is required to run pschism. 
----
+------
    - This covers how to build the software stack that spack installs.
    - Software 
      1. mpi %oneapi@2021.7.1 - is external on AWS previously built this.
@@ -855,7 +857,7 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
 ```
 
 ### Step 11: Spack related: Refresh the modules
----
+------
   - From spack version 19 and on we are required to refresh the module tree to get access to the modules. 
     
   - [ ] Refresh the modules by doing this: 
@@ -888,10 +890,10 @@ c-blosc@1.21.5  diffutils@3.3  hdf5@1.12.2  libaec@1.0.6               netcdf-c@
 
 
 ## Test MPI
----
+------
 
 ### Step 12: Pre-preperation- test MPI on the system.
----
+
  - pschism uses/requires mpi, we should test this is working first. 
  - If Mpi works, this is a good indication MPI should work for pchism.
 
@@ -998,13 +1000,13 @@ srun --mpi=pmi2 /modeling/pschism/hello_out
 
 
 ## PSCHISM specific information
----
+------
 
 - SNAFU with complier : to Compile the pschism code we need to load all the modules used with pschism first.
 
 
-### Step 13: Prep verify the modules used for pschism exist in spack and can be accessed. 
----
+### Step 13: Pschism: Prep verify the modules exist and are loadable. 
+
 
 - [ ] list the modules available. Note, if you don't see the new modules, log out and log back in.
       That will refresh the environment or you simply type 'bash' to start a new nested bash session. 
@@ -1074,7 +1076,7 @@ Currently Loaded Modulefiles:
 ```
 
 ### Step 14 Pschism - Get the source code 
----
+------
 
 
 - [ ] get the [latest] source code
@@ -1127,7 +1129,7 @@ Switched to a new branch 'remotes/origin/icm_Balg'
 ```
 
 ### Step 15: Pschism: Prep and build the Source code.
----
+------
 
 - [ ] We remove build folder and recreate each build.
 ```bash
@@ -1136,7 +1138,7 @@ rm -fr build; mkdir build
 ```
 
 ### Step 16: - refresh the data.
----
+------
 - Data Setup
   1. Each directory needs and outputs folder. This is omitted in the data.
   2. The param.nml file is the configuration file.
@@ -1167,9 +1169,7 @@ touch sbatch_file_goes_here #use what ever naming convention you desire.
 ```
 
 ### Step 17: Pschism: Prep and build create a bash script to do the compiling for you.
-
-This step can be done differently.
----
+------
 
 - [ ] check all these paths before attempting to run your pschism compile. 
   1. - [ ] type 'modules av' to get your modules. 
@@ -1312,16 +1312,16 @@ set(NetCDF_C_DIR "$ENV{NetCDF_C_DIR}" CACHE PATH "Path to NetCDF C library")
 set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fPIC -no-prec-sqrt -no-prec-div -align all -assume buffered_io -assume byterecl" CACHE STRING "Fortran flags" FORCE)
 ```
 
-###  Step 18: Prep and build the source Code - Compile using bash script or some other method.
----
+###  Step 18: Pschism: Prep and build the source Code - Compile using bash script or some other method.
+------
 
 - [ ] compile pschism with your custom cmake file. 
 ```bash
 bash compile_pschism_aws_intel-mpi.sh
 ```
 
-### Step 19: Compile schism from the build directory using make. 
----
+### Step 19: Pschism: Compile the binary from the cmake build directory. 
+------
 
 - [ ] build the binary with make 
 ```bash
@@ -1329,8 +1329,8 @@ cd /modeling/pschism/schism/src/build
 make -j8 pschism
 ```
 
-### Step 20 - Final Step - Running the code.
----
+### Step 20 - Final Steps - Pschism: Running the code.
+------
 - to run the code you will need a sbatch file
 - you may also want to edit the 'params.nml' control file to reduce the number of days of data to simulate. 
 - the sbatch file needs to be run from the directory holding the data.
@@ -1341,7 +1341,7 @@ Data dir: /modeling/pschism/Test_ICM_ChesBay
 
 #ref files in cmake_info for latest copies. 
 
-- [ ] Before running the module update the params.nml file. 
+- [ ] Before running pschism update the params.nml file. 
       365 should be changed to 1 or 10. 
       A 365 day run will take 24+ hours.
       A 1 day run should take 5 minutes if everything is running properly. 
@@ -1452,26 +1452,28 @@ echo "Finished in $(printf '%02dh:%02dm:%02ds\n' $(($SECONDS/3600)) $(($SECONDS%
 Run completed successfully at 20231205, 161111.159
    ```
 
+------
 ### End of Step by Step guide
-
+------
 
 ### References 
----
+------
 
-- old setup guide https://jiaweizhuang.github.io/blog/aws-hpc-guide/
+- An old setup guide from a grad student. https://jiaweizhuang.github.io/blog/aws-hpc-guide/
 
-- spack environments https://hpc.nmsu.edu/discovery/software/spack/environments/
+- NMSU has some good spack environments https://hpc.nmsu.edu/discovery/software/spack/environments/
 
--NOAA has the best documenation  https://github.com/JCSDA/spack-stack/tree/develop/configs/sites/aws-pcluster
+- NOAA pcluster/spack setups in github.  https://github.com/JCSDA/spack-stack/tree/develop/configs/sites/aws-pcluster
+
+- Amazon https://aws.amazon.com/blogs/hpc/install-optimized-software-with-spack-configs-for-aws-parallelcluster/
+
+- Wisc.edu https://chtc.cs.wisc.edu/uw-research-computing/hpc-spack-setup
+
+- Spack github site https://github.com/spack/spack/
+
+### Special Thanks
+
+- Special thanks to Dave Kintgen for testing this document. 
+
 
 END/end
-
-
-
-
-
-
-
-
-
-
