@@ -1435,8 +1435,7 @@ echo "Finished in $(printf '%02dh:%02dm:%02ds\n' $(($SECONDS/3600)) $(($SECONDS%
  - [ ] monitor Pschism  outputs/mirror.out this will tell you if the model ran right. 
    ```bash
    TIME STEP=         5760;  TIME=        864000.000000
-
-Run completed successfully at 20231205, 161111.159
+   Run completed successfully at 20231205, 161111.159
    ```
 
 ------
