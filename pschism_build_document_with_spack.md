@@ -22,7 +22,8 @@
 
 ## Executive Summary
 - Install spack and setup HDF5, netcdf-c, and netcdf-fortan with Intel MPI (AWS specific)
-- Build pschism with software stack with a step-by-step guide. Note action items are identified by a - [ ] in the text. 
+- Build pschism with software stack with a step-by-step guide. Note action items are identified by a 
+   - [ ] [example action item] in the text. 
 - What this does not cover. How setup a cluster using pcluster or Azure.
 
 ## Software Stack Requirements (Intel specific)
