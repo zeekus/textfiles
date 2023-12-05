@@ -61,12 +61,12 @@
   2. EFA - To ensure proper functionality of MPI with EFA, it is important to verify EFA setup with IntelMPI. Failure to set up EFA with IntelMPI can result in   non-functional or significantly slow MPI performance. Checking EFA for network connection errors is crucial, as any issues can lead to MPI failure.
   Note only some of the AWS hardware has EFA enabled. So, you will need to build a cluster with EFA if you want a high preformance network interface.
 
- To verify EFA, use the command fi_info -p efa on the compute nodes. A return value of -61 indicates a potential issue that may affect MPI functionality. It's important to note that this error may occur on the head nodes, as they are primarily used as the launch pad.
+  To verify EFA, use the command `fi_info -p efa` on the compute nodes. A return value of -61 indicates a potential issue that may affect MPI functionality. It's important to note that this error may occur on the head nodes, as they are primarily used as the launch pad.
 
-  For further details and troubleshooting, you can refer to the Intel community and documentation.
+   For further details and troubleshooting, you can refer to the Intel community and documentation.
 
-  Citations:
-  [1] https://community.intel.com/t5/Intel-HPC-Toolkit/Installing-wrappers-for-using-Intel-MPI-with-the-PGI-compilers/td-p/1020565
+   Citations:
+   [1] https://community.intel.com/t5/Intel-HPC-Toolkit/Installing-wrappers-for-using-Intel-MPI-with-the-PGI-compilers/td-p/1020565
 
   3.  When compilng the pshism binary, a custom CMake file that does not exist can cause CMake to fail without providing an error message. It is essential to   verify the existence of the custom CMake file to prevent potential issues.
 
