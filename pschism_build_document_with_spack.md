@@ -236,7 +236,7 @@ Please be aware the following notion tells the reader they need to take some act
 
 The first step is to install spack on your system. To install spack from the github this is how to do it.
 
-- [ ] define your SPACK_ROOT
+- [ ] define your SPACK_ROOT this will be used later in the document. 
 ```bash 
 export SPACK_ROOT=/modeling/spack
 ```
@@ -374,10 +374,9 @@ spack compiler add --scope site  $(spack location -i /6gpygsu)/bin
 ### Step 6: Spack Configuration
 ----
 
-In this sections we create a `config.yaml`, `modules.yaml`, `packages.yaml`, and `compilers.yaml`. 
-These files are created in '/modeling/spack/etc/spack/.' on our test system.  The files need to go in your './spack/etc' folder.
-Each of these files in Spack serve different configuration purposes. The following explains how 
-they are used by spack. 
+In this section, we create four configuration files: `config.yaml`, `modules.yaml`, `packages.yaml`, and `compilers.yaml. These files are initially created in '/$SPACK_ROOT/etc/spack/'. Each of these files serves different configuration purposes in Spack. We defined the $SPACK_ROOT in step 2. 
+
+The following explains how they are used by spack. 
 
 1. **config.yaml**:
    - The `config.yaml` file stores global configuration settings for Spack.
@@ -450,7 +449,7 @@ In the following section, we will edit and create the following files:
 - /modeling/spack/etc/spack/packages.yaml
 - /modeling/spack/etc/spack/compilers.yaml
 
-- [ ] Define your config.yaml 
+- [ ] Define your config.yaml in your $SPACK_ROOT/etc/spack directory. 
 File: *config.yaml* - create this if it doesn't exit. This tells spack to use 48 cores when doing a build.
                       It also tells spack to stage the build on local storage. You may want to modify this 
                       place the spack staging info in a different location.
@@ -469,7 +468,7 @@ config:
   misc_cache: /tmp/spack-stack/cache/misc_cache
 ```
 
-- [ ] Define your modules.yaml 
+- [ ] Define your modules.yaml in your $SPACK_ROOT/etc/spack directory
 File: *modules.yaml* - create this if doesn't exit. This tell spack to build modules using these specifications.
                       The file is configuring the Lmod module system. The lmod section which is defined as a default the Python module should be included. 
                       The Ecflow module will be excluded from the generated module files. 
@@ -486,7 +485,7 @@ modules:
       - ecflow
 ```
 
-- [ ] Define your packages.yaml
+- [ ] Define your packages.yaml in your $SPACK_ROOT/etc/spack directory.
 *packages.yaml* - This file will be written to by the 'spack external find' command. After spack adds the lines, you will need to append some more information.
                   Note, we are putting everything in the "--scope site" just so we know where the file is generated.
           
@@ -496,7 +495,7 @@ modules:
 
 -  [ ] These commands will generate some basic entries in your packages.yaml file. 
 ```bash
-export SPACK_SYSTEM_CONFIG_PATH=/modeling/spack/etc/spack
+export SPACK_SYSTEM_CONFIG_PATH=$SPACK_ROOT/etc/spack
 spack external find --scope system
 spack external find --scope system texlive
 spack external find --scope system perl
