@@ -282,6 +282,7 @@ To load the Spack environment from the command line, use 'source $SPACK_ROOT/sha
 - [ ] Setup the spack environment.
 
 ```bash
+source $SPACK_ROOT/share/spack/setup-env.sh
 echo "export SPACK_ROOT=$SPACK_ROOT" >> $HOME/.bashrc
 echo "source $SPACK_ROOT/share/spack/setup-env.sh" >> $HOME/.bashrc
 ```
