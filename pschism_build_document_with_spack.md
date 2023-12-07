@@ -808,6 +808,17 @@ ifort (IFORT) 2021.6.0 20220226
 Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 ```
 
+*Note* intel documentation on the MPI setup says you should set the compilers as environment varibles which is not what we do.
+
+source: https://www.intel.com/content/dam/develop/external/us/en/documents/mpi-devref-oneapi-linux-beta10.pdf
+
+**Enviornment Variables**
+```
+export I_MPI_CC="/modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/bin/intel64/icc"
+export I_MPI_CXX="/modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/bin/intel64/icpc"
+export I_MPI_FC="/modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/bin/intel64/ifort"
+```
+
 ### Step 10: Spack related: Build the software stack that is required to run pschism. 
 ------
    - This covers how to build the software stack that spack installs.
