@@ -812,7 +812,7 @@ Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 
 source: https://www.intel.com/content/dam/develop/external/us/en/documents/mpi-devref-oneapi-linux-beta10.pdf
 
-**Enviornment Variables**
+*Environment Variables* - from the intel documenation 
 ```
 export I_MPI_CC="/modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/bin/intel64/icc"
 export I_MPI_CXX="/modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/bin/intel64/icpc"
