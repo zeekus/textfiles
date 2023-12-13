@@ -1098,6 +1098,7 @@ Currently Loaded Modulefiles:
 
 - [ ] get the [latest] source code
 ```bash
+cd /modeling/pschism
 git clone https://github.com/schism-dev/schism.git
 Cloning into 'schism'...
 remote: Enumerating objects: 20465, done.
@@ -1164,6 +1165,7 @@ rm -fr build; mkdir build
    
 - [ ] Get Test Data - for basic tests (Optional)
 ```bash
+cd /modeling/pschism
 svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_CORIE
 mkdir Test_CORE/outputs #create missing outputs directory
 ```
@@ -1171,6 +1173,7 @@ mkdir Test_CORE/outputs #create missing outputs directory
 - [ ] Get ICM Test data - source chesapeake bay (Our data)
 
 ```bash
+ cd /modeling/pschism
  svn co https://columbia.vims.edu/schism/schism_verification_tests/Test_ICM_ChesBay
  mkdir Test_ICM_ChesBay/outputs # create missing outputs directory
  ```
