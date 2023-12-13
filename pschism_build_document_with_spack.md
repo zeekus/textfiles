@@ -1,5 +1,5 @@
 # PSCHISM install guide for AWS pcluster
-- Last edit: 12/5/23
+- Last edit: 12/13/23
 - Author: Theodore Knab aka Zeekus on github
 - Quality: Document was tested. 
 - Version: v1.0
