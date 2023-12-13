@@ -120,6 +120,11 @@
   8. *Pametris* - external binary for MPI needing elevated privileges.  
       It seems schism relies on this binary. On Centos7, ldconfig seems to want to place the compiled libaries into the system area.
 
+  9. *Cmake2* - When using CentOS 7 and Spack, if the system-installed CMake becomes a trouble spot, the best practice to work around this is to let Spack build its own version of CMake. This can be achieved by adding CMake as a dependency for the package that needs it. For example, you can add the following line to the package's spack file: depends_on('cmake', type='build') This approach ensures that Spack uses its own version of CMake, avoiding conflicts with the system-installed CMake.
+
+  10. *Curl* - When working with Spack to build NetCDF on CentOS 7 and encountering issues with the old curl libraries, the best practice is to let Spack build its own version of curl. This can be achieved by adding curl as a dependency for the NetCDF package in its Spack file. For example, you can add the following line to the package's spack file: depends_on('curl', type='build'). This approach ensures that Spack uses its own version of curl, avoiding conflicts with the system-installed libraries.
+
+
 ```bash
     [100%] Built target pschism
     Install the project...
@@ -492,15 +497,19 @@ modules:
 
  - This tells spack to use our system installed vesions of textlive, perl, python and some other libraries. 
   You will need to type these commands in your bash environment. 
+  *note* system curl and system cmake are known to cause potential compiling issues with NetCDF. You will want to use Spack versions of curl and cmake. 
 
 -  [ ] These commands will generate some basic entries in your packages.yaml file. 
 ```bash
 export SPACK_SYSTEM_CONFIG_PATH=$SPACK_ROOT/etc/spack
-spack external find --scope system
 spack external find --scope system texlive
 spack external find --scope system perl
 spack external find --scope system python
 ```
+
+
+- [ ] edit the *packages.yaml* and remove or comment any enteries for curl or cmake. We want spack to build it's own curl and cmake.
+   Why *note* system curl and system cmake may create issues with spack. You may need to comment out the entries for curl and cmake for spack to compile NetCDF code.
 
 - Now that the *packages.yaml* file is created. You will need to edit it with either emacs, vim, or nano. 
   Append in some information tells spack about the MPI subsystem[intel-onempi, libfabric, pmix, slurm ], and the compilers to use.
@@ -808,7 +817,7 @@ ifort (IFORT) 2021.6.0 20220226
 Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 ```
 
-*Note* intel documentation on the MPI setup says you should set the compilers as environment varibles which is not what we do.
+*Note* intel documentation on the MPI setup says you should set the compilers as environment variables which is not what we do.
 
 source: https://www.intel.com/content/dam/develop/external/us/en/documents/mpi-devref-oneapi-linux-beta10.pdf
 
