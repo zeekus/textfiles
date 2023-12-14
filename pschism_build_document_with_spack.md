@@ -1,5 +1,5 @@
 # PSCHISM install guide for AWS pcluster
-- Last edit: 12/13/23
+- Last edit: 12/15/23
 - Author: Theodore Knab aka Zeekus on github
 - Quality: Document was tested. 
 - Version: v1.0
@@ -53,9 +53,12 @@
    1. We explain how to build pschism with cmake
    2. We explain how to get the test datasets for pschism from subversions
    3. We explain how run pschism tests and provide sbatch script. 
-   
+
+  
 
   ## Extra Information: Know snafus
+
+  Please be aware that occasional snafus may arise, impacting the expected outcome. We encourage you to review the details to ensure preparedness for any potential disruptions.
  
   1. Hardware Compatiblity - To ensure hardware compatibility and avoid unexpected errors when running compiled binaries, it's crucial to verify that the hardware matches on both the head nodes and compute nodes. Spack automatically adds CFLAGS to the compiled packages, which can lead to issues if the binaries are executed on hardware expecting different CFLAGS. To address this, it's essential to confirm hardware consistency across all nodes.
 
@@ -80,9 +83,7 @@
      set( USE_ICM ON CACHE BOOLEAN "Use ICM module")
      ```
 
-  5. Software stack dependancies. - Use diffutils@3.8 instead of diffutils@3.9, as diffutils3.9 is part of the bundle and is not compatible with hdf5@1.14.1-2. If compilation issues persist, include diffutils@3.8 by adding '^diffutils@3.8' to your install command.
-
-  6. Compilers and Slurm's libpmi library - To resolve issues with Spack v.20 and above, modify the compilers.yaml to point to the intel64 variants for successful compilation. Additionally, include the following change, which may be required:
+5. Compilers and Slurm's libpmi library - To resolve issues with Spack v.20 and above, modify the compilers.yaml to point to the intel64 variants for successful compilation. Additionally, include the following change, which may be required:
    ```yaml
   environment:
    prepend_path:
@@ -91,7 +92,7 @@
     I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
    ```
 
-  7. *Compiler info and flags* 
+  6. *Compiler info and flags* 
     *I only tested intel@2021.6 0 (aka classic-oneapi-compiler) with pschism. This version comes from intel-oneapi-compilers@2022.1.0.
 
     - Compiler Flags needed none. 
@@ -117,15 +118,10 @@
            also be used for RTPs; -static is the default.
    ```
 
-  8. *Pametris* - external binary for MPI needing elevated privileges.  
+  7. *Pametris* - external binary for MPI needing elevated privileges.  
       It seems schism relies on this binary. On Centos7, ldconfig seems to want to place the compiled libaries into the system area.
-
-  9. *Cmake2* - When using CentOS 7 and Spack, if the system-installed CMake becomes a trouble spot, the best practice to work around this is to let Spack build its own version of CMake. This can be achieved by adding CMake as a dependency for the package that needs it. For example, you can add the following line to the package's spack file: depends_on('cmake', type='build') This approach ensures that Spack uses its own version of CMake, avoiding conflicts with the system-installed CMake.
-
-  10. *Curl* - When working with Spack to build NetCDF on CentOS 7 and encountering issues with the old curl libraries, the best practice is to let Spack build its own version of curl. This can be achieved by adding curl as a dependency for the NetCDF package in its Spack file. For example, you can add the following line to the package's spack file: depends_on('curl', type='build'). This approach ensures that Spack uses its own version of curl, avoiding conflicts with the system-installed libraries.
-
-
-```bash
+     
+      ```bash
     [100%] Built target pschism
     Install the project...
     -- Install configuration: "Release"
@@ -138,18 +134,37 @@
     Call Stack (most recent call first):
     ParMetis-4.0.3/cmake_install.cmake:49 (include)
      cmake_install.cmake:47 (include)
-```
- *Simplest: work around for parmetris*
-```bash
-   sudo chown centos /usr/local/include/parmetis.h
-   sudo chown centos /usr/local/lib/libparmetis.a
-```
+      ```
+      *Simplest: work around for parmetris*
+      ```bash
+      sudo chown centos /usr/local/include/parmetis.h
+      sudo chown centos /usr/local/lib/libparmetis.a
+      ```
 
- Better Solution: tell cmake to compile parmetis in a different location with "-DCMAKE_INSTALL_PREFIX" like this:
-```
-  mkdir -p /var/tmp/libparmetis
- -D CMAKE_INSTALL_PREFIX=/var/tmp/libparmetis
-```
+      Better Solution: tell cmake to compile parmetis in a different location with "-DCMAKE_INSTALL_PREFIX" like this:
+      ```
+      mkdir -p /var/tmp/libparmetis
+      -D CMAKE_INSTALL_PREFIX=/var/tmp/libparmetis
+      ```
+  8. *software dependancies* - *Cmake2* - When using CentOS 7 and Spack, if the system-installed CMake becomes a trouble spot, the best practice to work around this is to let Spack build its own version of CMake. This can be achieved by adding CMake as a dependency for the package that needs it. For example, you can add the following line to the package's spack file: depends_on('cmake', type='build') This approach ensures that Spack uses its own version of CMake, avoiding conflicts with the system-installed CMake.
+
+  ```bash
+     spack install --reuse netcdf-fortran@4.6.0%intel@2021.6.0 ^hdf5+fortran+hl%intel@2021.6.0 ^netcdf-c@4.9.0%intel@2021.6.0 ^cmake@3.27.7%intel@2021.6.0 ^intel-oneapi-mpi@2021.10.0%intel@2021.6.0  
+  ```
+
+  9. *software dependancies* *Curl/ssl* - When working with Spack to build NetCDF on CentOS 7 and encountering issues with the old curl and ssl libraries, the best practice is to let Spack build its own version of curl and ssl. This can be achieved by adding curl as a dependency for the NetCDF package in its Spack file. For example, you can add the following line to the package's spack file: depends_on('curl', type='build'). This approach ensures that Spack uses its own version of curl, avoiding conflicts with the system-installed libraries.
+
+
+  10. *software dependancies* *Diff* - As of 12/23, when installing the software stack, if you use the latest version of Spack, you may encounter an issue where the installation of    different versions of netcdf-c and netcdf-fortran may fail to complete. This is due to compatibility issues with versions of diff3.9 and the netcdf libraries. To work around this, it is recommended to ensure that you are using an older version than diff3.9 to enable a successful installation.
+
+     ```bash
+      spack install --reuse netcdf-fortran@4.6.0%intel@2021.6.0 ^hdf5+fortran+hl%intel@2021.6.0 ^netcdf-c@4.9.0%intel@2021.6.0 ^cmake@3.27.7%intel@2021.6.0 ^intel-oneapi-mpi@2021.10.0%intel@2021.6.0 ^diff3.8%intel@2021.6.0
+     ```
+
+  11. *Basics*  Difference between compilers.  
+      The intel-oneapi-compilers and intel-oneapi-mpi are two different components of the Intel oneAPI toolkit. The intel-oneapi-compilers provide a set of compilers for languages like C, C++, and Fortran, along with libraries and tools for building and optimizing high-performance applications. On the other hand, intel-oneapi-mpi is the Intel MPI Library, which is a multi-fabric message passing library that implements the Message Passing Interface (MPI) specification, allowing for efficient communication and coordination between distributed processes.
+
+      In summary, the intel-oneapi-compilers are for compiling and optimizing applications, while intel-oneapi-mpi is for enabling efficient message passing and coordination between distributed processes in high-performance computing environments
 
   
 ## Extra Information: Spack area - Spack - Cheat Sheet of commands
@@ -290,6 +305,7 @@ To load the Spack environment from the command line, use 'source $SPACK_ROOT/sha
 source $SPACK_ROOT/share/spack/setup-env.sh
 echo "export SPACK_ROOT=$SPACK_ROOT" >> $HOME/.bashrc
 echo "source $SPACK_ROOT/share/spack/setup-env.sh" >> $HOME/.bashrc
+spack install libelf #snuffu for spack
 ```
 
 This ensures that the Spack environment is loaded every time bash is called. Note that on AWS, home directories are shared, allowing changes made on the head node to propagate to the compute area. However, Azure does not have a shared home directory like AWS Pcluster.
