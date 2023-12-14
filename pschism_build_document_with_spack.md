@@ -83,7 +83,7 @@
      set( USE_ICM ON CACHE BOOLEAN "Use ICM module")
      ```
 
-5. Compilers and Slurm's libpmi library - To resolve issues with Spack v.20 and above, modify the compilers.yaml to point to the intel64 variants for successful compilation. Additionally, include the following change, which may be required:
+  5. Compilers and Slurm's libpmi library - To resolve issues with Spack v.20 and above, modify the compilers.yaml to point to the intel64 variants for successful compilation. Additionally, include the following change, which may be required:
    ```yaml
   environment:
    prepend_path:
