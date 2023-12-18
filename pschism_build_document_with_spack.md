@@ -523,7 +523,6 @@ spack external find --scope system perl
 spack external find --scope system python
 ```
 
-
 - [ ] edit the *packages.yaml* and remove or comment any enteries for curl or cmake. We want spack to build it's own curl and cmake.
    Why *note* system curl and system cmake may create issues with spack. You may need to comment out the entries for curl and cmake for spack to compile NetCDF code.
 
@@ -532,20 +531,19 @@ spack external find --scope system python
 
 File: *packages.yaml*  - base config AWS specific - add this to the top of the configuration or edit it to match.
 
-- [ ] Information that will need to be appended to your package.yaml file. 
+- [ ] Verify you *packages.yaml*. It should look like this. Make adjustments where necessary.  
+
 ```yaml
 packages:
   all:
     compiler: [intel@2021.6.0, gcc@9.2.0]
     providers:
       mpi: [intel-oneapi-mpi@2021.9.0, openmpi@4.1.5]
-
-### MPI, Python, MKL
   mpi:
     buildable: false
   intel-oneapi-mpi:
-    externals:
     variants: +libfabric
+    externals:
     - spec: intel-oneapi-mpi@2021.9.0%intel@2021.6.0
       prefix: /opt/intel
       modules:
@@ -575,6 +573,34 @@ packages:
         - spec: slurm@23.02.6 +pmix sysconfdir=/opt/slurm/etc
           prefix: /opt/slurm
         buildable: False
+  # cmake:
+  #   externals:
+  #   - spec: cmake@2.8.12.2
+  #     prefix: /usr
+  #   - spec: cmake@3.17.5
+  #     prefix: /usr
+  curl:
+    externals:
+    - spec: curl@8.2.1+gssapi+ldap+nghttp2
+      prefix: /usr
+  python:
+    externals:
+    - spec: python@3.7.16+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /opt/parallelcluster/pyenv/versions/3.7.16/envs/cfn_bootstrap_virtualenv
+    - spec: python@3.9.16+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /opt/parallelcluster/pyenv/versions/3.9.16/envs/awsbatch_virtualenv
+    - spec: python@2.7.5+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
+      prefix: /usr
+    - spec: python@3.6.8+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.16.3~cpanm+opcode+open+shared+threads
+      prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20130530
+      prefix: /usr
 ```
 
 *compilers.yaml*
