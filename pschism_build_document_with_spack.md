@@ -536,7 +536,7 @@ spack external find --scope site slurm
 - Now that the *packages.yaml* file is created. You will need to edit it with either emacs, vim, or nano. 
   Append in some information tells spack about the MPI subsystem[intel-onempi, libfabric, pmix, slurm ], and the compilers to use.
 
-File: *packages.yaml*  - base config AWS specific - add this to the top of the configuration or edit it to match.
+File: *packages.yaml*  - base config AWS specific edit it to be similar. *note* versions are important. 
 
 - [ ] Ensure that your packages.yaml file resembles the following. Make any necessary adjustments. Please note that the intelmpi package, efa, and libfabric may have changed since this was written. Verify that the versions match. If there are any entries for cmake on Centos7, they should be commented out so that Spack installs its own version of cmake. 
 
