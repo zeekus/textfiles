@@ -259,7 +259,9 @@ The first step is to install spack on your system. To install spack from the git
 
 - [ ] create a directory called /modeling/spack as root and set the user permisions so your non-root user can write to it.
   ```
-    chown centos /modeling/spack -R
+    sudo mkdir -p /modeling/spack 
+    sudo chown centos:centos /modeling/spack -R 
+    sudo - centos #if you are not centos
   ```
 
 - [ ] switch back to your non-root user for the remainder of this build. 
@@ -332,11 +334,13 @@ Citations:
 To enable Spack to find the local compiler on AWS, use the command 'spack compiler find --scope site'. This command adds the compiler to the compilers.yaml file. For example, it may add 'gcc@4.8.5' to the file. This ensures that Spack is aware of the installed compiler. Note that on AWS, home directories are shared, allowing changes made on the head node to propagate to the compute area. 
 
 - [ ] Tell spack where the Centos7 default gcc4.8.5 compiler is located. This adds it to the spack catalog of compilers.
+      *note* remove any previous setup so this get mapped to our site *scope* area. 
 
 ```bash
+spack compiler rm gcc@=4.8.5
 spack compiler find --scope site
 
-==> Added 1 new compiler to /home/centos/.spack/linux/compilers.yaml
+==> Added 1 new compiler to /modeling/spack/etc/spack/compilers.yaml
     gcc@4.8.5 
 
 ```
@@ -372,8 +376,16 @@ Centos7 on AWS has gcc4.8.5, but is a bit dated. This is how we may add a newer 
 - Select the version you want. We use 9.2.0 in this example and use 8 cores to compile it with the "-O3" [oscar 3] compiler flag. Note, '-O2' is the default flag.
   [ Read the man for gcc for more information on the compiler flags available. ]
 
-- [ ] compile and install a new version of your gcc compiler in spack 
+- [ ] add in some basic configuration of spack
+      then compile and install a newer version of the gcc compiler in spack 
 ```bash
+export SPACK_SYSTEM_CONFIG_PATH=$SPACK_ROOT/etc/spack
+spack external find --scope site --exclude cmake
+spack external find --scope site texlive 
+spack external find --scope site perl 
+spack external find --scope site python 
+spack external find --scope site libfabric 
+spack external find --scope site slurm 
 spack install -j8 gcc@9.2.0+binutils cflags="-O3"
 ```
 
@@ -474,27 +486,25 @@ In the following section, we will edit and create the following files:
 - /modeling/spack/etc/spack/packages.yaml
 - /modeling/spack/etc/spack/compilers.yaml
 
-- [ ] Define your config.yaml in your $SPACK_ROOT/etc/spack directory. 
-File: *config.yaml* - create this if it doesn't exit. This tells spack to use 48 cores when doing a build.
+- [ ] Define your $SPACK_ROOT/etc/spack/config.yaml in your $SPACK_ROOT/etc/spack directory. 
+File: *$SPACK_ROOT/etc/spack/config.yaml* - create this if it doesn't exit. This tells spack to use 48 cores when doing a build.
                       It also tells spack to stage the build on local storage. You may want to modify this 
                       place the spack staging info in a different location.
 
 ```yaml
 config:
-  #HPCa6-48 has 48 cpus
   build_jobs: 48
-
-  # Overrides for spack build and staging areas to speed up builds
-  #   # by using a local directory instead of the EFS shared filesystem. NOAA 
-  #
   build_stage: /tmp/spack-stack/cache/build_stage
   test_stage: /tmp/spack-stack/cache/test_stage
   source_cache: /tmp/spack-stack/cache/source_cache
   misc_cache: /tmp/spack-stack/cache/misc_cache
+  # Overrides for spack build and staging areas to speed up builds
+  #   # by using a local directory instead of the EFS shared filesystem. NOAA 
+  #
 ```
 
 - [ ] Define your modules.yaml in your $SPACK_ROOT/etc/spack directory
-File: *modules.yaml* - create this if doesn't exit. This tell spack to build modules using these specifications.
+File: *$SPACK_ROOT/etc/spack/modules.yaml* - create this if doesn't exit. This tell spack to build modules using these specifications.
                       The file is configuring the Lmod module system. The lmod section which is defined as a default the Python module should be included. 
                       The Ecflow module will be excluded from the generated module files. 
 
@@ -511,7 +521,7 @@ modules:
 ```
 
 - [ ] Define your packages.yaml in your $SPACK_ROOT/etc/spack directory.
-*packages.yaml* - This file will be written to by the 'spack external find' command. After spack adds the lines, you will need to append some more information.
+*$SPACK_ROOT/etc/spack/packages.yaml* - This file will be written to by the 'spack external find' command. After spack adds the lines, you will need to append some more information.
                   Note, we are putting everything in the "--scope site" just so we know where the file is generated.
 
  - This tells spack to use our system installed vesions of textlive, perl, python and some other libraries. 
@@ -527,9 +537,6 @@ spack external find --scope site perl
 spack external find --scope site python 
 spack external find --scope site libfabric 
 spack external find --scope site slurm 
-spack config add  "packages:mpi:buildable:False"
-spack config add  "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
-spack config add  "packages:all:compiler:[intel@2021.6.0, gcc@9.2.0]"
 ```
 
 - `spack external find` doesn't always find everything. 
@@ -585,17 +592,18 @@ libfabric-aws/1.18.2amzn1.0 module-info                 null                    
 
 File: *packages.yaml*  - base config AWS specific edit it to be similar. *note* versions are important. 
 
-- [ ] Ensure that your packages.yaml file resembles the following. Make any necessary adjustments. Please note that the intelmpi package, efa, pmix, and libfabric may have changed since this was written. Verify that the versions match. If there are any entries for cmake on Centos7, they should be commented out so that Spack installs its own version of cmake. 
+- [ ] Ensure that your packages.yaml file resembles the following. Make any necessary adjustments. Please note that the intelmpi package, efa, pmix, slurm, and libfabric may have changed since this was written. Verify that the versions match. If there are any entries for cmake on Centos7, they should be commented out so that Spack installs its own version of cmake. 
 
 ```yaml
 packages:
-  all:
-    compiler: [intel@2021.6.0, gcc@9.2.0]
-    providers:
-      mpi: [intel-oneapi-mpi@2021.9.0, openmpi@4.1.5]
   mpi:
     buildable: false
-  #manually enter intel-mpi check versions
+  all:
+    providers:
+      mpi: [intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]
+    compiler:
+    - intel@2021.6.0
+    - gcc@9.2.0
   intel-oneapi-mpi:
     variants: +libfabric
     externals:
@@ -604,7 +612,6 @@ packages:
       modules:
       - libfabric-aws/1.18.2
       - intelmpi
-  #manually enter openmpi
   openmpi:
     externals:
     - spec: openmpi@4.1.5 %gcc@4.8.5
@@ -613,55 +620,17 @@ packages:
       modules:
       - libfabric-aws/1.18.2
       - openmpi/4.1.5
-  #should get added automatically with `spack external find --scope site libfabric`
-  libfabric:
-        variants: fabrics=efa,tcp,udp,sockets,verbs,shm,mrail,rxd,rxm
-        externals:
-        - spec: libfabric@1.18.2 fabrics=efa,tcp,udp,sockets,verbs,shm,mrail,rxd,rxm
-          prefix: /opt/amazon/efa
-        buildable: False
-  #manually entered pmix
   pmix:
         externals:
           - spec: pmix@4.2.6 ~pmi_backwards_compatibility
             prefix: /opt/pmix
-  #should get added automatically with `spack external find --scope site slurm`
-  #this entry may need to be editted. 
   slurm:
     variants: +pmix sysconfdir=/opt/slurm/etc
     externals:
     - spec: slurm@23.02.6 +pmix sysconfdir=/opt/slurm/etc
       prefix: /opt/slurm
     buildable: False
-  # note we comment out cmake
-  # cmake:
-  #   externals:
-  #   - spec: cmake@2.8.12.2
-  #     prefix: /usr
-  #   - spec: cmake@3.17.5
-  #     prefix: /usr
-  curl:
-    externals:
-    - spec: curl@8.2.1+gssapi+ldap+nghttp2
-      prefix: /usr
-  python:
-    externals:
-    - spec: python@3.7.16+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /opt/parallelcluster/pyenv/versions/3.7.16/envs/cfn_bootstrap_virtualenv
-    - spec: python@3.9.16+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /opt/parallelcluster/pyenv/versions/3.9.16/envs/awsbatch_virtualenv
-    - spec: python@2.7.5+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
-      prefix: /usr
-    - spec: python@3.6.8+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
-      prefix: /usr
-  perl:
-    externals:
-    - spec: perl@5.16.3~cpanm+opcode+open+shared+threads
-      prefix: /usr
-  texlive:
-    externals:
-    - spec: texlive@20130530
-      prefix: /usr
+#system generated entries should follow. 
 ```
 
 - [ ] verify no errors were introduced 
