@@ -1,5 +1,5 @@
 # PSCHISM install guide for AWS pcluster
-- Last edit: 12/18/23
+- Last edit: 12/21/23
 - Author: Theodore Knab aka Zeekus on github
 - Quality: Document was tested. 
 - Version: v1.0
@@ -33,6 +33,7 @@
   - HDF5 - hdf5@1.12.2
   - NetCDF-C - netcdf-c@4.9.0
   - NetCDF-Fortran - netcdf-fortran@4.6.0
+  - LibFabric 1.18.2 ( note this is always changing/ getting updated )
 
 ## Details on What we cover.
 - Define snafus. This is intentially put at top to save the reader some time. 
@@ -165,6 +166,9 @@
       The intel-oneapi-compilers and intel-oneapi-mpi are two different components of the Intel oneAPI toolkit. The intel-oneapi-compilers provide a set of compilers for languages like C, C++, and Fortran, along with libraries and tools for building and optimizing high-performance applications. On the other hand, intel-oneapi-mpi is the Intel MPI Library, which is a multi-fabric message passing library that implements the Message Passing Interface (MPI) specification, allowing for efficient communication and coordination between distributed processes.
 
       In summary, the intel-oneapi-compilers are for compiling and optimizing applications, while intel-oneapi-mpi is for enabling efficient message passing and coordination between distributed processes in high-performance computing environments
+
+  12. *Libfabric* libfabric seems to be updated a lot.
+      You will have to update your packages.yaml everytime software gets updated so we are references the newest versions.     
 
   
 ## Extra Information: Spack area - Spack - Cheat Sheet of commands
@@ -521,6 +525,9 @@ export SPACK_SYSTEM_CONFIG_PATH=$SPACK_ROOT/etc/spack
 spack external find --scope system texlive
 spack external find --scope system perl
 spack external find --scope system python
+spack external find --scope site libfabric
+spack external find --scope site intel-mpi
+spack external find --scope site slurm
 ```
 
 - [ ] edit the *packages.yaml* and remove or comment any enteries for curl or cmake. We want spack to build it's own curl and cmake.
@@ -531,7 +538,7 @@ spack external find --scope system python
 
 File: *packages.yaml*  - base config AWS specific - add this to the top of the configuration or edit it to match.
 
-- [ ] Verify you *packages.yaml*. It should look like this. Make adjustments where necessary.  
+- [ ] Ensure that your packages.yaml file resembles the following. Make any necessary adjustments. Please note that the intelmpi package, efa, and libfabric may have changed since this was written. Verify that the versions match. If there are any entries for cmake on Centos7, they should be commented out so that Spack installs its own version of cmake. 
 
 ```yaml
 packages:
@@ -547,7 +554,7 @@ packages:
     - spec: intel-oneapi-mpi@2021.9.0%intel@2021.6.0
       prefix: /opt/intel
       modules:
-      - libfabric-aws/1.17.1
+      - libfabric-aws/1.18.2
       - intelmpi
   openmpi:
     externals:
@@ -555,12 +562,12 @@ packages:
         fabrics=ofi schedulers=slurm
       prefix: /opt/amazon/openmpi
       modules:
-      - libfabric-aws/1.17.1
+      - libfabric-aws/1.18.2
       - openmpi/4.1.5
   libfabric:
         variants: fabrics=efa,tcp,udp,sockets,verbs,shm,mrail,rxd,rxm
         externals:
-        - spec: libfabric@1.17.1 fabrics=efa,tcp,udp,sockets,verbs,shm,mrail,rxd,rxm
+        - spec: libfabric@1.18.2 fabrics=efa,tcp,udp,sockets,verbs,shm,mrail,rxd,rxm
           prefix: /opt/amazon/efa
         buildable: False
   pmix:
@@ -776,7 +783,7 @@ Citations:
 
 ```bash
 spack install intel-oneapi-mpi@2021.9.0%intel@2021.6.0
-==> intel-oneapi-mpi@2021.9.0 : has external module in ['libfabric-aws/1.17.1', 'intelmpi']
+==> intel-oneapi-mpi@2021.9.0 : has external module in ['libfabric-aws/1.18.2', 'intelmpi']
 [+] /opt/intel (external intel-oneapi-mpi-2021.9.0-ja3rl76w3kwiadg4gcp7vcramorar7es)
 ```
 
@@ -1028,7 +1035,7 @@ spack load intelmpi
 spack load --list
 
 echo "loading modules using module"
-module load libfabric-aws/1.17.1
+module load libfabric-aws/1.18.2
 module load intempi 
 ls -la $I_MPI_ROOT
 echo "$?: did we load the I_MPI_ROOT"
@@ -1076,7 +1083,7 @@ module av
 
 ---------------------------------------------- /usr/share/Modules/modulefiles -----------------------------------------------
 dot                  module-git           modules              openmpi/4.1.5
-libfabric-aws/1.17.1 module-info          null                 use.own
+libfabric-aws/1.18.2 module-info          null                 use.own
 
 -------------------------------------------- /opt/intel/mpi/2021.9.0/modulefiles --------------------------------------------
 intelmpi
@@ -1096,7 +1103,7 @@ intel-oneapi-mpi/2021.9.0-intel-2021.6.0-hul6jpm  zstd/1.5.5-intel-2021.6.0-4dpb
 
 - [ ] load the modules needed to compile and run pschism *note* your names may differ. 
 ```bash
-module load libfabric-aws/1.17.1 #external libfabric
+module load libfabric-aws/1.18.2 #external libfabric
 module load intelmpi #external mpi
 module load hdf5/1.12.2-intel-2021.6.0-uz2e74i
 module load netcdf-c/4.9.0-intel-2021.6.0-yii5utw
@@ -1252,7 +1259,7 @@ vim /modeling/pschism/Test_ICM_ChesBay/load_modules_aws_intel.sh
 
 yes 'y'| module clear
 #note all the modules are loaded on one line and libfabric is external with intelmpi
-module load libfabric-aws/1.17.1 intelmpi hdf5/1.12.2-intel-2021.6.0-uz2e74i netcdf-c/4.9.0-intel-2021.6.0-yii5utw netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
+module load libfabric-aws/1.18.2 intelmpi hdf5/1.12.2-intel-2021.6.0-uz2e74i netcdf-c/4.9.0-intel-2021.6.0-yii5utw netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
 ```
 
 - [ ] Before attempting to run cmake with the bash script clear your modules and load them manually.
@@ -1260,7 +1267,7 @@ module load libfabric-aws/1.17.1 intelmpi hdf5/1.12.2-intel-2021.6.0-uz2e74i net
 
 ```bash
 yes 'y'| module clear
-module load libfabric-aws/1.17.1 intelmpi hdf5/1.12.2-intel-2021.6.0-uz2e74i netcdf-c/4.9.0-intel-2021.6.0-yii5utw netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
+module load libfabric-aws/1.18.2 intelmpi hdf5/1.12.2-intel-2021.6.0-uz2e74i netcdf-c/4.9.0-intel-2021.6.0-yii5utw netcdf-fortran/4.6.0-intel-2021.6.0-vpzbv7s
 ```
 
 - [ ] Create a bash file to build the Cmake pschism parts.
