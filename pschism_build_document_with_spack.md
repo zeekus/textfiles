@@ -699,7 +699,7 @@ spack compiler add --scope site $(spack location -i /drusa5u)/compiler/latest/li
 - Identify where are the slurm MPI libraries are located. Earlier we found that your callpath for the compiler was 'drusa5u'.
 
 ```bash
-cd $(spack location -i /drusa5u)/compiler/latest/linux/compiler/lib/intel64_lin
+
 echo $PWD
 /modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/compiler/lib/intel64_lin
 ```
@@ -864,10 +864,10 @@ FC="/modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compiler
 
 *typically MPII files for MPI-Intel while the MPI files are for gcc*
 ```bash
- vim $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpiifort
- vim $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpifc
- vim $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpiicpc
- vim $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpiicc
+ sudo vim $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpiifort
+ sudo vim $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpifc
+ sudo vim $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpiicpc
+ sudo vim $(spack location -i intel-oneapi-mpi@2021.9.0%intel@2021.6.0)/mpi/2021.9.0/bin/mpiicc
 ```
 
 - [ ] verify each of these point the expected compiler
