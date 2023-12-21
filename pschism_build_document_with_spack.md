@@ -532,6 +532,9 @@ spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi
 spack config add "packages:all:compiler:[intel@2021.6.0, gcc@9.2.0]"
 ```
 
+- `spack external find` doesn't always find everything. 
+   We will have to manually add *pmix*, *openmpi*, and *intelmpi* to the packages.yaml. 
+
 - [ ] determine the versions/location of pmix 
 
 ```
@@ -566,6 +569,15 @@ Loading intelmpi version 2021.9.0
 /opt/amazon/openmpi/include/openmpi
 /opt/amazon/openmpi/lib64/openmpi
 ```
+
+- [ ] determine the versions of openmpi
+  ```
+  module av
+
+---------------------------------------------------------------------------------------- /usr/share/Modules/modulefiles -----------------------------------------------------------------------------------------
+dot                         module-git                  modules                     openmpi/4.1.5
+libfabric-aws/1.18.2amzn1.0 module-info                 null                        use.own
+  ```
 
 - [ ] edit the *packages.yaml* and remove or comment any enteries for curl or cmake. We want spack to build it's own curl and cmake.
    Why *note* system curl and system cmake may create issues with spack. You may need to comment out the entries for curl and cmake for spack to compile NetCDF code. 
