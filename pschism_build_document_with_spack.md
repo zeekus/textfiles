@@ -513,7 +513,6 @@ modules:
 - [ ] Define your packages.yaml in your $SPACK_ROOT/etc/spack directory.
 *packages.yaml* - This file will be written to by the 'spack external find' command. After spack adds the lines, you will need to append some more information.
                   Note, we are putting everything in the "--scope site" just so we know where the file is generated.
-          
 
  - This tells spack to use our system installed vesions of textlive, perl, python and some other libraries. 
   You will need to type these commands in your bash environment. 
@@ -526,19 +525,54 @@ spack external find --scope system texlive
 spack external find --scope system perl
 spack external find --scope system python
 spack external find --scope site libfabric
-spack external find --scope site intel-mpi
 spack external find --scope site slurm
+spack config add "packages:mpi:buildable:False"
+spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
+spack config add "packages:all:compiler:[intel@2021.6.0, gcc@9.2.0]"
+```
+
+- [ ] determine the versions/location of pmix 
+
+```
+/opt/pmix/bin/pmix_info | grep -i pmix
+                 Package: PMIx root@ip-172-31-0-155.ec2.internal Distribution
+                    PMIX: 4.2.6
+      PMIX repo revision: gitf20e0d5d
+       PMIX release date: Sep 09, 2023
+           PMIX Standard: 4.2
+       PMIX Standard ABI: Stable (0.0), Provisional (0.0)
+                  Prefix: /opt/pmix
+```
+
+- [ ] determine the version/location of intempi
+
+```
+find /opt -iname 'mpi' 2>/dev/null
+/opt/intel/mpi
+```
+
+```
+module load intelmpi
+Loading intelmpi version 2021.9.0
+```
+
+- [ ] determine the location of openmpi
+
+```
+[centos@ip-172-31-0-87 opt]$ find /opt -iname 'openmpi' 2>/dev/null
+/opt/amazon/openmpi
+/opt/amazon/openmpi/share/openmpi
+/opt/amazon/openmpi/include/openmpi
+/opt/amazon/openmpi/lib64/openmpi
 ```
 
 - [ ] edit the *packages.yaml* and remove or comment any enteries for curl or cmake. We want spack to build it's own curl and cmake.
-   Why *note* system curl and system cmake may create issues with spack. You may need to comment out the entries for curl and cmake for spack to compile NetCDF code.
+   Why *note* system curl and system cmake may create issues with spack. You may need to comment out the entries for curl and cmake for spack to compile NetCDF code. 
 
-- Now that the *packages.yaml* file is created. You will need to edit it with either emacs, vim, or nano. 
-  Append in some information tells spack about the MPI subsystem[intel-onempi, libfabric, pmix, slurm ], and the compilers to use.
 
 File: *packages.yaml*  - base config AWS specific edit it to be similar. *note* versions are important. 
 
-- [ ] Ensure that your packages.yaml file resembles the following. Make any necessary adjustments. Please note that the intelmpi package, efa, and libfabric may have changed since this was written. Verify that the versions match. If there are any entries for cmake on Centos7, they should be commented out so that Spack installs its own version of cmake. 
+- [ ] Ensure that your packages.yaml file resembles the following. Make any necessary adjustments. Please note that the intelmpi package, efa, pmix, and libfabric may have changed since this was written. Verify that the versions match. If there are any entries for cmake on Centos7, they should be commented out so that Spack installs its own version of cmake. 
 
 ```yaml
 packages:
@@ -548,6 +582,7 @@ packages:
       mpi: [intel-oneapi-mpi@2021.9.0, openmpi@4.1.5]
   mpi:
     buildable: false
+  #manually enter intel-mpi check versions
   intel-oneapi-mpi:
     variants: +libfabric
     externals:
@@ -556,6 +591,7 @@ packages:
       modules:
       - libfabric-aws/1.18.2
       - intelmpi
+  #manually enter openmpi
   openmpi:
     externals:
     - spec: openmpi@4.1.5 %gcc@4.8.5
@@ -564,22 +600,27 @@ packages:
       modules:
       - libfabric-aws/1.18.2
       - openmpi/4.1.5
+  #should get added automatically with `spack external find --scope site libfabric`
   libfabric:
         variants: fabrics=efa,tcp,udp,sockets,verbs,shm,mrail,rxd,rxm
         externals:
         - spec: libfabric@1.18.2 fabrics=efa,tcp,udp,sockets,verbs,shm,mrail,rxd,rxm
           prefix: /opt/amazon/efa
         buildable: False
+  #manually entered pmix
   pmix:
         externals:
           - spec: pmix@4.2.6 ~pmi_backwards_compatibility
             prefix: /opt/pmix
+  #should get added automatically with `spack external find --scope site slurm`
+  #this entry may need to be editted. 
   slurm:
-        variants: +pmix sysconfdir=/opt/slurm/etc
-        externals:
-        - spec: slurm@23.02.6 +pmix sysconfdir=/opt/slurm/etc
-          prefix: /opt/slurm
-        buildable: False
+    variants: +pmix sysconfdir=/opt/slurm/etc
+    externals:
+    - spec: slurm@23.02.6 +pmix sysconfdir=/opt/slurm/etc
+      prefix: /opt/slurm
+    buildable: False
+  # note we comment out cmake
   # cmake:
   #   externals:
   #   - spec: cmake@2.8.12.2
