@@ -527,9 +527,9 @@ spack external find --scope site perl
 spack external find --scope site python 
 spack external find --scope site libfabric 
 spack external find --scope site slurm 
-spack config add  --scope site "packages:mpi:buildable:False"
-spack config add --scope site "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
-spack config add --scope site "packages:all:compiler:[intel@2021.6.0, gcc@9.2.0]"
+spack config add  "packages:mpi:buildable:False"
+spack config add  "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
+spack config add  "packages:all:compiler:[intel@2021.6.0, gcc@9.2.0]"
 ```
 
 - `spack external find` doesn't always find everything. 
