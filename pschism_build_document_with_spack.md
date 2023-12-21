@@ -521,11 +521,12 @@ modules:
 -  [ ] These commands will generate some basic entries in your packages.yaml file. 
 ```bash
 export SPACK_SYSTEM_CONFIG_PATH=$SPACK_ROOT/etc/spack
-spack external find --scope system texlive
-spack external find --scope system perl
-spack external find --scope system python
-spack external find --scope site libfabric
-spack external find --scope site slurm
+spack external find --scope system --exclude cmake
+spack external find --scope system texlive 
+spack external find --scope system perl 
+spack external find --scope system python 
+spack external find --scope site libfabric 
+spack external find --scope site slurm 
 spack config add "packages:mpi:buildable:False"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
 spack config add "packages:all:compiler:[intel@2021.6.0, gcc@9.2.0]"
@@ -649,6 +650,14 @@ packages:
     externals:
     - spec: texlive@20130530
       prefix: /usr
+```
+
+- [ ] verify no errors were introduced 
+
+- running the spack external find command with help is one to verify if there are any errors in the package.yaml. You will get a parsing error if the yaml file is not formatted properly.  
+
+```
+spack external find --help
 ```
 
 *compilers.yaml*
