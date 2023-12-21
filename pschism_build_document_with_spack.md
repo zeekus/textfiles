@@ -411,7 +411,9 @@ spack compiler add --scope site  $(spack location -i /6gpygsu)/bin
 ### Step 6: Spack Configuration
 ------
 
-In this section, we create four configuration files: `config.yaml`, `modules.yaml`, `packages.yaml`, and `compilers.yaml. These files are initially created in '/$SPACK_ROOT/etc/spack/'. Each of these files serves different configuration purposes in Spack. We defined the $SPACK_ROOT in step 2. 
+In this section, we create four configuration files: `config.yaml`, `modules.yaml`, `packages.yaml`, and `compilers.yaml`. 
+These files are initially created in '/$SPACK_ROOT/etc/spack/'. Each of these files serves different configuration purposes in Spack. 
+We defined the $SPACK_ROOT in step 2. 
 
 The following explains how they are used by spack. 
 
@@ -486,7 +488,8 @@ In the following section, we will edit and create the following files:
 - /modeling/spack/etc/spack/packages.yaml
 - /modeling/spack/etc/spack/compilers.yaml
 
-- [ ] Define your $SPACK_ROOT/etc/spack/config.yaml in your $SPACK_ROOT/etc/spack directory. 
+- [ ] Define your `$SPACK_ROOT/etc/spack/config.yaml` file. 
+
 File: *$SPACK_ROOT/etc/spack/config.yaml* - create this if it doesn't exit. This tells spack to use 48 cores when doing a build.
                       It also tells spack to stage the build on local storage. You may want to modify this 
                       place the spack staging info in a different location.
@@ -503,7 +506,7 @@ config:
   #
 ```
 
-- [ ] Define your modules.yaml in your $SPACK_ROOT/etc/spack directory
+- [ ] Define your `$SPACK_ROOT/etc/spack/modules.yaml` file. 
 File: *$SPACK_ROOT/etc/spack/modules.yaml* - create this if doesn't exit. This tell spack to build modules using these specifications.
                       The file is configuring the Lmod module system. The lmod section which is defined as a default the Python module should be included. 
                       The Ecflow module will be excluded from the generated module files. 
@@ -520,7 +523,8 @@ modules:
       - ecflow
 ```
 
-- [ ] Define your packages.yaml in your $SPACK_ROOT/etc/spack directory.
+- [ ] Define your packages.yaml in your `$SPACK_ROOT/etc/spack/packages.yaml` file.
+
 *$SPACK_ROOT/etc/spack/packages.yaml* - This file will be written to by the 'spack external find' command. After spack adds the lines, you will need to append some more information.
                   Note, we are putting everything in the "--scope site" just so we know where the file is generated.
 
@@ -528,7 +532,10 @@ modules:
   You will need to type these commands in your bash environment. 
   *note* system curl and system cmake are known to cause potential compiling issues with NetCDF. You will want to use Spack versions of curl and cmake. 
 
--  [ ] These commands will generate some basic entries in your packages.yaml file. 
+-  [ ] These commands will generate some basic entries in your $SPACK_ROOT/etc/spack/packages.yaml file. 
+       The entries may already exist if you ran them earlier in step 5. 
+       But, we will need to add some entries in this file. 
+
 ```bash
 export SPACK_SYSTEM_CONFIG_PATH=$SPACK_ROOT/etc/spack
 spack external find --scope site --exclude cmake
@@ -586,13 +593,15 @@ dot                         module-git                  modules                 
 libfabric-aws/1.18.2amzn1.0 module-info                 null                        use.own
   ```
 
-- [ ] edit the *packages.yaml* and remove or comment any enteries for curl or cmake. We want spack to build it's own curl and cmake.
+- [ ] edit the *$SPACK_ROOT/etc/spack/packages.yaml* and remove or comment any enteries for curl or cmake. We want spack to build it's own curl and cmake.
    Why *note* system curl and system cmake may create issues with spack. You may need to comment out the entries for curl and cmake for spack to compile NetCDF code. 
 
 
 File: *packages.yaml*  - base config AWS specific edit it to be similar. *note* versions are important. 
 
 - [ ] Ensure that your packages.yaml file resembles the following. Make any necessary adjustments. Please note that the intelmpi package, efa, pmix, slurm, and libfabric may have changed since this was written. Verify that the versions match. If there are any entries for cmake on Centos7, they should be commented out so that Spack installs its own version of cmake. 
+
+- [ ] **IMPORTANT** your $SPACK_ROOT/etc/spack/packages.yaml will need to have the following appended if it doesn't exist.
 
 ```yaml
 packages:
@@ -630,12 +639,12 @@ packages:
     - spec: slurm@23.02.6 +pmix sysconfdir=/opt/slurm/etc
       prefix: /opt/slurm
     buildable: False
-#system generated entries should follow. 
+#system generated entries should follow. The slurm entry may need to be updated to include the variants and buildable: False info. 
 ```
 
 - [ ] verify no errors were introduced 
 
-- running the spack external find command with help is one to verify if there are any errors in the package.yaml. You will get a parsing error if the yaml file is not formatted properly.  
+- running the `spack external find --help` command should verify if there are any errors in the package.yaml. You will get a parsing error if the yaml file is not formatted properly.  
 
 ```
 spack external find --help
@@ -644,7 +653,6 @@ spack external find --help
 *compilers.yaml*
 - For spack to compile the spack binaries with MPI support, the compilers.yaml needs to define the environment variables.
 - This will be touched upon more later since we do not have the intel compiler configured. 
-
 
 
 ### Step 7: Installing and configuring Intel compilers. 
@@ -704,7 +712,7 @@ echo $PWD
 /modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/compiler/lib/intel64_lin
 ```
 
-- [ ] Modify the *config.yaml* so that the environment area is defined. 
+- [ ] Manual change - Modify the *$SPACK_ROOT/etc/spack/compilers.yaml* so that the environment area is defined. 
   The environment area should have the following info.
   Defining the environment area in your compiler.yaml tells spack where to get the MPI libraries that Slurm, the scheduler provides.
   
@@ -714,13 +722,13 @@ echo $PWD
 ```yaml
     environment:
       prepend_path:
-        LD_LIBRARY_PATH: '/modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/compiler/lib/intel64_lin'
+        LD_LIBRARY_PATH: /modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/compiler/lib/intel64_lin
       set:
-        I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
+        I_MPI_PMI_LIBRARY: /opt/slurm/lib/libpmi.so
 ```
 
 
-*classic compiler setup doesn't display the library for some reason*
+*classic compiler setup doesn't display the library for some reason* 
 ```bash
 spack compiler info intel@2021.6.0
 intel@2021.6.0:
@@ -738,7 +746,7 @@ intel@2021.6.0:
 
 *Note* We should be using the classic compiler to compile everything. So, the compiler info should look like this:
 
-- from the *config.yaml*
+- file output of intel@2021.6.0 from the *$SPACK_ROOT/etc/spack/compilers.yaml*
 ```yaml
 intel@2021.6.0:
         paths:
@@ -748,9 +756,9 @@ intel@2021.6.0:
                 fc = /modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-ciiufncrbeqb5lzjm7qzauonhoohyygk/compiler/2021.2.0/linux/bin/intel64/ifort
         environment:
           prepend_path:
-            LD_LIBRARY_PATH: '/modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-or3ebystfoy624o55d3sedgvwwxelhx7/compiler/2022.1.0/linux/compiler/lib/intel64_lin'
+            LD_LIBRARY_PATH: /modeling/spack/opt/spack/linux-centos7-skylake_avx512/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-or3ebystfoy624o55d3sedgvwwxelhx7/compiler/2022.1.0/linux/compiler/lib/intel64_lin
           set:
-            I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
+            I_MPI_PMI_LIBRARY: /opt/slurm/lib/libpmi.so
         modules  = []
         operating system  = centos7
 ```
@@ -901,7 +909,7 @@ Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 
 source: https://www.intel.com/content/dam/develop/external/us/en/documents/mpi-devref-oneapi-linux-beta10.pdf
 
-*Environment Variables* - from the intel documenation 
+*Environment Variables* - from the intel documenation *we don't do this*
 ```
 export I_MPI_CC="/modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/bin/intel64/icc"
 export I_MPI_CXX="/modeling/spack/opt/spack/linux-centos7-zen2/gcc-9.2.0/intel-oneapi-compilers-2022.1.0-drusa5ufomxfbklm6rbb2xloljxcwgev/compiler/latest/linux/bin/intel64/icpc"
