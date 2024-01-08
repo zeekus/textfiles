@@ -12,6 +12,14 @@ Summary: reissue and ssh keys for puppet and configure the bitbucket repos to tr
 	 ```
 	 # 3. copy pub key to repo https://bitbucket.org/cbpo-internal/workspace/projects/PUP/settings/access-keys
 	 
-	 # 4. test it: ssh -i ./id-control_repo.rsa -t git@bitbucket.org
+	 # 4. Test the ssh key: 
 	 
+	 ```
+	   cd /etc/puppetlabs/puppetserver/ssh
+	   ssh -T -i ./id-control_repo.rsa git@bitbucket.org
+	 ```
+
 	 # 5. run a code deploy.
+     ```
+       time puppet code deploy --all --wait
+     ```
