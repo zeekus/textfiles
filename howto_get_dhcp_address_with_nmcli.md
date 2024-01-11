@@ -29,3 +29,9 @@ or
 ```
 nmcli con up eth0 
 ```
+
+# modify the connection so it keeps state after reboots
+
+```
+nmcli con mod eth0 connection.autoconnect true
+```
