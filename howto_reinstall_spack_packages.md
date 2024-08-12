@@ -174,7 +174,7 @@ module load hdf5/1.12.2-intel-2021.6.0-pviyrk7
 
 
 # Spack Environment Creation
-Create and activate a new environment:
+- Create and activate a new environment:
 
 ``` bash 
 spack create env ifort-rocky
@@ -185,7 +185,7 @@ Activate the environment
 spack activate env ifort-rocky
 ```
 
-Spack Environment Creation
+- Spack Environment Creation
 Create new environment:
 
 ``` bash 
@@ -196,6 +196,20 @@ spack add netcdf-c@4.9.0
 spack add netcdf-fortran@4.6.0
 spack add hdf5@1.12.2
 spack install --reuse 
+```
+
+- Concretize the environment.
+
+```bash
+spack concretize -f 
+```
+
+- Rebuild the Modules in the environment
+Refresh the modules in the enviornment.
+
+```bash
+spack module lmod refresh 
+spack module tcl refresh 
 ```
 
 ### Links to Spack Commands
