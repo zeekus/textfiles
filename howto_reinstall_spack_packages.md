@@ -212,6 +212,60 @@ spack module lmod refresh
 spack module tcl refresh 
 ```
 
+# Example spack job using the above environment
+
+```text
+#!/usr/bin/bash
+#SBATCH --job-name=mpi-test     # create a short name for your job
+#SBATCH --nodes=2               # node count
+#SBATCH --ntasks=2              # total number of tasks across all nodes
+#SBATCH --cpus-per-task=4       # cpu-cores per task (>1 if multi-threaded tasks)
+#SBATCH --mem-per-cpu=4G        # memory per cpu-core (4G per cpu-core is default)
+#SBATCH --time=00:15:00         # total run time limit (HH:MM:SS)
+#SBATCH --error=mpitest%J.err
+#SBATCH --output=mpitest%J.out
+
+source /modeling/spack/share/spack/setup-env.sh
+spack env activate ifort-rocky
+module purge
+module load $(spack module tcl find intel-oneapi-compilers)
+module load $(spack module tcl find intel-oneapi-mpi)
+module load $(spack module tcl find netcdf-c)
+module load $(spack module tcl find netcdf-fortran)
+module load $(spack module tcl find hdf5)
+module list
+
+srun --mpi=pmi2 $HOME/slurm_tests/hello_world_mpi
+```
+
+# simple example hello world mpi prgram
+
+```
+PROGRAM hello_world_mpi
+include 'mpif.h'
+
+integer process_Rank, size_Of_Cluster, ierror
+
+call MPI_INIT(ierror)
+call MPI_COMM_SIZE(MPI_COMM_WORLD, size_Of_Cluster, ierror)
+call MPI_COMM_RANK(MPI_COMM_WORLD, process_Rank, ierror)
+
+print *, 'Hello World from process: ', process_Rank, 'of ', size_Of_Cluster
+
+call MPI_FINALIZE(ierror)
+END PROGRAM
+```
+- compile with 
+```
+spack activate ifort-rocky
+module load $(spack module tcl find intel-oneapi-compilers)
+module load $(spack module tcl find intel-oneapi-mpi)
+module load $(spack module tcl find netcdf-c)
+module load $(spack module tcl find netcdf-fortran)
+module load $(spack module tcl find hdf5)
+mpiifort hello_world_mpi.f90 -o hello_world_mpi
+```
+
 ### Links to Spack Commands
 
 - [Spack Uninstall](https://spack.readthedocs.io/en/latest/basic_usage.html#spack-uninstall)
