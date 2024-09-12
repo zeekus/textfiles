@@ -1,0 +1,28 @@
+spack:
+  # Add package specs to the `specs` list
+  specs:
+    - r@4.4.0
+    - proj
+    - geos@3.12.1
+    - gdal@3.8.5
+    - sqlite@3.43.2
+    - bzip2
+
+  modules:
+    default:
+      enable:
+        - tcl
+        - lmod
+      roots:
+        lmod: /modeling/spack/share/spack/modules/r-env/lmod
+        tcl: /modeling/spack/share/spack/modules/r-env/tcl
+
+  view: true
+
+  concretizer:
+    unify: true
+
+  packages:
+    all:
+      require:
+        - any_of: ['%gcc@12.2.0', '%gcc']

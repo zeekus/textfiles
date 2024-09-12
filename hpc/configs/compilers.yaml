@@ -1,0 +1,57 @@
+compilers:
+- compiler:
+    spec: gcc@=8.5.0
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    flags: {}
+    operating_system: rocky8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=12.2.0
+    paths:
+      cc: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-8.5.0/gcc-12.2.0-akjd3fbqzyfyg2vvdkkmvwsnmgq3yr6t/bin/gcc
+      cxx: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-8.5.0/gcc-12.2.0-akjd3fbqzyfyg2vvdkkmvwsnmgq3yr6t/bin/g++
+      f77: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-8.5.0/gcc-12.2.0-akjd3fbqzyfyg2vvdkkmvwsnmgq3yr6t/bin/gfortran
+      fc: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-8.5.0/gcc-12.2.0-akjd3fbqzyfyg2vvdkkmvwsnmgq3yr6t/bin/gfortran
+    flags: {}
+    operating_system: rocky8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=9.2.0
+    paths:
+      cc: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/gcc-9.2.0-jbcrrax2yscwbwidvfdakjmavqtug5pm/bin/gcc
+      cxx: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/gcc-9.2.0-jbcrrax2yscwbwidvfdakjmavqtug5pm/bin/g++
+      f77: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/gcc-9.2.0-jbcrrax2yscwbwidvfdakjmavqtug5pm/bin/gfortran
+      fc: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/gcc-9.2.0-jbcrrax2yscwbwidvfdakjmavqtug5pm/bin/gfortran
+    flags: {}
+    operating_system: rocky8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@=2021.6.0
+    paths:
+      cc: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-2022.1.0-b3vj7upegb5lvsf4m5rxthgfn4mekthf/compiler/2022.1.0/linux/bin/intel64/icc
+      cxx: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-2022.1.0-b3vj7upegb5lvsf4m5rxthgfn4mekthf/compiler/2022.1.0/linux/bin/intel64/icpc
+      f77: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-2022.1.0-b3vj7upegb5lvsf4m5rxthgfn4mekthf/compiler/2022.1.0/linux/bin/intel64/ifort
+      fc: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-2022.1.0-b3vj7upegb5lvsf4m5rxthgfn4mekthf/compiler/2022.1.0/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: rocky8
+    target: x86_64
+    modules: []
+    environment:
+       prepend_path:
+         LD_LIBRARY_PATH: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-2022.1.0-b3vj7upegb5lvsf4m5rxthgfn4mekthf/compiler/2022.1.0/linux/lib/oclfpga/linux64/lib/dspba/linux64
+       set:
+         I_MPI_PMI_LIBRARY: /opt/slurm/lib/libpmi.so
+    extra_rpaths: []
