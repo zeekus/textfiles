@@ -1,0 +1,50 @@
+spack:
+  specs:
+  - gcc@8.5.0
+  - openmpi@4.1.6 
+  - perl@5.26.3
+  - netcdf-fortran@4.6.0 +shared ^openmpi@4
+  - netcdf-c@4.9.2  +mpi ~dap ~szip +shared
+  - hdf5@1.14.0 +hl +mpi ~tools ~szip +shared
+  - nco
+  concretizer:
+    unify: true
+  modules:
+    default:
+      enable:
+      - tcl
+      - lmod
+      lmod:
+        core_compilers:
+        - gcc@=8.5.0
+  view: true
+  packages:
+    all:
+      providers:
+        mpi: [openmpi@4]
+      require:
+      - any_of: ['%gcc@8.5.0', '%gcc']
+      - any_of: [build_type=Release, '@:']
+      - any_of: [~shared, '@:']
+      - any_of: [+pic, '@:']
+      - any_of: [openmpi@4]
+    libxml2:
+      require: +shared
+    gettext:
+      require: +shared
+    perl:
+      require: '@5.26.3'
+      externals:
+      - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
+        prefix: /usr
+    openmpi:
+      externals:
+      - spec: openmpi@4.1.6%gcc@=8.5.0+atomics~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+          fabrics=ofi schedulers=slurm
+        prefix: /opt/amazon/openmpi
+        extra_attributes:
+          environment:
+            prepend_path:
+              PATH: /opt/amazon/openmpi/bin:$PATH
+              LD_LIBRARY_PATH: /opt/amazon/openmpi/lib64:$LD_LIBRARY_PATH
+      buildable: false

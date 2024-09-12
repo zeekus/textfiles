@@ -1,0 +1,71 @@
+spack:
+  include:
+    - /modeling/spack/etc/spack/compilers.yaml
+  concretizer:
+    unify: true
+  modules:
+    default:
+      enable:
+       - tcl
+       - lmod
+  #note shared libraries on hdf5 and netcdf-c are needed for make pschism to work
+  # parallel netcdf and parallelio are not needed to compile pschism. 
+  specs:
+  - intel-oneapi-compilers@2022.1.0
+  - intel-oneapi-mpi@2021.9.0
+  - netcdf-fortran@4.6.0 ^intel-oneapi-mpi@2021.9.0+external-libfabric
+  - hdf5@1.14.0 +hl +mpi ~tools ~szip +shared
+  - netcdf-c@4.9.2 +mpi ~dap ~szip +shared
+  - perl@5.26.3
+  - parallel-netcdf@1.12.2
+  - parallelio@2.5.10 +fortran~pnetcdf
+  - nco@5.1.9 # nco works with this stack!!
+  # - zlib@1.2.11
+  packages:
+    all:
+      providers:
+        mpi: [intel-oneapi-mpi@2021.9.0]
+      require:
+        - any_of: ['%intel@2021.6.0', '%intel', '%gcc', '%gcc@12.2.0']
+        - any_of: [build_type=Release, '@:']
+        - any_of: [~shared, '@:']
+        - any_of: [+pic, '@:']
+        - any_of: [cmake@3.27.9%gcc@12.2.0]
+    libxml2:
+      require: '+shared'
+    gettext:
+      require: '+shared'
+    netcdf-c:
+      require: 'build_system=autotools'
+    netcdf-fortran:
+      require: 'build_system=autotools'
+    perl:
+      require: '@5.26.3'
+      externals:
+      - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
+        prefix: /usr
+    cmake:
+      externals:
+      - spec: cmake@3.27.9%gcc@12.2.0
+        prefix: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/cmake-3.27.9-hc7lzzkr4awwrcdxzxl5ju2iua3f6h2s
+
+
+# spack find looks like this:
+
+# $ spack find
+# ==> In environment schism
+# ==> 9 root specs
+# [+] hdf5@1.14.0 +hl+mpi+shared~szip~tools  [+] intel-oneapi-mpi@2021.9.0  [+] netcdf-c@4.9.2 ~dap+mpi+shared~szip  [+] parallel-netcdf@1.12.2              [e] perl@5.26.3
+# [+] intel-oneapi-compilers@2022.1.0        [+] nco                        [+] netcdf-fortran@4.6.0                 [+] parallelio@2.5.10 +fortran~pnetcdf
+
+# ==> Installed packages
+# -- linux-rocky8-haswell / gcc@8.5.0 -----------------------------
+# antlr@2.7.7  bzip2@1.0.8  c-blosc@1.21.5  cmake@3.26.5  diffutils@3.6  gcc-runtime@8.5.0  glibc@2.28  gmake@4.2.1  gsl@2.7.1  lz4@1.9.4  snappy@1.1.10  zlib-ng@2.1.6  zstd@1.5.6
+
+# -- linux-rocky8-haswell / gcc@12.2.0 ----------------------------
+# cmake@3.27.9  expat@2.6.2  gcc-runtime@12.2.0  gmake@4.2.1  intel-oneapi-compilers@2022.1.0  libbsd@0.12.1  libmd@1.0.4  patchelf@0.17.2  udunits@2.2.28
+
+# -- linux-rocky8-haswell / intel@2021.6.0 ------------------------
+# bison@3.0.4  hdf5@1.14.0                libfabric@1.21.0  nco@5.1.9       netcdf-fortran@4.6.0    parallelio@2.5.10  pkgconf@1.4.2
+# flex@2.6.1   intel-oneapi-mpi@2021.9.0  m4@1.4.18         netcdf-c@4.9.2  parallel-netcdf@1.12.2  perl@5.26.3
+# ==> 35 installed packages

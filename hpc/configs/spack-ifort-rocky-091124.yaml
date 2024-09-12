@@ -1,0 +1,79 @@
+spack:
+  #ifort-rocky environment
+  include:
+  - /modeling/spack/etc/spack/compilers.yaml
+  concretizer:
+    unify: true
+  modules:
+    default:
+      enable:
+      - tcl
+      - lmod
+  view: false
+  specs:
+  - intel-oneapi-compilers-classic@2021.10.0%gcc@12.2.0
+  - intel-oneapi-mpi@2021.12.1
+  - netcdf-fortran@4.6.0 ^intel-oneapi-mpi@2021.12.1+external-libfabric
+  - hdf5@1.14.0 +hl +mpi ~tools ~szip +shared
+  - netcdf-c@4.9.2 +mpi ~dap ~szip +shared
+  - perl@5.26.3
+  #- parallel-netcdf@1.12.2
+  # - parallelio@2.5.10 +fortran~pnetcdf
+  - nco
+  # - zlib@1.2.11
+  packages:
+    all:
+      providers:
+        mpi: [intel-oneapi-mpi@2021.12.1]
+      require:
+      - any_of: ['%intel-oneapi-compilers-classic@2021.10.0', '%intel@2021.10.0', '%gcc', '%gcc@12.2.0']
+      - any_of: [build_type=Release, '@:']
+      - any_of: [~shared, '@:']
+      - any_of: [+pic, '@:']
+      - any_of: [cmake@3.27.9%gcc@12.2.0]
+    libxml2:
+      require: +shared
+    gettext:
+      require: +shared
+    netcdf-c:
+      require: build_system=autotools
+    netcdf-fortran:
+      require: build_system=autotools
+      #intel-oneapi-compilers-classic@2021.10.0:
+      #require: '%gcc-12.2.0'
+    perl:
+      require: '@5.26.3'
+      externals:
+      - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
+        prefix: /usr
+    cmake:
+      externals:
+      - spec: cmake@3.27.9%gcc@12.2.0
+        prefix: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/cmake-3.27.9-hc7lzzkr4awwrcdxzxl5ju2iua3f6h2s
+    intel-oneapi-compilers-classic:
+      externals:
+      - spec: intel-oneapi-compilers-classic@2021.10.0%gcc@12.2.0
+        #- spack location -i intel-oneapi-compilers-classic@2021.10.0%gcc@12.2.0
+        prefix: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-classic-2021.10.0-qc4l6vaafkhnrzdcdvse2t2ve4c4v4hk
+    intel-oneapi-compilers:
+      version: [2023.2.4]
+    intel-oneapi-mpi:
+      version: [2021.12.1]
+    libfabric:
+      externals:
+      - spec: libfabric@1.21.0 fabrics=shm,sockets,tcp,udp
+        prefix: /opt/amazon/efa
+  compilers:
+  - compiler:
+      spec: intel@=2021.10.0
+      paths:
+        cc: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-classic-2021.10.0-qc4l6vaafkhnrzdcdvse2t2ve4c4v4hk/bin/icc
+        cxx: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-classic-2021.10.0-qc4l6vaafkhnrzdcdvse2t2ve4c4v4hk/bin/icpc
+        f77: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-classic-2021.10.0-qc4l6vaafkhnrzdcdvse2t2ve4c4v4hk/bin/ifort
+        fc: /modeling/spack/opt/spack/linux-rocky8-haswell/gcc-12.2.0/intel-oneapi-compilers-classic-2021.10.0-qc4l6vaafkhnrzdcdvse2t2ve4c4v4hk/bin/ifort
+      flags: {}
+      operating_system: rocky8
+      target: x86_64
+      modules: []
+      environment: {}
+      extra_rpaths: []
