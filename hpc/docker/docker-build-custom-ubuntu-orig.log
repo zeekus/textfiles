@@ -1,0 +1,33 @@
+Sending build context to Docker daemon  10.24kB
+Step 1/10 : FROM ubuntu:22.04
+ ---> 97271d29cb79
+Step 2/10 : ENV DEBIAN_FRONTEND=noninteractive
+ ---> Using cache
+ ---> b55ce9420787
+Step 3/10 : ENV TZ=America/New_York
+ ---> Using cache
+ ---> ea679cfac362
+Step 4/10 : WORKDIR /home/ted.knab/spack_environment_build
+ ---> Using cache
+ ---> b74afb462200
+Step 5/10 : RUN apt-get update && apt-get install -y ca-certificates curl gnupg &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg &&     chmod a+r /etc/apt/keyrings/docker.gpg &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update &&     apt-get upgrade -y &&     apt-get install -y         build-essential         curl         file         git         wget 	pkgconf         python3         python3-dev         python3-pip         tzdata         perl         gawk 	lz4         libssl-dev         cmake         texinfo         tar         expat         vim         bc         gfortran         gcc &&     apt-get clean &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 35f52b66e2d1
+Step 6/10 : RUN git clone https://github.com/spack/spack.git /opt/spack
+ ---> Using cache
+ ---> cea7d41ba869
+Step 7/10 : ENV PATH="/opt/spack/bin:${PATH}"
+ ---> Using cache
+ ---> 2b8fcf5864fb
+Step 8/10 : COPY build_spack_env.bash /opt/spack/build_spack_env.bash
+ ---> 69bdcb1b1d0a
+Step 9/10 : RUN chmod +x  /opt/spack/build_spack_env.bash
+ ---> Running in 853649dd3886
+Removing intermediate container 853649dd3886
+ ---> 4856d170f34e
+Step 10/10 : CMD ["/opt/spack/build_spack_env.bash"]
+ ---> Running in 13d7257813dc
+Removing intermediate container 13d7257813dc
+ ---> 9050d7b581c5
+Successfully built 9050d7b581c5
+Successfully tagged custom_ubuntu_spack:latest
