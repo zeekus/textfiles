@@ -177,5 +177,5 @@ spack env activate $ENV_NAME
 echo "running concretizer"
 spack concretize -f 
 
-echo "installing spack"
+echo "installing missing packages"
 spack install 
