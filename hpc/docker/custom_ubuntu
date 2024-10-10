@@ -52,13 +52,12 @@ ENV PATH="/opt/spack/bin:${PATH}"
 
 #COPY OVER bash script to build spack environment
 COPY build_spack_env.bash /opt/spack/build_spack_env.bash
-RUN chmod +x  /opt/spack/build_spack_env.bash
 
 #RUN the build script on the intial build only 
-RUN  /opt/spack/build_spack_env.bash
+RUN chmod +x /opt/spack/build_spack_env.bash && /opt/spack/build_spack_env.bash
 
-#Set CMD to run when starting the container 
-CMD ["bash"] 
+# Keep container running
+CMD ["tail", "-f", "/dev/null"]
 
 
 
