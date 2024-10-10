@@ -44,11 +44,18 @@ RUN apt-get update && apt-get install -y ca-certificates curl gnupg && \
 # Clone Spack repository and set PATH
 RUN git clone https://github.com/spack/spack.git /opt/spack
 
+#SET ENV
 ENV PATH="/opt/spack/bin:${PATH}"
 
+#COPY OVER bash script to build spack environment
 COPY build_spack_env.bash /opt/spack/build_spack_env.bash
 RUN chmod +x  /opt/spack/build_spack_env.bash
-CMD ["/opt/spack/build_spack_env.bash"] 
+
+#RUN the build script on the intial build only 
+RUN  /opt/spack/build_spack_env.bash
+
+#Set CMD to run when starting the container 
+CMD ["bash"] 
 
 
 
