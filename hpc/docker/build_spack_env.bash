@@ -166,6 +166,14 @@ else
 
     echo "Installing Spack..."
     install_spack 
+
+    #run apt and see if we get the modules
+    echo "get the environment-modules installed"
+    apt update -y
+    apt install -y environment-modules
+
+    # load moules
+    source /etc/profile.d/modules.sh
 fi
 
 
