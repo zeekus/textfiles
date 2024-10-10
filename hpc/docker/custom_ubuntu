@@ -36,7 +36,8 @@ RUN apt-get update && apt-get install -y ca-certificates curl gnupg && \
         expat \
         vim \
         bc \	
-        gfortran \		
+        gfortran \	
+        kmod \	
         gcc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
