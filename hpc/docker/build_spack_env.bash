@@ -1,75 +1,17 @@
 #!/bin/bash
+#description: install udunits, spack gcc-test environment with system perl, netcdf, openmpi, nco, and hdf5
+#filename: build_spack_env.bash
+#author Theodore Knab
 
 # Define the name of the environment
 ENV_NAME="gcc-test"
 
-#source the environment
-. /opt/spack/share/spack/setup-env.sh
+# Source the Spack environment
+source /opt/spack/share/spack/setup-env.sh
 
-#!/bin/bash
-
-install_udunits() {
-    # Define variables
-    local version="2.2.28"
-    local url="https://downloads.unidata.ucar.edu/udunits/${version}/udunits-${version}.tar.gz"
-    local tar_file="udunits-${version}.tar.gz"
-    local install_prefix="/opt/spack/local"
-    local expat_path="/usr/include"
-
-    # Download the UDUNITS package
-    echo "Downloading UDUNITS version ${version}..."
-    wget -q "${url}" -O "${tar_file}"
-    if [[ $? -ne 0 ]]; then
-        echo "Error: Failed to download UDUNITS."
-        return 1
-    fi
-
-    # Decompress the package
-    echo "Decompressing ${tar_file}..."
-    tar xf "${tar_file}"
-    if [[ $? -ne 0 ]]; then
-        echo "Error: Failed to decompress ${tar_file}."
-        return 1
-    fi
-
-    # Navigate into the extracted directory
-    cd "udunits-${version}" || { echo "Error: Directory not found."; return 1; }
-
-    # Configure the build
-    echo "Configuring the build..."
-    ./configure --prefix="${install_prefix}"
-    if [[ $? -ne 0 ]]; then
-        echo "Error: Configuration failed."
-        return 1
-    fi
-
-    # Build the library
-    echo "Building UDUNITS..."
-    export CMAKE_PREFIX_PATH="${expat_path}"
-    make -j 4
-    if [[ $? -ne 0 ]]; then
-        echo "Error: Build failed."
-        return 1
-    fi
-
-    # Install the library
-    echo "Installing UDUNITS..."
-    make install
-    if [[ $? -ne 0 ]]; then
-        echo "Error: Installation failed."
-        return 1
-    fi
-
-    echo "UDUNITS version ${version} installed successfully!"
-}
-
-# Call the function to execute the installation process
-install_udunits
-
-
-
-# Create the spack.yaml file
-cat <<EOL > spack.yaml
+install_spack() {
+    # Create the spack.yaml file
+    cat <<EOL > spack.yaml
 spack:
   specs:
   - gcc@11.4.0
@@ -160,22 +102,72 @@ spack:
       - spec: perl@5.34.0~cpanm+opcode+open+shared+threads
         prefix: /usr
     udunits:
-      buildable: false  # This prevents Spack from building its own version
+      buildable: false  # Prevents Spack from building its own version.
       externals:
       - spec: udunits@2.2.8
         prefix: /opt/spack/local # Replace with the actual prefix where expat is installed
 
 EOL
 
-# Create the Spack environment using the generated spack.yaml file.
-spack env create $ENV_NAME spack.yaml
+    # Create the Spack environment using the generated spack.yaml file.
+    spack env create "$ENV_NAME" spack.yaml
 
-echo "Environment '$ENV_NAME' created with specifications from spack.yaml."
+    echo "Environment '$ENV_NAME' created with specifications from spack.yaml."
 
-spack env activate $ENV_NAME
+    spack env activate "$ENV_NAME"
 
-echo "running concretizer"
-spack concretize -f 
+    echo "Running concretizer..."
+    spack concretize -f 
 
-echo "installing missing packages"
-spack install 
+    echo "Installing missing packages..."
+    spack install 
+}
+
+install_udunits() {
+    local version="2.2.28"
+    local url="https://downloads.unidata.ucar.edu/udunits/${version}/udunits-${version}.tar.gz"
+    local tar_file="udunits-${version}.tar.gz"
+    local install_prefix="/opt/spack/local"
+    local expat_path="/usr/include"
+
+    # Download the UDUNITS package.
+    echo "Downloading UDUNITS version ${version}..."
+    wget -q "${url}" -O "${tar_file}" || { echo "Error downloading UDUNITS."; return 1; }
+
+    # Decompress the package.
+    echo "Decompressing ${tar_file}..."
+    tar xf "${tar_file}" || { echo "Error decompressing ${tar_file}."; return 1; }
+
+    # Navigate into the extracted directory.
+    cd "udunits-${version}" || { echo "Error navigating to directory."; return 1; }
+
+    # Configure the build.
+    echo "Configuring the build..."
+    ./configure --prefix="${install_prefix}" || { echo "Configuration failed."; return 1; }
+
+    # Build the library.
+    echo "Building UDUNITS..."
+    export CMAKE_PREFIX_PATH="${expat_path}"
+    make -j 4 || { echo "Build failed."; return 1; }
+
+    # Install the library.
+    echo "Installing UDUNITS..."
+    make install || { echo "Installation failed."; return 1; }
+
+    echo "UDUNITS version ${version} installed successfully!"
+}
+
+# Check if the Spack environment exists.
+if spack env list | grep -q "$ENV_NAME"; then
+    echo "Spack environment '$ENV_NAME' already exists. Skipping installation of Spack and UDUnits."
+else 
+    echo "Installing UDUnits..."
+    install_udunits
+
+    echo "Installing Spack..."
+    install_spack 
+fi
+
+
+
+
