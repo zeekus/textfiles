@@ -174,6 +174,7 @@ else
 
     # load moules
     source /etc/profile.d/modules.sh
+    module use /opt/spack/share/spack/modules/linux-ubuntu22.04-broadwell
 fi
 
 
