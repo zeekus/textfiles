@@ -14,7 +14,6 @@ This document outlines the steps to compile SCHISM using a Docker container conf
    ```bash
    wget https://raw.githubusercontent.com/zeekus/textfiles/master/hpc/docker/custom_ubuntu
    wget https://raw.githubusercontent.com/zeekus/textfiles/refs/heads/master/hpc/docker/build_spack_env.bash
-   wget https://raw.githubusercontent.com/zeekus/textfiles/refs/heads/master/hpc/docker/pschism_gcc-schism.sh
    ```
 
 2. **Build the Docker Image**  
