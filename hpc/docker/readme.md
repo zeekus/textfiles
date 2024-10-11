@@ -1,5 +1,3 @@
-Here’s the revised documentation with improved Markdown formatting and structure:
-
 ## Documentation for Compiling SCHISM on Docker
 
 This document outlines the steps to compile SCHISM using a Docker container configured with Spack. The Docker build information is based on a custom Ubuntu image that sets up a Spack environment with the necessary dependencies.
