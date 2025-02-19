@@ -72,7 +72,7 @@ from numpy import array,unique,arange,zeros
 from netCDF4 import Dataset
 ```
 
-# example run 
+# How to run run. Just call python this will get the environment's version.  
 
 ```shell
 python test.py 
