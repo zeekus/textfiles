@@ -46,6 +46,7 @@ module load openmpi/4.1.6                # external MPI
 ```
 
 # Step 3: Load Spack-managed modules the spack way
+
 ```bash
 module load $(spack module tcl find netcdf-c)
 module load $(spack module tcl find netcdf-fortran)
@@ -54,9 +55,12 @@ module load $(spack module tcl find nco)
 ```
 
 # Step 4: Verify environment
+
 ```bash
 spack env status
 ```
+
+# basic test script for Python Numpy and netCDF4.
 
 ```python
 # Example dependencies needed for your Python script
