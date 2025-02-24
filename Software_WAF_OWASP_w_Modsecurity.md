@@ -64,6 +64,6 @@ SecRuleEngine On
 ## Reference
 For more detailed information, visit:
 [Nginx WAF with ModSecurity and OWASP CRS Documentation](https://docs.nginx.com/nginx-waf/admin-guide/nginx-plus-modsecurity-waf-owasp-crs/)
+[CRS-WORKS] https://coreruleset.org/docs/2-how-crs-works/2-4-sampling_mode/
 
-Citations:
-[1] https://github.com/corerule
+
