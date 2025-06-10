@@ -23,3 +23,8 @@ Summary: reissue and ssh keys for puppet and configure the bitbucket repos to tr
      ```
        time puppet code deploy --all --wait
      ```
+
+         # renew the token for 2 hours  
+	```
+ puppet-access login --lifetime 2h
+ ```
