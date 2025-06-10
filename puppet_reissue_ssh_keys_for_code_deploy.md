@@ -2,11 +2,15 @@ Problem: need to reissue ssh keys for code deploy
 
 Summary: reissue and ssh keys for puppet and configure the bitbucket repos to trust the public keys for them. 
 
-# issue new ssh key in /etc/puppetlabs/puppetserver/ssh
+# 1
+## 2
+### 3
+
+### issue new ssh key in /etc/puppetlabs/puppetserver/ssh
 ```
 	   ssh-keygen -t rsa -b 2048 -P '' -f /etc/puppetlabs/puppetserver/ssh/id-control_repo.rsa
 ```  
-# run puppet infra config
+### run puppet infra config
 ```
 	   puppet infrastructure configure
 ```
