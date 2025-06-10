@@ -2,9 +2,9 @@ Problem: need to reissue ssh keys for code deploy
 
 Summary: reissue and ssh keys for puppet and configure the bitbucket repos to trust the public keys for them. 
 
-# 1
-## 2
-### 3
+# 1   Header check 1
+## 2  Header check 2
+### 3 Header check 3
 
 ### issue new ssh key in /etc/puppetlabs/puppetserver/ssh
 ```
@@ -28,7 +28,7 @@ Summary: reissue and ssh keys for puppet and configure the bitbucket repos to tr
        time puppet code deploy --all --wait
  ```
 
-### renew the token for 2 hours  
+### renew the token for 2 hours  *The lifetime can be specified in years (y), days (d), hours (h), minutes (m), or seconds (s).* 
  
  ```
  puppet-access login --lifetime 2h
