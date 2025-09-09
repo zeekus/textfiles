@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  bookstack_db:
+    image: mysql:8.0
+    container_name: bookstack_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=bookstack
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=bookstack_password
+    volumes:
+      - bookstack_db_data:/var/lib/mysql
+    networks:
+      - bookstack_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  bookstack:
+    image: lscr.io/linuxserver/bookstack:latest
+    container_name: bookstack_app
+    stop_grace_period: 30s
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - APP_URL=https://bookstack.chesapeakebay.net
+      - DB_HOST=bookstack_db
+      - DB_PORT=3306
+      - DB_DATABASE=bookstack
+      - DB_USERNAME=bookstack
+      - DB_PASSWORD=bookstack_password
+      - MAIL_DRIVER=smtp
+      - APP_PROXIES=*
+      - APP_KEY=base64:5C2ZKLDyjpb5RYRuEcvcp47+1hJaV0Vjv9Ir/zJjahc=
+        #REMOVED APP_KEY LET Bookstack generate it automatically
+        #- APP_KEY=wXJGpMBFUCzxiAVDDQoxmttMJpja3sHsQjNsBBxDkRo=
+    volumes:
+      - bookstack_app_data:/config
+    ports:
+      - "8080:80"
+    depends_on:
+      - bookstack_db
+    networks:
+      - bookstack_network
+    restart: unless-stopped
+
+volumes:
+  bookstack_db_data:
+  bookstack_app_data:
+
+networks:
+  bookstack_network:
